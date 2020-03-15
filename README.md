@@ -6,9 +6,9 @@
  
 # Ссылки на элементы проекта:
 
-**Техническое задание (формат docx):** https://github.com/marinaagafonova/Wish-box/blob/master/Techical_requirements.docx
+**Техническое задание (формат docx):** https://github.com/marinaagafonova/Wish-box/blob/master/Technical_requirements.docx
 
-**Техническое задание (формат pdf):** https://github.com/marinaagafonova/Wish-box/blob/master/Techical_requirements.pdf
+**Техническое задание (формат pdf):** https://github.com/marinaagafonova/Wish-box/blob/master/Technical_requirements.pdf
 
 **Курсовой проект (формат docx):** https://github.com/marinaagafonova/Wish-box/blob/master/course_project_Wish_box.docx
 
