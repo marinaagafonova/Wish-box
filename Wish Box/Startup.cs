@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Wish_Box.Options;
 using Microsoft.OpenApi.Models;
+using Wish_Box.Models;
 
 namespace Wish_Box
 {
@@ -29,7 +30,7 @@ namespace Wish_Box
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(options =>
+            services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -40,6 +41,7 @@ namespace Wish_Box
             {
                 x.SwaggerDoc("v1", new OpenApiInfo{ Title = "Wishbox API", Version = "v1"});
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
