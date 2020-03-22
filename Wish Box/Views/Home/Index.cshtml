@@ -1,6 +1,25 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model IEnumerable<Wish_Box.Models.User>
+
+    <h3>Пользователи</h3>
+    <table>
+        <tr>
+            <td>Id</td>
+            <td>Логин</td>
+            <td>Дата рождения</td>
+            <td></td>
+        </tr>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.Login</td>
+                <td>@user.dayOfBirth</td>
+            </tr>
+        }
+    </table>
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>

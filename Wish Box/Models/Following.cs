@@ -7,9 +7,11 @@ namespace Wish_Box.Models
 {
     public class Following
     {
-        public int WhoFollowsId { get; set; }
-        public User WhoFollows { get; set; }
-        public int WhoIsFollowedId { get; set; }
-        public User WhoIsFollowed { get; set; }
+        public int Id { get; set; }
+
+        public int UserFId { get; set; }
+    //    public User UserF { get; set; }
+        public int UserIsFId { get; set; }
+    //    public User UserIsF { get; set; }
     }
 }
