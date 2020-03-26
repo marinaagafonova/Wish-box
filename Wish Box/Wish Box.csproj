@@ -21,4 +21,10 @@
     <Folder Include="Data\" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <None Include="wwwroot\Content\logo.png" />
+    <None Include="wwwroot\Content\style.css" />
+  </ItemGroup>
+
 </Project>
