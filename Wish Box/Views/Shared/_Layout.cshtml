@@ -6,26 +6,73 @@
     <title>@ViewData["Title"] - Wish_Box</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="@Url.Content("~/Content/style.css")" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
     <style type="text/css">
-       body {
-    background-color: #aed3e6 !important;
+        body {
+            background-color: #aed3e6 !important;
         }
-       .navbar-default {
-    background-color: #aed3e6 !important;
-    border-color: white;
-}
-       .own-navbar {
-    background-color: #aed3e6;
-    border-color: white;
-}
 
-.navbar {
-    background-color: #aed3e6 !important;
-}
+        .navbar-default {
+            background-color: #aed3e6 !important;
+            border-color: white;
+        }
 
+        .own-navbar {
+            background-color: #aed3e6;
+            border-color: white;
+        }
+
+        .navbar {
+            background-color: #aed3e6 !important;
+        }
+        .searchbar{
+            margin-bottom: auto;
+            margin-top: auto;
+            height: 50px;
+            background-color: #5d8ba2;
+            border-radius: 30px;
+            padding: 10px;
+            transform: translate(68%, 0px);
+            position: absolute
+        }
+
+        .search_input{
+            color: white;
+            border: 0;
+            outline: 0;
+            background: none;
+            width: 450px;
+            line-height: 30px;
+            transition: width 0.4s linear;
+            padding-left: 50px;
+        }
+        .search_icon {
+            height: 40px;
+            width: 40px;
+            float: right;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            margin-right: 10px;
+            position: absolute;
+            transform: translate(0, -90%);
+        }
+
+        input[type="text"]::-webkit-input-placeholder {
+            color: white;
+        }
+        input[type="text"]::-moz-placeholder {
+            color: white;
+        }
+        /* Firefox 19+ */
+        input[type="text"]:-moz-placeholder           {color:white;}/* Firefox 18- */
+        input[type="text"]:-ms-input-placeholder      {color:white;}
     </style>
 
-    <!--<link rel="stylesheet" href="~/css/site.css" />-->
 </head>
 <body>
     <header>
@@ -38,22 +85,11 @@
                                  height="50" alt="Home">
                         </a>
                     </div>
-                    <!-- <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Wish_Box</a>-->
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                            </li>
-                        </ul>
+                    <div class="searchbar">
+                        <input class="search_input" type="text" name="" placeholder="Найти пользователя...">
+                        <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
                     </div>
+
                 </div>
             </nav>
         </div>
