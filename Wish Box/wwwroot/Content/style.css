@@ -1,14 +1,93 @@
-﻿.own_header {
-    background-color: #aed3e6;
+﻿body {
+    background-color: #aed3e6 !important;
+}
+
+.navbar-default {
+    background-color: #aed3e6 !important;
+    border-color: white;
 }
 
 .own-navbar {
     background-color: #aed3e6;
     border-color: white;
+    max-width: 1920px;
+    margin: 10px;
 }
 
 .navbar {
     background-color: #aed3e6 !important;
 }
 
+.searchbar {
+    margin-bottom: auto;
+    margin-top: auto;
+    height: 50px;
+    background-color: #5d8ba2;
+    border-radius: 30px;
+    padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
+.search_input {
+    color: white;
+    border: 0;
+    outline: 0;
+    background: none;
+    width: 450px;
+    line-height: 30px;
+    transition: width 0.4s linear;
+    padding-left: 50px;
+}
+
+.search_icon {
+    height: 40px;
+    width: 40px;
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    color: white;
+    text-decoration: none;
+    margin-right: 10px;
+    position: absolute;
+    transform: translate(0, -90%);
+}
+
+input[type="search"]::-webkit-input-placeholder {
+    color: white;
+}
+
+input[type="search"]::-moz-placeholder {
+    color: white;
+}
+/* Firefox 19+ */
+input[type="search"]:-moz-placeholder {
+    color: white;
+}
+/* Firefox 18- */
+input[type="search"]:-ms-input-placeholder {
+    color: white;
+}
+
+.own-container {
+    @extend .container;
+    margin: 0 !important;
+    max-width: 1440px !important;
+}
+
+.actions-block {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.logo {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.logout-btn {
+    color: white !important;
+    font-weight: bold;
+}

@@ -8,89 +8,36 @@
     <link href="@Url.Content("~/Content/style.css")" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
-    <style type="text/css">
-        body {
-            background-color: #aed3e6 !important;
-        }
-
-        .navbar-default {
-            background-color: #aed3e6 !important;
-            border-color: white;
-        }
-
-        .own-navbar {
-            background-color: #aed3e6;
-            border-color: white;
-        }
-
-        .navbar {
-            background-color: #aed3e6 !important;
-        }
-        .searchbar{
-            margin-bottom: auto;
-            margin-top: auto;
-            height: 50px;
-            background-color: #5d8ba2;
-            border-radius: 30px;
-            padding: 10px;
-            transform: translate(68%, 0px);
-            position: absolute
-        }
-
-        .search_input{
-            color: white;
-            border: 0;
-            outline: 0;
-            background: none;
-            width: 450px;
-            line-height: 30px;
-            transition: width 0.4s linear;
-            padding-left: 50px;
-        }
-        .search_icon {
-            height: 40px;
-            width: 40px;
-            float: right;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            color: white;
-            text-decoration: none;
-            margin-right: 10px;
-            position: absolute;
-            transform: translate(0, -90%);
-        }
-
-        input[type="text"]::-webkit-input-placeholder {
-            color: white;
-        }
-        input[type="text"]::-moz-placeholder {
-            color: white;
-        }
-        /* Firefox 19+ */
-        input[type="text"]:-moz-placeholder           {color:white;}/* Firefox 18- */
-        input[type="text"]:-ms-input-placeholder      {color:white;}
-    </style>
-
 </head>
 <body>
     <header>
         <div class="own-navbar">
             <nav class="navbar navbar-default navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-                <div class="container">
-                    <div>
+                    <div class="logo">
                         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                             <img src="~/Content/logo.png" asp-append-version="true" width="166"
                                  height="50" alt="Home">
                         </a>
                     </div>
                     <div class="searchbar">
-                        <input class="search_input" type="text" name="" placeholder="Найти пользователя...">
+                        <input class="search_input" type="search" name="" placeholder="Найти пользователя...">
                         <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
                     </div>
 
-                </div>
+                    <div class="actions-block">
+                        <a class="navbar-brand" asp-area="" asp-controller="Wish" asp-action="Add">
+                            <!-- Alex "to do" -->
+                            <img src="~/Content/plus gift.png" asp-append-version="true" width="80"
+                                 height="45" alt="Add wish">
+                        </a>
+                        <a class="navbar-brand" asp-area="" asp-controller="Profile" asp-action="Show">
+                            <img src="~/Content/profile.png" asp-append-version="true" width="45"
+                                 height="45" alt="My profile">
+                        </a>
+                        <a class="navbar-brand logout-btn" asp-area="" asp-controller="Home" asp-action="Logout">
+                            ВЫЙТИ
+                        </a>
+                    </div>
             </nav>
         </div>
     </header>
