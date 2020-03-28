@@ -91,3 +91,31 @@ input[type="search"]:-ms-input-placeholder {
     color: white !important;
     font-weight: bold;
 }
+
+.btn-signup {
+    background-color: #FF967E;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.button-group {
+    list-style: none;
+    display: inline-block;
+}
+
+.app-desc {
+    width: 430px;
+    height: 158px;
+    left: 518px;
+    top: 448px;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 32px;
+    line-height: 40px;
+    color: #FFFFFF;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+}
