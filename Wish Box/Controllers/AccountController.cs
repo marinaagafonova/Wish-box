@@ -54,7 +54,8 @@ namespace Wish_Box.Controllers
                 if (user == null)
                 {
                     // добавляем пользователя в бд
-                    db.Users.Add(new User { Login = model.Login, Password = model.Password });
+                    db.Users.Add(new User { Login = model.Login, Password = model.Password, dayOfBirth = model.dayOfBirth, 
+                        Country = model.Country, City = model.City });
                     await db.SaveChangesAsync();
 
                     await Authenticate(model.Login); // аутентификация

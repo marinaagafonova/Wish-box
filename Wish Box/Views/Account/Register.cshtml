@@ -15,9 +15,11 @@
             <span asp-validation-for="Login" />
         </div>
         <div>
-            <label asp-for="DateOfBirth">Введите дату рождения</label><br />
-            <input type="date" asp-for="DateOfBirth" />
-            <span asp-validation-for="DateOfBirth" />
+            <label asp-for="dayOfBirth">Введите дату рождения</label><br />
+            <input type="date" asp-for="dayOfBirth" />
+            @*@Html.EditorFor(model => model.dayOfBirth, new { htmlAttributes = new { @class = "datepicker"} })*@
+            <span asp-validation-for="dayOfBirth" />
+
         </div>
         <div>
             <label asp-for="Country">Введите страну</label><br />

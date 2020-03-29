@@ -14,7 +14,7 @@ namespace Wish_Box.ViewModels
         [Required(ErrorMessage = "Не указана дата рождения")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd'/'MM'/'yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime DateOfBirth { get; set; }
+        public DateTime dayOfBirth { get; set; }
 
         [Required(ErrorMessage = "Не указана страна")]
         public string Country { get; set; }
