@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 using Wish_Box.Models;
 
 namespace Wish_Box.Controllers
@@ -18,9 +19,14 @@ namespace Wish_Box.Controllers
             db = context;
         }
 
+        //[Authorize]
         public IActionResult Index()
         {
-            return View(db.Users.ToList());
+            if (User.Identity.IsAuthenticated)
+            {
+                return View(db.Users.ToList());
+            }
+            return RedirectToAction("Logout", "Account");
         }
 
         public IActionResult Privacy()
@@ -36,8 +42,7 @@ namespace Wish_Box.Controllers
 
         public IActionResult Logout()
         {
-            // дописать по функционалу - Данила
-            return View(); 
+            return RedirectToAction("Logout", "Account");
         }
     }
 }

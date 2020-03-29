@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Logout";
+}
+
+@*@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}*@
+
+<div class="text-center">
+    <img src="~/Content/logo.png" asp-append-version="true" width="577"
+         height="174">
+    <p class="app-desc">
+        Делитесь тем, чего желаете.
+        Получайте то, о чём
+        действительно мечтали.
+    </p>
+    <ul class="button-group">
+        <li>
+            <a class="btn btn-signup  btn-lg" asp-area="" asp-controller="Account" asp-action="Register">Зарегистрироваться</a>
+        </li>
+        <li>
+            <a class="btn btn-light  btn-lg" asp-area="" asp-controller="Account" asp-action="Login">Войти</a>
+        </li>
+    </ul>
+</div>
