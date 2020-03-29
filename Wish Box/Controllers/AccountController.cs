@@ -59,7 +59,7 @@ namespace Wish_Box.Controllers
 
                     await Authenticate(model.Login); // аутентификация
 
-                    return RedirectToAction("Index", "HomeController");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                     ModelState.AddModelError("", "Некорректные логин и(или) пароль");
