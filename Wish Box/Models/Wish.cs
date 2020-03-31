@@ -14,6 +14,6 @@ namespace Wish_Box.Models
         public string Description { get; set; }
         public bool IsTaken { get; set; }
         public int UserId {get;set;}
-        //public User User { get; set; }
+        public User User { get; set; }
     }
 }
