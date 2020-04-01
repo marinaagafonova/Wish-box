@@ -1,33 +1,47 @@
-﻿@model PagedList.Core.IPagedList<Wish_Box.Models.User>
+﻿@model Wish_Box.Models.UserListViewModel
 @{
     ViewData["Title"] = "Search";
 }
-    <div class="col-sm-8 col-lg-8 col-md-8">
 
+    
+
+    <div class="col-sm-8 col-lg-8 col-md-8">
+        <form method="get" asp-controller="Home" asp-action="Filter">
+            <div class="form-inline form-group">
+                <label class="control-label">Имя: </label>
+                <input name="name" class="form-control" value="@ViewBag.keyword" />
+                <label class="control-label">Страна: </label>
+                <select name="country" asp-items="Model.Countries" class="form-control"></select>
+                <label class="control-label">Город: </label>
+                <select name="city" asp-items="Model.Cities" class="form-control"></select>
+
+                <input type="submit" value="Искать" class="btn btn-default" />
+            </div>
+        </form>
         @if (Model != null)
         {
-        <table border="1">
-            <tr>
-                <th>Login</th>
-                <th>Country</th>
-                <th>City</th>
-                <th>DayOfBirth</th>
-            </tr>
-            @foreach (var user in Model)
-            {
+            <table class="table table-striped">
                 <tr>
-                    <td>@user.Login</td>
-                    <td>@user.Country</td>
-                    <td>@user.City</td>
-                    <td>@user.dayOfBirth</td>
+                    <th>Login</th>
+                    <th>Country</th>
+                    <th>City</th>
+                    <th>DayOfBirth</th>
                 </tr>
-            }
-            <!--  <tr>
-          <td colspan="3" align="left">
-              <pager list="@Model" asp-controller="Home" asp-action="Search" asp-route-keyword="@ViewBag.keyword" />
+                @foreach (var user in Model.Users)
+                {
+                    <tr>
+                        <td>@user.Login</td>
+                        <td>@user.Country</td>
+                        <td>@user.City</td>
+                        <td>@user.dayOfBirth</td>
+                    </tr>
+                }
+                <!--  <tr>
+                <td colspan="3" align="left">
+                    <pager list="@Model" asp-controller="Home" asp-action="Search" asp-route-keyword="@ViewBag.keyword" />
 
-          </td>
-      </tr>-->
-        </table>
+                </td>
+            </tr>-->
+            </table>
         }
     </div>
