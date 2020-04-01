@@ -8,43 +8,78 @@
     <link href="@Url.Content("~/Content/style.css")" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arimo&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
         <div class="own-navbar">
             <nav class="navbar navbar-default navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-                    <div class="logo">
-                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                            <img src="~/Content/logo.png" asp-append-version="true" width="166"
-                                 height="50" alt="Home">
-                        </a>
-                    </div>
-                    <div class="searchbar">
-                        <input class="search_input" type="search" name="" placeholder="Найти пользователя...">
-                        <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
-                    </div>
+                <div class="logo">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="~/Content/logo.png" asp-append-version="true" width="166"
+                             height="50" alt="Home">
+                    </a>
+                </div>
+                @{ if (User.Identity.IsAuthenticated)
+                    {
+                        <form method="get" asp-controller="Home" asp-action="Search">
+                            <div class="searchbar">
+                                <input class="search_input" type="search" name="keyword" placeholder="Найти пользователя...">
+                                <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
+                            </div>
+                        </form>
 
-                    <div class="actions-block">
-                        <a class="navbar-brand" asp-area="" asp-controller="Wish" asp-action="Add">
-                            <!-- Alex "to do" -->
-                            <img src="~/Content/plus gift.png" asp-append-version="true" width="80"
-                                 height="45" alt="Add wish">
-                        </a>
-                        <a class="navbar-brand" asp-area="" asp-controller="Account" asp-action="Show">
-                            <img src="~/Content/profile.png" asp-append-version="true" width="45"
-                                 height="45" alt="My profile">
-                        </a>
-                        <a class="navbar-brand logout-btn" asp-controller="Home" asp-action="Logout">
-                            ВЫЙТИ
-                        </a>
-                    </div>
-            </nav>
+                        <div class="actions-block">
+                            <a class="navbar-brand" asp-area="" asp-controller="Wish" asp-action="Add">
+                                <!-- Alex "to do" -->
+                                <img src="~/Content/plus gift.png" asp-append-version="true" width="80"
+                                     height="45" alt="Add wish">
+                            </a>
+                            <a class="navbar-brand" asp-area="" asp-controller="Account" asp-action="Show">
+                                <img src="~/Content/profile.png" asp-append-version="true" width="45"
+                                     height="45" alt="My profile">
+                            </a>
+                            <a class="navbar-brand logout-btn" asp-controller="Home" asp-action="Logout">
+                                ВЫЙТИ
+                            </a>
+                        </div>
+                        }
+                    }
+                    </nav>
         </div>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+       
+    <div class="container-fluid">
+        <div class="row">
+            @{ if (User.Identity.IsAuthenticated)
+                {
+                    <div class="col-sm-3 col-lg-3 col-md-3 left">
+                        <ul class="button-group">
+                            <li class="menu-li">
+                                <div class="menu-btn-block">
+                                    <a href="" class="menu-btn">Мои желания</a>
+                                </div>
+                            </li>
+                            <li class="menu-li">
+                                <div class="menu-btn-block">
+                                    <a href="" class="menu-btn">Подарить</a>
+                                </div>
+                            </li>
+                            <li class="menu-li">
+                                <div class="menu-btn-block">
+                                    <a href="" class="menu-btn">Мои подписки</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                }
+            }
+
+
+            <!-- <main role="main" class="pb-3">-->
             @RenderBody()
-        </main>
+        </div>
+        <!--  </main>-->
     </div>
 
     <footer class="border-top footer text-muted">

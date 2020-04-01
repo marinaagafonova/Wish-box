@@ -17,10 +17,14 @@ namespace Wish_Box.Controllers
         {
             db = context;
         }
+        public IActionResult Index()
+        {
+            return View();
+        }
         [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            return PartialView();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -37,12 +41,12 @@ namespace Wish_Box.Controllers
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
-            return View(model);
+            return PartialView(model);
         }
         [HttpGet]
         public IActionResult Register()
         {
-            return View();
+            return PartialView();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -65,7 +69,7 @@ namespace Wish_Box.Controllers
                 else
                     ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
-            return View(model);
+            return PartialView(model);
         }
 
         private async Task Authenticate(string userName)
@@ -84,7 +88,7 @@ namespace Wish_Box.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return View();
+            return RedirectToAction("Index", "Account");
         }
     }
 }

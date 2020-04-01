@@ -72,7 +72,6 @@ input[type="search"]:-ms-input-placeholder {
 }
 
 .own-container {
-    @extend .container;
     margin: 0 !important;
     max-width: 1440px !important;
 }
@@ -111,11 +110,50 @@ input[type="search"]:-ms-input-placeholder {
     font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: normal;
-    font-size: 32px;
+    font-size: 27px;
     line-height: 40px;
     color: #FFFFFF;
     text-align: left;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 43%;
     padding-top: 20px;
+}
+
+
+a.menu-btn {
+    font-family: Arimo;
+    font-style: normal;
+    color: white;
+    text-decoration: none;
+    padding: .8em 1em calc(.8em + 3px);
+    font-size: 20px;
+    position: absolute;
+    line-height: 18px;
+}
+
+.menu-btn-block:hover {
+    background: rgb(73, 128, 156);
+}
+
+.menu-btn-block:active {
+    background: rgb(53, 108, 136);
+}
+
+.menu-li {
+    margin-bottom: 20px;
+}
+
+.menu-btn-block {
+    border-radius: 20px;
+    background: #71A8C4;
+    transition: 0.2s;
+    width: 281px;
+    height: 50px;
+    position: relative;
+}
+
+.left {
+    /*position: fixed;*/
+    margin-left: 40px;
+    /*margin-right: auto;*/
+    width: 400px !important;
 }
