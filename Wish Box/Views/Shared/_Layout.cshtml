@@ -22,10 +22,12 @@
                 </div>
                 @{ if (User.Identity.IsAuthenticated)
                     {
-                        <div class="searchbar">
-                            <input class="search_input" type="search" name="" placeholder="Найти пользователя...">
-                            <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
-                        </div>
+                        <form method="get" asp-controller="Home" asp-action="Search">
+                            <div class="searchbar">
+                                <input class="search_input" type="search" name="keyword" placeholder="Найти пользователя...">
+                                <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
+                            </div>
+                        </form>
 
                         <div class="actions-block">
                             <a class="navbar-brand" asp-area="" asp-controller="Wish" asp-action="Add">
@@ -51,7 +53,7 @@
         <div class="row">
             @{ if (User.Identity.IsAuthenticated)
                 {
-                    <div class="col-sm-1 col-lg-1 col-md-1 left">
+                    <div class="col-sm-3 col-lg-3 col-md-3 left">
                         <ul class="button-group">
                             <li class="menu-li">
                                 <div class="menu-btn-block">
@@ -65,7 +67,7 @@
                             </li>
                             <li class="menu-li">
                                 <div class="menu-btn-block">
-                                    <a href="" class="menu-btn">Мои подписка</a>
+                                    <a href="" class="menu-btn">Мои подписки</a>
                                 </div>
                             </li>
                         </ul>

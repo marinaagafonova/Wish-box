@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Wish_Box.Models;
+using PagedList.Core;
 
 namespace Wish_Box.Controllers
 {
@@ -26,7 +27,7 @@ namespace Wish_Box.Controllers
             {
                 return View(db.Users.ToList());
             }
-            return RedirectToAction("Logout", "Account");
+            return RedirectToAction("Index", "Account");
         }
 
         public IActionResult Privacy()
@@ -43,6 +44,17 @@ namespace Wish_Box.Controllers
         public IActionResult Logout()
         {
             return RedirectToAction("Logout", "Account");
+        }
+
+        [HttpGet] 
+        [Route("Search")]
+        public async Task<IActionResult> Search(int page = 1, int pageSize = 3)
+        {
+            var keyword = Request.Query["keyword"].ToString();
+            var users = db.Users.Where(u => u.Login.Contains(keyword));
+            PagedList<User> model = new PagedList<User>(users, page, pageSize);
+            ViewBag.keyword = keyword;
+            return View(model);
         }
     }
 }

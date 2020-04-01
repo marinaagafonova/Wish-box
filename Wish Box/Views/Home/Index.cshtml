@@ -3,6 +3,7 @@
 }
 @model IEnumerable<Wish_Box.Models.User>
 
+<div class="col-8 col-lg-8">
     <h3>Пользователи</h3>
     <table>
         <tr>
@@ -13,15 +14,15 @@
         </tr>
         @foreach (var user in Model)
         {
-    <tr>
-        <td>@user.Id</td>
-        <td>@user.Login</td>
-        <td>@user.dayOfBirth.ToShortDateString()</td>
-    </tr>
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.Login</td>
+                <td>@user.dayOfBirth.ToShortDateString()</td>
+            </tr>
         }
     </table>
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
 </div>
