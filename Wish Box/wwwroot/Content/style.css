@@ -171,3 +171,18 @@ a.menu-btn {
     left: 50%;
     transform: translate(-50%, 0);
 }
+
+.sign-up-window {
+    background: #FFFFFF;
+    border-radius: 15px;
+    width: 550px;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 10%);
+}
+
+.sign-up-btn {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
