@@ -49,7 +49,7 @@ namespace Wish_Box.Controllers
         }
 
         [HttpGet] 
-        public async Task<IActionResult> Search(UserListViewModel model = null)
+        public IActionResult Search(UserListViewModel model = null)
         {
             var keyword = Request.Query["keyword"].ToString();
             var users = db.Users.Where(u => u.Login.Contains(keyword));
@@ -82,7 +82,7 @@ namespace Wish_Box.Controllers
             return countries;
         }
 
-        public async Task<IActionResult> Filter(string country, string city, string name)
+        public IActionResult Filter(string country, string city, string name)
         {
             IQueryable<User> users = db.Users;
             if (country != null && country != "" && country != "Все")

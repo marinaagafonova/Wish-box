@@ -1,29 +1,28 @@
-﻿@model Wish_Box.Models.Wish
+﻿@model Wish_Box.Models.WishViewModel
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Добавить желание</h1>
+<div class="col-sm-8 col-lg-8 col-md-8">
 
-<!--
-    
-        !   will not work without FK userId   !
+    <div class="add-wish-block">
+        <h1>Добавить желание</h1>
 
-<form asp-action="create" asp-controller="Wish">
+        <form asp-action="create" asp-controller="Wish">
 
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Описание</label>
+                <input type="text" asp-for="Description" class="form-control" />
+            </div>
 
-    <div class="form-group">
-        <label asp-for="Name" class="control-label">Название</label>
-        <input type="text" asp-for="Name" class="form-control" />
+            <div class="form-group">
+                <label>Изображение: </label>
+                <input name="Attachment" type="file" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Cохранить" class="btn btn-default" />
+            </div>
+        </form>
     </div>
-
-
-<div class="form-group">
-    <label asp-for="Description" class="control-label">Описание</label>
-    <input type="text" asp-for="Description" class="form-control" />
 </div>
-<div class="form-group">
-    <input type="submit" value="Отправить" class="btn btn-default" />
-</div>
-</form>
--->
