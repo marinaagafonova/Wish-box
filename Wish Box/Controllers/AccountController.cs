@@ -71,7 +71,29 @@ namespace Wish_Box.Controllers
             }
             return PartialView(model);
         }
-
+        public async Task<IActionResult> Edit()
+        {
+            string name = User.Identity.Name;
+            if (name != null)
+            {
+                User user = await db.Users.FirstOrDefaultAsync(p => p.Login == name);
+                if (user != null)
+                    return View(user);
+            }
+            return NotFound();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(User user)
+        {
+            string name = User.Identity.Name;
+            if (name != null)
+            {
+                db.Users.Update(user);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return NotFound();
+        }
         private async Task Authenticate(string userName)
         {
             // создаем один claim
