@@ -126,8 +126,7 @@ a.menu-btn {
     text-decoration: none;
     padding: .8em 1em calc(.8em + 3px);
     font-size: 20px;
-    position: absolute;
-    line-height: 18px;
+    line-height: 50px;
 }
 
 .menu-btn-block:hover {
@@ -157,7 +156,6 @@ a.menu-btn {
     /*margin-right: auto;*/
     width: 400px !important;
 }
-
 .add-wish-block {
     background: #FFFFFF;
     border-radius: 15px;
@@ -178,4 +176,34 @@ a.menu-btn {
     opacity: 0;
     right: 0;
     top: 0;
+=======
+.sign-in-window {
+    top: 241px;
+    background: #FFFFFF;
+    border-radius: 15px;
+}
+.menu-image {
+    margin-top: -5px;
+    margin-right: 10px;
+}
+
+.sign-in-btn {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.sign-up-window {
+    background: #FFFFFF;
+    border-radius: 15px;
+    width: 550px;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 10%);
+}
+
+.sign-up-btn {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
 }

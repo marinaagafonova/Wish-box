@@ -90,7 +90,48 @@ namespace Wish_Box.Controllers
             }
             return PartialView(model);
         }
-
+        public async Task<IActionResult> Edit()
+        {
+            string name = User.Identity.Name;
+            if (name != null)
+            {
+                User user = await db.Users.FirstOrDefaultAsync(p => p.Login == name);
+                if (user != null)
+                {
+                    EditModel e = new EditModel() 
+                    {
+                        City = user.City,
+                        Country = user.Country,
+                        dayOfBirth = user.dayOfBirth,
+                        Login = user.Login 
+                    };
+                    return View(e);
+                }
+            }
+            return NotFound();//может сделать страничку "вы должны быть авторизованны для этого действия"
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                string name = User.Identity.Name;
+                if (name != null)
+                {
+                    User user = await db.Users.FirstOrDefaultAsync(p => p.Login == name);
+                    user.Login = model.Login;
+                    user.City = model.City;
+                    user.Country = model.Country;
+                    user.dayOfBirth = model.dayOfBirth;
+                    db.Users.Update(user);
+                    await db.SaveChangesAsync();
+                    return RedirectToAction("Index", "Home");
+                }
+                return NotFound();
+            }
+            return View(model);
+        }
         private async Task Authenticate(string userName)
         {
             // создаем один claim
