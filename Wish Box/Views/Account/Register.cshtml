@@ -5,7 +5,7 @@
             <h2 style="margin-left:auto; margin-right:auto;">Регистрация</h2>
         </div>
         <div class="modal-body">
-            <form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
+            <form asp-action="Register" asp-controller="Account" asp-anti-forgery="true"  method="post" enctype="multipart/form-data">
                 <div class="validation" asp-validation-summary="ModelOnly"> </div>
                 <div>
                     <div class="form-group">
@@ -41,6 +41,9 @@
                         <span asp-validation-for="ConfirmPassword" />
                     </div>
                     <div class="form-group">
+                        <input name="Avatar" type="file" class="form-control" />
+                    </div>
+                    <div>
                         <input class="btn btn-outline-success sign-up-btn" type="submit" value="Регистрация" />
                     </div>
                 </div>
