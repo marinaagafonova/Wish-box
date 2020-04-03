@@ -156,6 +156,27 @@ a.menu-btn {
     /*margin-right: auto;*/
     width: 400px !important;
 }
+.add-wish-block {
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.upload {
+    position: relative;
+    overflow: hidden;
+    background-color: #E8E8E8;
+    border-radius: 15px;
+}
+
+.file {
+    position: absolute;
+    font-size: 50px;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
 .sign-in-window {
     top: 241px;
     background: #FFFFFF;
@@ -185,7 +206,7 @@ a.menu-btn {
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);
-
+}
 .add-wish-block {
     background: #FFFFFF;
     border-radius: 15px;
