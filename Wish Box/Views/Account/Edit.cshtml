@@ -1,4 +1,4 @@
-﻿@model Wish_Box.Models.User
+﻿@model Wish_Box.ViewModels.EditModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,17 +12,11 @@
         <div class="col-md-5">
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id" />
                 <div class="form-group">
                     <label asp-for="Login" class="control-label">Имя</label>
                     <input asp-for="Login" class="form-control" />
                     <span asp-validation-for="Login" class="text-danger"></span>
                 </div>
-                <!--<div class="form-group">
-                <label asp-for="Password" class="control-label"></label> -->
-                <input type="hidden" asp-for="Password" />
-                <!--<span asp-validation-for="Password" class="text-danger"></span>
-                </div>-->
                 <div class="form-group">
                     <label asp-for="dayOfBirth" class="control-label">Дата рождения</label>
                     <input asp-for="dayOfBirth" class="form-control" />
@@ -42,10 +36,10 @@
                     <input type="submit" value="Save" class="btn btn-primary" />
                 </div>
             </form>
-            </div>
-        </div>
-
-        <div>
-            <a asp-action="Index">Назад</a>
         </div>
     </div>
+
+    <div>
+        <a asp-action="Index">Назад</a>
+    </div>
+</div>

@@ -78,21 +78,40 @@ namespace Wish_Box.Controllers
             {
                 User user = await db.Users.FirstOrDefaultAsync(p => p.Login == name);
                 if (user != null)
-                    return View(user);
+                {
+                    EditModel e = new EditModel() 
+                    {
+                        City = user.City,
+                        Country = user.Country,
+                        dayOfBirth = user.dayOfBirth,
+                        Login = user.Login 
+                    };
+                    return View(e);
+                }
             }
-            return NotFound();
+            return NotFound();//может сделать страничку "вы должны быть авторизованны для этого действия"
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(User user)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditModel model)
         {
-            string name = User.Identity.Name;
-            if (name != null)
+            if(ModelState.IsValid)
             {
-                db.Users.Update(user);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                string name = User.Identity.Name;
+                if (name != null)
+                {
+                    User user = await db.Users.FirstOrDefaultAsync(p => p.Login == name);
+                    user.Login = model.Login;
+                    user.City = model.City;
+                    user.Country = model.Country;
+                    user.dayOfBirth = model.dayOfBirth;
+                    db.Users.Update(user);
+                    await db.SaveChangesAsync();
+                    return RedirectToAction("Index", "Home");
+                }
+                return NotFound();
             }
-            return NotFound();
+            return View(model);
         }
         private async Task Authenticate(string userName)
         {
