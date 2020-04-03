@@ -52,7 +52,7 @@ namespace Wish_Box.Controllers
             wish.UserId = wish.User.Id;
             db.Wishes.Add(wish);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
 
         //public async Task<IActionResult> Details(int? id)

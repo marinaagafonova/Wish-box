@@ -7,6 +7,7 @@ using Wish_Box.ViewModels; // пространство имен моделей R
 using Wish_Box.Models; // пространство имен UserContext и класса User
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.IO;
 
 namespace Wish_Box.Controllers
 {
@@ -57,9 +58,27 @@ namespace Wish_Box.Controllers
                 User user = await db.Users.FirstOrDefaultAsync(u => u.Login == model.Login);
                 if (user == null)
                 {
+                    User new_user = new User
+                    {
+                        Login = model.Login,
+                        Password = model.Password,
+                        dayOfBirth = model.dayOfBirth,
+                        Country = model.Country,
+                        City = model.City
+                    };
+                    if (model.Avatar != null)
+                    {
+                        byte[] imageData = null;
+                        // считываем переданный файл в массив байтов
+                        using (var binaryReader = new BinaryReader(model.Avatar.OpenReadStream()))
+                        {
+                            imageData = binaryReader.ReadBytes((int)model.Avatar.Length);
+                        }
+                        // установка массива байтов
+                        new_user.Avatar = imageData;
+                    }
                     // добавляем пользователя в бд
-                    db.Users.Add(new User { Login = model.Login, Password = model.Password, dayOfBirth = model.dayOfBirth, 
-                        Country = model.Country, City = model.City });
+                    db.Users.Add(new_user);
                     await db.SaveChangesAsync();
 
                     await Authenticate(model.Login); // аутентификация

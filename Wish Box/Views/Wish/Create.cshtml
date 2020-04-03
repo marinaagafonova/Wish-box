@@ -1,28 +1,23 @@
-﻿@model Wish_Box.Models.WishViewModel
+﻿@model Wish_Box.Models.Wish
 @{
     ViewData["Title"] = "Create";
 }
 
-<div class="col-sm-8 col-lg-8 col-md-8">
+    <div class="col-sm-8 col-lg-8 col-md-8">
+        <h2 style="color:white; text-align: center; font-weight: bold; margin-bottom: 20px;">Добавить желание</h2>
+        <div class="add-wish-block">
+            <form asp-action="create" asp-controller="Wish" method="post" enctype="multipart/form-data">
 
-    <div class="add-wish-block">
-        <h1>Добавить желание</h1>
-
-        <form asp-action="create" asp-controller="Wish">
-
-            <div class="form-group">
-                <label asp-for="Description" class="control-label">Описание</label>
-                <input type="text" asp-for="Description" class="form-control" />
-            </div>
-
-            <div class="form-group">
-                <label>Изображение: </label>
-                <input name="Attachment" type="file" class="form-control" />
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Cохранить" class="btn btn-default" />
-            </div>
-        </form>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label">Описание:</label>
+                    <input type="text" asp-for="Description" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input name="Attachment" type="file" class="form-control" /> 
+                </div>
+                <div class="form-group">
+                    <input style="margin-top: 10px;" class="btn btn-outline-success" type="submit" value="Cохранить" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
