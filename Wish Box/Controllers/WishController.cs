@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -18,35 +19,52 @@ namespace Wish_Box.Controllers
             db = context;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            return View(await db.Wishes.ToListAsync());
-        }
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await db.Wishes.ToListAsync());
+        //}
 
-        //how to include userId in wish, the author of the wish
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Wish wish)
+        public async Task<IActionResult> Create(WishViewModel wvm)
         {
+            Wish wish = new Wish
+            {
+                Description = wvm.Description
+            };
+            if (wvm.Attachment != null)
+            {
+                byte[] imageData = null;
+                // считываем переданный файл в массив байтов
+                using (var binaryReader = new BinaryReader(wvm.Attachment.OpenReadStream()))
+                {
+                    imageData = binaryReader.ReadBytes((int)wvm.Attachment.Length);
+                }
+                // установка массива байтов
+                wish.Attachment = imageData;
+            }
+            wish.IsTaken = false;
+            wish.User = db.Users.Where(p => p.Login == User.Identity.Name).ToList()[0];
+            wish.UserId = wish.User.Id;
             db.Wishes.Add(wish);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
 
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id != null)
-            {
-                Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
-                if (wish != null)
-                    return View(wish);
-            }
-            return NotFound();
-        }
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id != null)
+        //    {
+        //        Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
+        //        if (wish != null)
+        //            return View(wish);
+        //    }
+        //    return NotFound();
+        //}
 
         public async Task<IActionResult> Edit(int? id)
         {
