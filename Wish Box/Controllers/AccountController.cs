@@ -92,10 +92,9 @@ namespace Wish_Box.Controllers
         }
         public async Task<IActionResult> Edit()
         {
-            string name = User.Identity.Name;
-            if (name != null)
+            if (User.Identity.Name != null)
             {
-                User user = await db.Users.FirstOrDefaultAsync(p => p.Login == name);
+                User user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
                 if (user != null)
                 {
                     EditModel e = new EditModel() 
@@ -127,6 +126,39 @@ namespace Wish_Box.Controllers
                     db.Users.Update(user);
                     await db.SaveChangesAsync();
                     return RedirectToAction("Index", "Home");
+                }
+                return NotFound();
+            }
+            return View(model);
+        }
+        public async Task<IActionResult> ChangePassword()
+        {
+            if ( User.Identity.Name != null && await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name) != null)
+                return View();
+            return NotFound();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string name = User.Identity.Name;
+                if (name != null)
+                {
+                    User user = await db.Users.FirstOrDefaultAsync(p => p.Login == name);
+                    if (user.Password == model.OldPassword)
+                    {
+                        user.Password = model.Password;
+                        db.Users.Update(user);
+                        await db.SaveChangesAsync();
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Старый пароль введён неверно");
+                        return View(model);
+                    }
                 }
                 return NotFound();
             }

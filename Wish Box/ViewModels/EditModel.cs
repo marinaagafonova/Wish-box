@@ -13,7 +13,7 @@ namespace Wish_Box.ViewModels
 
         [Required(ErrorMessage = "Не указана дата рождения")]
         [DataType(DataType.Date)]
-        //если это раскомментировать, то на странице изменения профиля пропадает дата рождения, хз как исправить
+        //если это раскомментировать, то на странице изменения профиля пропадает значение даты рождения, хз как исправить
         //[DisplayFormat(DataFormatString = "{0:dd'/'MM'/'yyyy}", ApplyFormatInEditMode = true)]
         public DateTime dayOfBirth { get; set; }
 
