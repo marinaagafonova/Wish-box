@@ -11,34 +11,34 @@
                     <div class="form-group">
                         <label asp-for="Login"><strong>Введите логин</strong></label><br />
                         <input type="text" class="form-control" asp-for="Login" />
-                        <span asp-validation-for="Login" />
+                        <span asp-validation-for="Login"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="dayOfBirth"><strong>Введите дату рождения</strong></label><br />
                         <input type="date" class="form-control" asp-for="dayOfBirth" />
                         @*@Html.EditorFor(model => model.dayOfBirth, new { htmlAttributes = new { @class = "datepicker"} })*@
-                        <span asp-validation-for="dayOfBirth" />
+                    <span asp-validation-for="dayOfBirth"></span>
 
                     </div>
                     <div class="form-group">
                         <label asp-for="Country"><strong>Введите страну</strong></label><br />
                         <input type="text" class="form-control" asp-for="Country" />
-                        <span asp-validation-for="Country" />
+                        <span asp-validation-for="Country"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="City"><strong>Введите город</strong></label><br />
                         <input type="text" class="form-control" asp-for="City" />
-                        <span asp-validation-for="City" />
+                        <span asp-validation-for="City"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Password"><strong>Введите пароль</strong></label><br />
                         <input type="password" class="form-control" asp-for="Password" />
-                        <span asp-validation-for="Password" />
+                        <span asp-validation-for="Password"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="ConfirmPassword"><strong>Повторите пароль</strong></label><br />
                         <input type="password" class="form-control" asp-for="ConfirmPassword" />
-                        <span asp-validation-for="ConfirmPassword" />
+                        <span asp-validation-for="ConfirmPassword"></span>
                     </div>
                     <div class="form-group">
                         <input class="btn btn-outline-success sign-up-btn" type="submit" value="Регистрация" />
