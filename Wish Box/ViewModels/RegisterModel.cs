@@ -31,7 +31,6 @@ namespace Wish_Box.ViewModels
         [Compare("Password", ErrorMessage = "Пароль введен неверно")]
         public string ConfirmPassword { get; set; }
 
-        [Required(ErrorMessage = "Нет аватара")]
         public IFormFile Avatar { get; set; }
 
     }
