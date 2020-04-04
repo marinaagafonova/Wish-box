@@ -30,7 +30,7 @@
                 @foreach (var user in Model.Users)
                 {
                     <tr>
-                        <td>@user.Login</td>
+                        <td><a class="btn-default" asp-controller="UserPage" asp-action="Show" asp-route-id="@user.Login"/>@user.Login</td>
                         <td>@user.Country</td>
                         <td>@user.City</td>
                         <td>@user.dayOfBirth</td>
