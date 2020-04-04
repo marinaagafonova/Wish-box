@@ -36,7 +36,6 @@ namespace Wish_Box
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(builder =>
                 builder.UseSqlServer(connectionString));
-            services.AddDbContext<UserContext>(options => options.UseSqlServer(connectionString));
 
             // установка конфигурации подключения
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

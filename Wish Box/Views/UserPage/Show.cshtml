@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewData["Title"] = "Show";
+    bool flag = ViewBag.currentUser.Login == User.Identity.Name;
+}
+
+@model IEnumerable<Wish_Box.Models.Wish>
+
+<div class="col-8 col-lg-8">
+    @if (flag)
+    {
+    <a class="btn btn-light  btn-lg" asp-area="" asp-controller="Account" asp-action="Edit" 
+       asp-route-id="@User.Identity.Name.ToString()">Редактровать профиль</a>
+    }
+        <table class="table table-striped">
+            <tr>
+                <th>Login</th>
+                <th>Country</th>
+                <th>City</th>
+                <th>DayOfBirth</th>
+            </tr>
+            @*@foreach (var user in Model.Users)*@
+           
+                <tr>
+                    <td>@ViewBag.currentUser.Login</td>
+                    <td>@ViewBag.currentUser.Country</td>
+                    <td>@ViewBag.currentUser.City</td>
+                    <td>@ViewBag.currentUser.dayOfBirth.ToShortDateString()</td>
+                </tr>        
+        </table>
+    <table class="table table-striped">
+        @foreach (var wish in Model)
+        {
+           @if (wish.UserId == ViewBag.currentUser.Id)
+            {
+                <tr>
+                    <td> @wish.Description </td>
+                    <td> @wish.UserId </td>
+                    @if (!flag)
+                    {
+                        <td>Отметить</td>
+                    }
+                </tr>
+           }
+        }
+    </table>
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
+</div>
