@@ -35,7 +35,7 @@
                                 <img src="~/Content/plus gift.png" asp-append-version="true" width="80"
                                      height="45" alt="Add wish">
                             </a>
-                            <a class="navbar-brand" asp-area="" asp-controller="UserPage" asp-action="Show">
+                            <a class="navbar-brand" asp-area="" asp-controller="UserPage" asp-action="Show" asp-route-id="@User.Identity.Name">
                                 <img src="~/Content/profile.png" asp-append-version="true" width="45"
                                      height="45" alt="My profile">
                             </a>
@@ -67,7 +67,7 @@
                             </li>
                             <li class="menu-li">
                                 <div class="menu-btn-block">
-                                    <a class="menu-btn" asp-area="" asp-controller="Followings" asp-action="Show" asp-route-id="@User.Identity.Name"><img class="menu-image" src="~/Content/friends.png" asp-append-version="true" width="38" height="40">Мои подписки</a>
+                                    <a class="menu-btn" asp-area="" asp-controller="Followings" asp-action="Show"><img class="menu-image" src="~/Content/friends.png" asp-append-version="true" width="38" height="40">Мои подписки</a>
                                 </div>
                             </li>
                         </ul>
