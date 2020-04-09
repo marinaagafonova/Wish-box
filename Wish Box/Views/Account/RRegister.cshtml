@@ -1,4 +1,4 @@
-﻿@model Wish_Box.ViewModels.RegisterModel
+﻿@*@model Wish_Box.ViewModels.RegisterModel
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -17,7 +17,7 @@
         <div>
             <label asp-for="dayOfBirth">Введите дату рождения</label><br />
             <input type="date" asp-for="dayOfBirth" />
-            @*@Html.EditorFor(model => model.dayOfBirth, new { htmlAttributes = new { @class = "datepicker"} })*@
+            @Html.EditorFor(model => model.dayOfBirth, new { htmlAttributes = new { @class = "datepicker"} })
         <span asp-validation-for="dayOfBirth"></span>
 
         </div>
@@ -45,5 +45,5 @@
             <input type="submit" value="Регистрация" />
         </div>
     </div>
-</form>
+</form>*@
 

@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Show";
+}
+
+@model IEnumerable<Wish_Box.Models.Following>
+
+<div class="col-8 col-lg-8">
+    <table class="table table-striped">
+        @foreach (var follow in Model)
+        {
+            @if (follow.UserFId == ViewBag.currentUser.Id)
+            {
+                <tr>
+                    <td> @follow.UserIsFId </td>
+                    <td> <a class="btn-link" asp-controller="UserPage" asp-action="Show" asp-route-id="@ViewBag.AllUsers[follow.UserIsFId - 1].Login"/> @ViewBag.AllUsers[follow.UserIsFId - 1].Login </td>
+                </tr>
+            }
+        }
+    </table>
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
+</div>
+
+
