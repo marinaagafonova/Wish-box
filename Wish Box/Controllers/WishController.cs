@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Wish_Box.Models;
+using System.Drawing;
 
 namespace Wish_Box.Controllers
 {
@@ -66,23 +67,42 @@ namespace Wish_Box.Controllers
         //    return NotFound();
         //}
 
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit()
         {
-            if (id != null)
+            var id = Convert.ToInt32(RouteData.Values["id"]);
+            if (id >=0)
             {
                 Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
                 if (wish != null)
+                {
                     return View(wish);
+                }
             }
             return NotFound();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Wish wish)
+        public async Task<IActionResult> Edit(WishViewModel wvm)
         {
-                db.Wishes.Update(wish);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+            Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == wvm.Id);
+            if (wvm.Attachment != null)
+            {
+                byte[] imageData = null;
+                // считываем переданный файл в массив байтов
+                using (var binaryReader = new BinaryReader(wvm.Attachment.OpenReadStream()))
+                {
+                    imageData = binaryReader.ReadBytes((int)wvm.Attachment.Length);
+                }
+                // установка массива байтов
+                wish.Attachment = imageData;
+            }
+            if(wvm.Description != null)
+            {
+                wish.Description = wvm.Description;
+            }
+            db.Wishes.Update(wish);
+            await db.SaveChangesAsync();
+            return RedirectToAction("OwnList", "Wish");
         }
 
         [HttpGet]
@@ -109,6 +129,14 @@ namespace Wish_Box.Controllers
                 return RedirectToAction("Index");
             }
             return NotFound();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> OwnList()
+        {
+            var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
+            var wishes = db.Wishes.Where(p => p.UserId == current_user.Id).ToList();
+            return View(wishes);
         }
     }
 }
