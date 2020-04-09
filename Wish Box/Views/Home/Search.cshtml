@@ -6,36 +6,57 @@
     
 
     <div class="col-sm-8 col-lg-8 col-md-8">
-        <form method="get" asp-controller="Home" asp-action="Filter">
-            <div class="form-inline form-group">
-                <label class="control-label">Имя: </label>
-                <input name="name" class="form-control" value="@ViewBag.keyword" />
-                <label class="control-label">Страна: </label>
-                <select name="country" asp-items="Model.Countries" class="form-control"></select>
-                <label class="control-label">Город: </label>
-                <select name="city" asp-items="Model.Cities" class="form-control"></select>
+        <div class="row">
+            <div class="col-9 col-sm-8">
+                <div class="search-result">
+                    <h4 style="text-align: center; font-weight: bold;">Результат поиска</h4>
+                    @if (Model != null)
+                    {
+                        @foreach (var user in Model.Users)
+                        {
+                            <div class="user-block-search">
+                                <a class="btn-default user-link" asp-controller="UserPage" asp-action="Show" asp-route-id="@user.Login">
+                                    @if (user.Avatar != null)
+                                    {
+                                        <img class="avatar" style='width:70px; height:70px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(user.Avatar))" />
+                                    }
+                                    else
+                                    {
+                                        <img class="avatar" src="~/Content/default_profile.jpg" asp-append-version="true" width="70"
+                                             height="70" alt="My profile">
+                                    }
+                                    @user.Login
+                                </a>
+                                <!-- Добавить проверку на то, подписан ли уже пользователь -->
+                                <a class="follow-btn">Подписаться</a>
 
-                <input type="submit" value="Искать" class="btn btn-default" />
+                            </div>
+                        }
+                    }
+                </div>
             </div>
-        </form>
-        @if (Model != null)
-        {
-            <table class="table table-striped">
-                <tr>
-                    <th>Login</th>
-                    <th>Country</th>
-                    <th>City</th>
-                    <th>DayOfBirth</th>
-                </tr>
-                @foreach (var user in Model.Users)
-                {
-                    <tr>
-                        <td><a class="btn-default" asp-controller="UserPage" asp-action="Show" asp-route-id="@user.Login"/>@user.Login</td>
-                        <td>@user.Country</td>
-                        <td>@user.City</td>
-                        <td>@user.dayOfBirth</td>
-                    </tr>
-                }
-            </table>
-        }
-    </div>
+            <div class="col-3 col-sm-4">
+                <div class="search-filter">
+                    <form method="get" asp-controller="Home" asp-action="Filter">
+                        <div class="form-inline form-group">
+                            <div>
+                                <label class="control-label">Имя: </label>
+                                <input style="margin-right:7px;" name="name" class="form-control" value="@ViewBag.keyword" />
+                            </div>
+                            <div>
+                                <label class="control-label">Страна: </label>
+                                <select style="margin-right:7px;" name="country" asp-items="Model.Countries" class="form-control"></select>
+                            </div>
+                            <div>
+                                <label class="control-label">Город: </label>
+                                <select style="margin-right:7px;" name="city" asp-items="Model.Cities" class="form-control"></select>
+                            </div>
+                            <div>
+                                <input type="submit" value="Искать" class="btn btn-info" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>

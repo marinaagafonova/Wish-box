@@ -8,6 +8,7 @@ namespace Wish_Box.Models
 {
     public class WishViewModel
     {
+        public int Id { get; set; }
         public string Description { get; set; }
         public bool IsTaken { get; set; }
         public int UserId { get; set; }
