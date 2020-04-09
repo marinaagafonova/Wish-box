@@ -134,9 +134,13 @@ namespace Wish_Box.Controllers
         [HttpGet]
         public async Task<IActionResult> OwnList()
         {
-            var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
-            var wishes = db.Wishes.Where(p => p.UserId == current_user.Id).ToList();
-            return View(wishes);
+            if(User.Identity.Name != null)
+            {
+                var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
+                var wishes = db.Wishes.Where(p => p.UserId == current_user.Id).ToList();
+                return View(wishes);
+            }
+            return NotFound();
         }
     }
 }
