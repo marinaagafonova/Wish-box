@@ -31,7 +31,6 @@
 
                         <div class="actions-block">
                             <a class="navbar-brand" asp-area="" asp-controller="Wish" asp-action="Create">
-                                <!-- Alex "to do" -->
                                 <img src="~/Content/plus gift.png" asp-append-version="true" width="80"
                                      height="45" alt="Add wish">
                             </a>
@@ -57,7 +56,7 @@
                         <ul class="button-group">
                             <li class="menu-li">
                                 <div class="menu-btn-block">
-                                    <a href="" class="menu-btn"><img style="margin-right: 10px;" src="~/Content/wish.png" asp-append-version="true" width="38" height="40">Мои желания</a>
+                                    <a asp-controller="Wish" asp-action="OwnList" class="menu-btn"><img style="margin-right: 10px;" src="~/Content/wish.png" asp-append-version="true" width="38" height="40">Мои желания</a>
                                 </div>
                             </li>
                             <li class="menu-li">
@@ -74,12 +73,8 @@
                     </div>
                 }
             }
-
-
-            <!-- <main role="main" class="pb-3">-->
             @RenderBody()
         </div>
-        <!--  </main>-->
     </div>
 
     <footer class="border-top footer text-muted">

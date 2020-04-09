@@ -3,8 +3,6 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Изменить желание</h1>
-
 <!--
 
 <form asp-action="edit" asp-controller="Wish" asp-route-id="@@Model.Id">
@@ -22,3 +20,33 @@
         </div>
     </form>
             -->
+
+<div class="col-sm-8 col-lg-8 col-md-8">
+    <h2 style="color:white; text-align: center; font-weight: bold; margin-bottom: 20px;">Редактировать желание</h2>
+    <div class="add-wish-block">
+        <form asp-action="edit" asp-controller="Wish" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Описание:</label>
+                <input type="text" asp-for="Description" class="form-control" value="@Model.Description" />
+            </div>
+            <div class="form-group">
+                <div class="attachment">
+                    @if (@Model.Attachment != null)
+                    {
+                        <img src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.Attachment))" />
+                    }
+                    else
+                    {
+                        <img src="~/Content/gift icon.png" asp-append-version="true">
+                    }
+                </div>
+                <input name="Attachment" type="file" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input style="margin-top: 10px;" class="btn btn-outline-success" type="submit" value="Cохранить" />
+            </div>
+</form>
+    </div>
+</div>
+
