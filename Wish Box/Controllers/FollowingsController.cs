@@ -16,6 +16,7 @@ namespace Wish_Box.Controllers
         {
             db = context;
         }
+
         public async Task<IActionResult> Add()
         {
             var followed_id = Convert.ToInt32(RouteData.Values["id"]);
@@ -25,6 +26,26 @@ namespace Wish_Box.Controllers
                 UserFId = current_user.Id,
                 UserIsFId = followed_id
             });
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Show()
+        {
+            var currentUser = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
+
+            List<User> followedUsersList = new List<User>();
+
+            foreach (var followed in db.Followings)
+            {
+                if (followed.UserFId == currentUser.Id)
+                {
+                    followedUsersList.Add(db.Users.FirstOrDefault(x => x.Id == followed.UserIsFId));
+                }
+            }
+
+            ViewBag.followingUsers = followedUsersList;
+
             return View();
         }
     }
