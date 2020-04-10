@@ -137,7 +137,7 @@ namespace Wish_Box.Controllers
             if(User.Identity.Name != null)
             {
                 var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
-                var wishes = db.Wishes.Where(p => p.UserId == current_user.Id).ToList();
+                var wishes = await db.Wishes.Where(p => p.UserId == current_user.Id).ToListAsync();
                 return View(wishes);
             }
             return NotFound();
