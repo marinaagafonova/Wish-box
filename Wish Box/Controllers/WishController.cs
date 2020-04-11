@@ -56,26 +56,17 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id != null)
-        //    {
-        //        Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
-        //        if (wish != null)
-        //            return View(wish);
-        //    }
-        //    return NotFound();
-        //}
-
         public async Task<IActionResult> Edit()
         {
             var id = Convert.ToInt32(RouteData.Values["id"]);
-            if (id >=0)
+            if (id >= 0)
             {
                 Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
                 if (wish != null)
                 {
-                    return View(wish);
+                    User user = await db.Users.FirstOrDefaultAsync(p => p.Id == wish.UserId);
+                    if (user != null && user.Login == User.Identity.Name)
+                        return PartialView(wish);
                 }
             }
             return NotFound();
@@ -107,26 +98,28 @@ namespace Wish_Box.Controllers
 
         [HttpGet]
         [ActionName("Delete")]
-        public async Task<IActionResult> ConfirmDelete(int? id)
+        public async Task<IActionResult> ConfirmDelete()
         {
-            if (id != null)
+            var id = Convert.ToInt32(RouteData.Values["id"]);
+            if (id >= 0)
             {
                 Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
                 if (wish != null)
-                    return View(wish);
+                    return PartialView(wish);
             }
             return NotFound();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete()
         {
-            if (id != null)
+            var id = Convert.ToInt32(RouteData.Values["id"]);
+            if (id >= 0)
             {
-                Wish wish = new Wish { Id = id.Value };
+                Wish wish = new Wish { Id = id };
                 db.Entry(wish).State = EntityState.Deleted;
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("OwnList", "Wish");
             }
             return NotFound();
         }
