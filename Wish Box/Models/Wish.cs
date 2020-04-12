@@ -13,5 +13,6 @@ namespace Wish_Box.Models
         public int UserId {get;set;}
         public User User { get; set; }
         public byte[] Attachment { get; set; }
+        public int Rating { get; set; }
     }
 }

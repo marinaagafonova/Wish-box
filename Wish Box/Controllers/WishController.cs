@@ -53,7 +53,7 @@ namespace Wish_Box.Controllers
             wish.UserId = wish.User.Id;
             db.Wishes.Add(wish);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("OwnList", "Wish");
         }
 
         public async Task<IActionResult> Edit()
@@ -134,6 +134,32 @@ namespace Wish_Box.Controllers
                 return View(wishes);
             }
             return NotFound();
+        }
+
+        public async Task<IActionResult> Rating(int id)
+        {
+            var flag = Convert.ToBoolean(RouteData.Values["id"]);
+            var currentUser = await db.Users.FirstOrDefaultAsync(x => x.Login == User.Identity.Name);
+            var currentRate = await db.WishRatings.FirstOrDefaultAsync(x => x.UserId == currentUser.Id && x.WishId == id);
+            if (currentRate != null && currentRate.Rate == flag)
+            {
+                
+            }
+            else
+            {
+                if (currentRate.Rate != flag)
+                {
+                    db.WishRatings.Remove(currentRate);
+                }
+                db.WishRatings.Add(new WishRating
+                {
+                    UserId = currentUser.Id,
+                    WishId = id,
+                    Rate = flag
+                });
+                db.SaveChanges();
+            }
+            return RedirectToAction("OwnList");
         }
     }
 }
