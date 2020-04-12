@@ -12,7 +12,7 @@ namespace Wish_Box.Models
         public SelectList Countries { get; set; }
         public SelectList Cities { get; set; }
         //public SelectList Ages { get; set; }
-
         public string Name { get; set; }
+        public List<int> Following_ids { get; set; }
     }
 }

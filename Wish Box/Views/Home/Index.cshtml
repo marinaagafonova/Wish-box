@@ -2,28 +2,46 @@
     ViewData["Title"] = "Home Page";
 }
 
-@model IEnumerable<Wish_Box.Models.User>
+@model IEnumerable<Wish_Box.Models.Wish>
 
-<div class="col-8 col-lg-8">
-    <h3>Пользователи</h3>
-    <table>
-        <tr>
-            <td>Id</td>
-            <td>Логин</td>
-            <td>Дата рождения</td>
-            <td></td>
-        </tr>
-        @foreach (var user in Model)
+    <div class="col-8 col-lg-8">
+        
+        @if (Model != null)
         {
-            <tr>
-                <td>@user.Id</td>
-                <td>@user.Login</td>
-                <td>@user.dayOfBirth.ToShortDateString()</td>
-            </tr>
+            @foreach (var wish in Model)
+            {
+        <div class="news-block">
+
+            <a class="btn-default user-link" asp-controller="UserPage" asp-action="Show" asp-route-id="@wish.User.Login">
+                @if (wish.User.Avatar != null)
+                {
+                    <img class="avatar" style='width:55px; height:55px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(wish.User.Avatar))" />
+                }
+                else
+                {
+                    <img class="avatar" src="~/Content/default_profile.jpg" asp-append-version="true" width="55"
+                         height="55" alt="My profile">
+                }
+                @wish.User.Login
+            </a>
+            <p>добавил(а) новое желание</p>
+
+            <div class="wish-desc">
+                <label class="description">@wish.Description</label>
+                <div class="attachment">
+
+                    @if (wish.Attachment != null)
+                    {
+                        <img src="data:image/jpeg;base64,@(Convert.ToBase64String(wish.Attachment))" />
+                    }
+                    else
+                    {
+                        <img src="~/Content/gift icon.png" />
+                    }
+                </div>
+            </div>
+        </div>
+            }
         }
-    </table>
-    <div class="text-center">
-        <h1 class="display-4">Welcome</h1>
-        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+          
     </div>
-</div>

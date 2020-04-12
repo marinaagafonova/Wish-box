@@ -10,12 +10,13 @@ using Wish_Box.Models;
 using PagedList.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Wish_Box.ViewModels;
 
 namespace Wish_Box.Controllers
 {
     public class HomeController : Controller
     {
-        private AppDbContext db;
+        private readonly AppDbContext db;
 
         public HomeController(AppDbContext context)
         {
@@ -23,11 +24,14 @@ namespace Wish_Box.Controllers
         }
 
         //[Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(db.Users.ToList());
+                var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
+                List<int> is_followed_id = await db.Followings.Where(p => p.UserFId == current_user.Id).Select(p => p.UserIsFId).ToListAsync();
+                var wishes = await db.Wishes.Where(p => is_followed_id.Contains(p.UserId)).OrderByDescending(p => p.Id).ToListAsync();
+                return View(wishes);
             }
             return RedirectToAction("Index", "Account");
         }
@@ -49,25 +53,29 @@ namespace Wish_Box.Controllers
         }
 
         [HttpGet] 
-        public IActionResult Search(UserListViewModel model = null)
+        public async Task<IActionResult> Search(UserListViewModel model = null)
         {
             var keyword = Request.Query["keyword"].ToString();
             var users = db.Users.Where(u => u.Login.Contains(keyword));
             List<string> countries = GetCountries();
             List<string> cities = GetCities();
-            if(model.Users == null)
+            var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
+            List<int> following_ids = await db.Followings.Where(p => p.UserFId == current_user.Id).Select(p => p.UserIsFId).ToListAsync();
+            if (model.Users == null)
             {
                 model = new UserListViewModel
                 {
                     Users = users.ToList(),
                     Countries = new SelectList(countries),
                     Cities = new SelectList(cities),
-                    Name = keyword
+                    Name = keyword,
+                    Following_ids = following_ids
                 };
             }
             ViewBag.keyword = keyword;
             return View(model);
         }
+
 
         private List<string> GetCities()
         {
@@ -82,7 +90,7 @@ namespace Wish_Box.Controllers
             return countries;
         }
 
-        public IActionResult Filter(string country, string city, string name)
+        public async Task<IActionResult> Filter(string country, string city, string name)
         {
             IQueryable<User> users = db.Users;
             if (country != null && country != "" && country != "Все")
@@ -101,15 +109,19 @@ namespace Wish_Box.Controllers
             List<string> countries = GetCountries();
 
             List<string> cities = GetCities();
+            var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
+            List<int> following_ids = await db.Followings.Where(p => p.UserFId == current_user.Id).Select(p => p.UserIsFId).ToListAsync();
 
             UserListViewModel viewModel = new UserListViewModel
             {
                 Users = users.ToList(),
                 Countries = new SelectList(countries),
                 Cities = new SelectList(cities),
-                Name = name
+                Name = name,
+                Following_ids = following_ids
             };
             return View("Search", viewModel);
         }
+
     }
 }
