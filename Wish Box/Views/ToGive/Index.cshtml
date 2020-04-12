@@ -1,0 +1,31 @@
+﻿@model List<Wish_Box.Models.Wish>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="col-sm-8 col-lg-8 col-md-8">
+    <h2 style="color:white; text-align: center; font-weight: bold; margin-bottom: 20px;">Подарить</h2>
+    <div class="row">
+        @foreach (var wish in Model)
+        {
+            <div class="col-6">
+                <div class="wish-block">
+                    <div style="transform: translate(10%, 20%); text-align:center">
+                        <label class="description">@wish.Description</label>
+                        <div class="attachment">
+                            @if (wish.Attachment != null)
+                            {
+                                <img src="data:image/jpeg;base64,@(Convert.ToBase64String(wish.Attachment))" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/gift icon.png" />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
