@@ -9,7 +9,7 @@ namespace Wish_Box.Controllers
 {
     public class UserPageController : Controller
     {
-        private AppDbContext db;
+        private readonly AppDbContext db;
         public UserPageController(AppDbContext context)
         {
             db = context;

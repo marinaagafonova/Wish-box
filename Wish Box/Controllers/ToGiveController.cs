@@ -11,7 +11,7 @@ namespace Wish_Box.Controllers
 {
     public class ToGiveController : Controller
     {
-        private AppDbContext db;
+        private readonly AppDbContext db;
         
         public ToGiveController(AppDbContext context)
         {

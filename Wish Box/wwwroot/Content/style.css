@@ -263,9 +263,8 @@ a.menu-btn {
 .follow-btn {
     float: right;
     margin-right: 50px;
-    background-color: #4dc368;
+    background-color: #87cb5c;
     border-radius: 15px;
-    border-color: #4dc368;
     color: white !important;
     padding: 10px;
 }
@@ -283,7 +282,6 @@ a.menu-btn {
     height: 200px;
     overflow: hidden;
     background: #FFFFFF;
-    outline: 1px solid #CCCCCC;
     margin: 10px;
 }
 
@@ -350,4 +348,18 @@ a.menu-btn {
     transform: translate(-10%, -350%);
     font-size: 20px;
     font-weight: bold;
+}
+
+.news-block {
+    width: 612px;
+    height: 351px;
+    background-color: white;
+    border-radius: 25px;
+    padding: 20px 30px;
+}
+
+.unfollow-btn {
+    float: right;
+    margin-right: 50px;
+    border-radius: 15px;
 }

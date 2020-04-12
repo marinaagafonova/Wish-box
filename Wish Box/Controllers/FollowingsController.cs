@@ -10,7 +10,7 @@ namespace Wish_Box.Controllers
 {
     public class FollowingsController : Controller
     {
-        AppDbContext db;
+        readonly AppDbContext db;
 
         public FollowingsController(AppDbContext context)
         {
@@ -26,7 +26,8 @@ namespace Wish_Box.Controllers
                 UserFId = current_user.Id,
                 UserIsFId = followed_id
             });
-            return View();
+            db.SaveChanges();
+            return Redirect(Request.Headers["Referer"].ToString());
         }
 
         [HttpGet]

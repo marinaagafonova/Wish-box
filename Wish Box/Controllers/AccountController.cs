@@ -13,7 +13,7 @@ namespace Wish_Box.Controllers
 {
     public class AccountController : Controller
     {
-        private AppDbContext db;
+        private readonly AppDbContext db;
         public AccountController(AppDbContext context)
         {
             db = context;
