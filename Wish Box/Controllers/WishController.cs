@@ -66,7 +66,7 @@ namespace Wish_Box.Controllers
                 {
                     User user = await db.Users.FirstOrDefaultAsync(p => p.Id == wish.UserId);
                     if (user != null && user.Login == User.Identity.Name)
-                        return PartialView(wish);
+                        return View(wish);
                 }
             }
             return NotFound();

@@ -5,13 +5,14 @@
 
 <div class="modal-content">
     <div>
-        <div class="modal-header">
-            <h2 style="text-align: center; font-weight: bold; margin-bottom: 20px;">Удалить желание</h2>
-        </div>
         <div class="modal-body">
             <form asp-action="delete" asp-controller="Wish" asp-route-id="@Model.Id" method="post">
+                <div>Вы уверены, что хотите удалить желание "@Model.Description"?</div>
                 <div class="form-group">
-                    <input style="margin-top: 10px;" class="btn btn-outline-success" type="submit" value="Удалить" />
+                    <div class="row" style="margin-left: 10px;">
+                        <input style="margin-top: 10px;" class="btn btn-outline-success" type="submit" value="Удалить" />
+                        <input style="margin-top: 10px; margin-left: 10px;" class="btn btn-outline-danger" type="button" data-dismiss="modal" value="Отмена" />
+                    </div>
                 </div>
             </form>
         </div>

@@ -19,7 +19,7 @@
                             string drop_id = "myDropdown" + wish.Id.ToString();
                         }
                         <div id="@drop_id" class="dropdown-content">
-                            <a class="btn-edit" asp-controller="Wish" asp-action="Edit" asp-route-id="@wish.Id">Редактировать желание</a>
+                            <a asp-controller="Wish" asp-action="Edit" asp-route-id="@wish.Id">Редактировать желание</a>
                             <a class="btn-delete" asp-controller="Wish" asp-action="Delete" asp-route-id="@wish.Id">Удалить желание</a>
                         </div>
                     </div>
@@ -69,15 +69,6 @@
 
         $(function () {
             $.ajaxSetup({ cache: false });
-            $(".btn-edit").click(function (e) {
-                console.log("edit button was pressed");
-                e.preventDefault();
-                $.get(this.href, function (data) {
-                    $('#dialogContent').html(data);
-                    $('#modDialog').modal('show');
-                });
-            });
-
             $(".btn-delete").click(function (e) {
                 console.log("delete button was pressed");
                 e.preventDefault();
