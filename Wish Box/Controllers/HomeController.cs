@@ -29,8 +29,12 @@ namespace Wish_Box.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
-                var is_followed_id = await db.Followings.Where(p => p.UserFId == current_user.Id).Select(p => p.UserIsFId).ToListAsync();
-                var wishes = await db.Wishes.Where(p => is_followed_id.Contains(p.UserId)).OrderByDescending(p => p.Id).ToListAsync();
+                List<int> is_followed_id = await db.Followings.Where(p => p.UserFId == current_user.Id).Select(p => p.UserIsFId).ToListAsync();
+                List<Wish> wishes = await db.Wishes.Where(p => is_followed_id.Contains(p.UserId)).OrderByDescending(p => p.Id).ToListAsync();
+                foreach (var wish in wishes)
+                {
+                    wish.User = db.Users.FirstOrDefault(p => p.Id == wish.UserId);
+                }
                 return View(wishes);
             }
             return RedirectToAction("Index", "Account");
