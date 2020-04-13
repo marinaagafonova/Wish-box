@@ -10,37 +10,37 @@
         {
             @foreach (var wish in Model)
             {
-        <div class="news-block">
+                <div class="news-block">
 
-            <a class="btn-default user-link" asp-controller="UserPage" asp-action="Show" asp-route-id="@wish.User.Login">
-                @if (wish.User.Avatar != null)
-                {
-                    <img class="avatar" style='width:55px; height:55px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(wish.User.Avatar))" />
-                }
-                else
-                {
-                    <img class="avatar" src="~/Content/default_profile.jpg" asp-append-version="true" width="55"
-                         height="55" alt="My profile">
-                }
-                @wish.User.Login
-            </a>
-            <p>добавил(а) новое желание</p>
+                    <a class="btn-default user-link" asp-controller="UserPage" asp-action="Show" asp-route-id="@wish.User.Login">
+                        @if (wish.User.Avatar != null)
+                        {
+                            <img class="avatar" style='width:55px; height:55px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(wish.User.Avatar))" />
+                        }
+                        else
+                        {
+                            <img class="avatar" src="~/Content/default_profile.jpg" asp-append-version="true" width="55"
+                                 height="55" alt="My profile">
+                        }
+                        @wish.User.Login
+                    </a>
+                    <p>добавил(а) новое желание</p>
 
-            <div class="wish-desc">
-                <label class="description">@wish.Description</label>
-                <div class="attachment">
+                    <div class="wish-desc">
+                        <label class="description">@wish.Description</label>
+                        <div class="attachment">
 
-                    @if (wish.Attachment != null)
-                    {
-                        <img src="data:image/jpeg;base64,@(Convert.ToBase64String(wish.Attachment))" />
-                    }
-                    else
-                    {
-                        <img src="~/Content/gift icon.png" />
-                    }
+                            @if (wish.Attachment != null)
+                            {
+                                <img src="data:image/jpeg;base64,@(Convert.ToBase64String(wish.Attachment))" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/gift icon.png" />
+                            }
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
             }
         }
           
