@@ -8,6 +8,7 @@ namespace Wish_Box.ViewModels
 {
     public class CommentViewModel
     {
+        public int Id { get; set; }
         public string Description { get; set; }
         public int WishId { get; set; }
         public int? InReplyId { get; set; }
