@@ -1,51 +1,145 @@
 ﻿
 @{
     ViewData["Title"] = "Show";
-    bool flag = ViewBag.currentUser.Login == User.Identity.Name;
+    bool flag = false;
 }
 
 @model IEnumerable<Wish_Box.Models.Wish>
 
 <div class="col-8 col-lg-8">
-    @if (flag)
-    {
-    <a class="btn btn-light  btn-lg" asp-area="" asp-controller="Account" asp-action="Edit" 
-       asp-route-id="@User.Identity.Name.ToString()">Редактровать профиль</a>
-    }
-        <table class="table table-striped">
-            <tr>
-                <th>Login</th>
-                <th>Country</th>
-                <th>City</th>
-                <th>DayOfBirth</th>
-            </tr>
-            @*@foreach (var user in Model.Users)*@
-           
-                <tr>
-                    <td>@ViewBag.currentUser.Login</td>
-                    <td>@ViewBag.currentUser.Country</td>
-                    <td>@ViewBag.currentUser.City</td>
-                    <td>@ViewBag.currentUser.dayOfBirth.ToShortDateString()</td>
-                </tr>        
-        </table>
-    <table class="table table-striped">
+    <div class="user-info">
+        <div style="width: 200px;height: 200px; float:left;">
+
+            @if (ViewBag.currentUser.Avatar != null)
+            {
+                <img class="avatar" style="width: 200px;height: 200px;" src="data:image/jpeg;base64,@(Convert.ToBase64String(ViewBag.currentUser.Avatar))" />
+            }
+            else
+            {
+                <img class="avatar" style="width: 200px;height: 200px;" src="~/Content/default_profile.jpg" />
+            }
+        </div>
+        <div class="user-info-block">
+            <label class="user-name">@ViewBag.currentUser.Login</label>
+            <br />
+            <label class="user-place">@ViewBag.currentUser.City, @ViewBag.currentUser.Country</label>
+            <div class="user-date">
+                <img src="~/Content/calendar-512.png" style="width: 30px; height: 30px; margin-right: 5px;" />
+                <label class="user-date-lb">@ViewBag.currentUser.dayOfBirth.ToShortDateString()</label>
+            </div>
+        </div>
+        @if (ViewBag.currentUser.Login == User.Identity.Name)
+        {
+            <a class="btn btn-light btn-lg edit-profile" asp-area="" asp-controller="Account" asp-action="Edit"
+               asp-route-id="@User.Identity.Name.ToString()">Редактировать профиль</a>
+        }
+        else
+        {
+            @if (!ViewBag.following_ids.Contains(ViewBag.currentUser.Id))
+            {
+                <a class="follow-btn" asp-controller="Followings" asp-action="Add" asp-route-id="@ViewBag.currentUser.Id" id="follow">Подписаться</a>
+                if (flag)
+                    ViewBag.Following_ids.Add(ViewBag.currentUser.Id);
+            }
+            else
+            {
+                <!-- Данила "to do" - action -->
+                <a class="btn btn-ligh unfollow-btn" asp-controller="Followings" asp-action="Delete" asp-route-id="@ViewBag.currentUser.Id" id="unfollow">Отписаться</a>
+                if (flag)
+                    ViewBag.Following_ids.Remove(ViewBag.currentUser.Id);
+            }
+        }
+    </div>
+
+    <div class="wishes">
         @foreach (var wish in Model)
         {
-           @if (wish.UserId == ViewBag.currentUser.Id)
+            @if (wish.UserId == ViewBag.currentUser.Id)
             {
-                <tr>
-                    <td> @wish.Description </td>
-                    <td> @wish.UserId </td>
-                    @if (!flag)
-                    {
-                        <td>Отметить</td>
+        <div class="wish-show">
+            @if (ViewBag.currentUser.Login == User.Identity.Name)
+            {
+                <div class="dropdown">
+
+                    <button onclick="myFunction(@wish.Id)" class="dropbtn">&#8226;&#8226;&#8226;</button>
+                    @{
+                        string drop_id = "myDropdown" + wish.Id.ToString();
                     }
-                </tr>
-           }
+                    <div id="@drop_id" class="dropdown-content">
+                        <a asp-controller="Wish" asp-action="Edit" asp-route-id="@wish.Id">Редактировать желание</a>
+                        <a class="btn-delete" asp-controller="Wish" asp-action="Delete" asp-route-id="@wish.Id">Удалить желание</a>
+                    </div>
+
+                </div>
+            }
+            
+            <label class="wish-desc">@wish.Description</label>
+            <div class="attachment">
+
+                @if (wish.Attachment != null)
+                {
+                    <img src="data:image/jpeg;base64,@(Convert.ToBase64String(wish.Attachment))" />
+                }
+                else
+                {
+                    <img src="~/Content/gift icon.png" />
+                }
+            </div>
+        </div>
+               
+            }
         }
-    </table>
-    <div class="text-center">
-        <h1 class="display-4">Welcome</h1>
-        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     </div>
+
+
 </div>
+
+
+<script>
+    function myFunction(id) {
+        console.log(id);
+        //console.log("myDropdown"+id);
+        document.getElementById("myDropdown" + id).classList.toggle("show");
+    }
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".btn-delete").click(function (e) {
+                console.log("delete button was pressed");
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
+        })
+    </script>
+}
+
+<script>
+    follow.onclick = function (event) {
+        console.log("follow button was pressed");
+      @{flag = true;}
+    }
+    unfollow.onclick = function (event) {
+        console.log("unfollow button was pressed");
+      @{flag = true;}
+  }
+</script>
