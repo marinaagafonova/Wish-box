@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Wish_Box.ViewModels
 {
-    public class CommentModel
+    public class CommentViewModel
     {
         public string Description { get; set; }
         public int WishId { get; set; }
-        public int InReplyId { get; set; }
+        public int? InReplyId { get; set; }
+        public string AuthorName { get; set; }
+        public byte[] Avatar { get; set; }
     }
 }

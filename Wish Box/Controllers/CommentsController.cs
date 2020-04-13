@@ -21,11 +21,26 @@ namespace Wish_Box.Controllers
         public async Task<IActionResult> GetComments()
         {
             var wishId = Convert.ToInt32(RouteData.Values["id"]);
-            return PartialView(await db.Comments.Where(c => c.Wish.Id == wishId).ToListAsync());
+            var comments = await db.Comments.Where(c => c.Wish.Id == wishId).ToListAsync();
+            List<CommentViewModel> commentModels = new List<CommentViewModel>();
+            foreach(Comment c in comments)
+            {
+                var currentUser = await db.Users.FirstOrDefaultAsync(u => u.Id == c.UserId);
+                commentModels.Add(
+                    new CommentViewModel
+                    {
+                        Description = c.Description,
+                        InReplyId = c.InReplyId,
+                        WishId = c.WishId,
+                        AuthorName = currentUser.Login,
+                        Avatar = currentUser.Avatar
+                    });
+            }
+            return PartialView(commentModels);
         }
 
         [HttpPost]
-        public IActionResult AddComment(CommentModel comment)
+        public IActionResult AddComment(CommentViewModel comment)
         {
             var user = db.Users.FirstOrDefault(u => u.Login == User.Identity.Name);
             var wish = db.Wishes.FirstOrDefault(p => p.Id == comment.WishId);
