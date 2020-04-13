@@ -18,5 +18,26 @@ namespace Wish_Box.Models
         {
             Database.EnsureCreated();
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Comment>()
+            .HasOne(p => p.Wish)
+            .WithMany()
+            .HasForeignKey("WishId")
+            .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Comment>()
+            .HasOne(p => p.User)
+            .WithMany()
+            .HasForeignKey("UserId")
+            .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Comment>()
+            .HasOne(p => p.InReply)
+            .WithMany()
+            .HasForeignKey("InReplyId")
+            .OnDelete(DeleteBehavior.Restrict);
+        }
     }
 }

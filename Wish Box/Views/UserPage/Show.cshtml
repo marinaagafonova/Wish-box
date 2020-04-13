@@ -9,29 +9,29 @@
 <div class="col-8 col-lg-8">
     @if (flag)
     {
-    <a class="btn btn-light  btn-lg" asp-area="" asp-controller="Account" asp-action="Edit" 
-       asp-route-id="@User.Identity.Name.ToString()">Редактровать профиль</a>
+        <a class="btn btn-light  btn-lg" asp-area="" asp-controller="Account" asp-action="Edit"
+           asp-route-id="@User.Identity.Name.ToString()">Редактровать профиль</a>
     }
-        <table class="table table-striped">
-            <tr>
-                <th>Login</th>
-                <th>Country</th>
-                <th>City</th>
-                <th>DayOfBirth</th>
-            </tr>
-            @*@foreach (var user in Model.Users)*@
-           
-                <tr>
-                    <td>@ViewBag.currentUser.Login</td>
-                    <td>@ViewBag.currentUser.Country</td>
-                    <td>@ViewBag.currentUser.City</td>
-                    <td>@ViewBag.currentUser.dayOfBirth.ToShortDateString()</td>
-                </tr>        
-        </table>
+    <table class="table table-striped">
+        <tr>
+            <th>Login</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>DayOfBirth</th>
+        </tr>
+        @*@foreach (var user in Model.Users)*@
+
+        <tr>
+            <td>@ViewBag.currentUser.Login</td>
+            <td>@ViewBag.currentUser.Country</td>
+            <td>@ViewBag.currentUser.City</td>
+            <td>@ViewBag.currentUser.dayOfBirth.ToShortDateString()</td>
+        </tr>
+    </table>
     <table class="table table-striped">
         @foreach (var wish in Model)
         {
-           @if (wish.UserId == ViewBag.currentUser.Id)
+            @if (wish.UserId == ViewBag.currentUser.Id)
             {
                 <tr>
                     <td> @wish.Description </td>
@@ -40,8 +40,21 @@
                     {
                         <td>Отметить</td>
                     }
+                <td>
+                    <a type="button" asp-controller="Comments" asp-action="GetComments" asp-route-id="@wish.Id" class="btn btn-outline-primary">Комментировать</a>
+                    <!--
+
+    <div id="@@string.Format("{0}_{1}","commentsBlock", wish.Id)" style="border: 1px solid #f1eaea; background-color: #eaf2ff;">
+        <div class="AddComment" style="margin-left: 5px;  margin-bottom: 5px; margin-top: 8px;">
+            <input type="text" id="@@string.Format("{0}_{1}", "comment", wish.Id)" class="form-control" placeholder="Add a Comment ..." style="display: inline;" />
+            <button type="button" class="btn btn-default btn-outline-dark addComment" data-id="@@wish.Id"><span class="glyphicon glyphicon-comment" aria-hidden="true">добавить комментарий</span></button>
+        </div>
+    </div>
+
+        -->
+                </td>
                 </tr>
-           }
+            }
         }
     </table>
     <div class="text-center">
