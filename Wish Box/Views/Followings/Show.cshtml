@@ -7,7 +7,7 @@
         @foreach(var user in ViewBag.followingUsers)
         {
             <tr> 
-                <td><a class="btn-link" asp-area="" asp-controller="Userpage" asp-action="Show" asp-route-id="@user.Login">@user.Login</a></td>
+                <td><a class="btn-link" asp-area="" asp-controller="Userpage" asp-action="Show" asp-route-id="@user.Login">@user.Login</a><a class="btn btn-default" asp-controller="Followings" asp-action="Delete" asp-route-id="@user.Id">Удалить</a></td>
             </tr>
         }
     </table>

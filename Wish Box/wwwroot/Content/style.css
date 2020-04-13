@@ -263,9 +263,8 @@ a.menu-btn {
 .follow-btn {
     float: right;
     margin-right: 50px;
-    background-color: #4dc368;
+    background-color: #87cb5c;
     border-radius: 15px;
-    border-color: #4dc368;
     color: white !important;
     padding: 10px;
 }
@@ -283,7 +282,6 @@ a.menu-btn {
     height: 200px;
     overflow: hidden;
     background: #FFFFFF;
-    outline: 1px solid #CCCCCC;
     margin: 10px;
 }
 
@@ -350,4 +348,98 @@ a.menu-btn {
     transform: translate(-10%, -350%);
     font-size: 20px;
     font-weight: bold;
+}
+
+.news-block {
+    width: 612px;
+    height: 351px;
+    background-color: white;
+    border-radius: 25px;
+    padding: 20px 30px;
+}
+
+.unfollow-btn {
+    float: right;
+    margin-right: 50px;
+    border-radius: 15px;
+}
+
+.edit {
+    /*width: 942px;
+    #height: 549px;*/
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.user-info {
+    width: 986px;
+    height: 250px;
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 30px;
+}
+
+.user-name {
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 35px;
+    line-height: 40px;
+    color: #000000;
+}
+
+.user-place {
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 29px;
+    color: #000000;
+}
+
+.user-date-lb {
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 25px;
+    color: #000000;
+    transform: translate(0%, 13%);
+}
+
+.edit-profile {
+    width: 281px;
+    height: 50px;
+    background: #71A8C4;
+    border-radius: 20px;
+    color: white;
+    float:right;
+}
+
+.edit-profile:hover {
+    background: #6393ac;
+    color: white;
+}
+
+.user-info-block {
+    float: left;
+    margin-left: 20px;
+}
+
+.wish-show {
+    width: 866px;
+    height: 285px;
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.wish-desc {
+    transform: translate(10%, -300%);
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 40px;
+    margin-right: 20px;
 }

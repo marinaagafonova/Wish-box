@@ -1,45 +1,53 @@
-﻿@model Wish_Box.ViewModels.EditModel
+﻿@model Wish_Box.ViewModels.Edit1Model
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<div class="col">
-    <h1>Редактирование профиля</h1>
-
-    <hr />
-    <div class="row">
-        <div class="col-md-5">
-            <form asp-action="Edit">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Login" class="control-label">Имя</label>
-                    <input asp-for="Login" class="form-control" />
-                    <span asp-validation-for="Login" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="dayOfBirth" class="control-label">Дата рождения</label>
-                    <input asp-for="dayOfBirth" class="form-control" />
-                    <span asp-validation-for="dayOfBirth" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Country" class="control-label">Страна</label>
-                    <input asp-for="Country" class="form-control" />
-                    <span asp-validation-for="Country" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="City" class="control-label">Город</label>
-                    <input asp-for="City" class="form-control" />
-                    <span asp-validation-for="City" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Сохранить" class="btn btn-primary" />
-                </div>
-            </form>
+<div class="col-sm-8 col-lg-8 col-md-8">
+    <h2 style="color:white; text-align: center; font-weight: bold; margin-bottom: 20px;">Редактирование профиля</h2>
+                <form class="edit" asp-action="Edit" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Login" class="control-label">Имя</label>
+                        <input asp-for="Login" class="form-control" />
+                        <span asp-validation-for="Login" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="dayOfBirth" class="control-label">Дата рождения</label>
+                        <input asp-for="dayOfBirth" class="form-control" />
+                        <span asp-validation-for="dayOfBirth" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Country" class="control-label">Страна</label>
+                        <input asp-for="Country" class="form-control" />
+                        <span asp-validation-for="Country" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="City" class="control-label">Город</label>
+                        <input asp-for="City" class="form-control" />
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="attachment">
+                            @if (@Model.Avatar != null)
+                            {
+                                <img src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.Avatar))" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/default_profile.jpg" asp-append-version="true">
+                            }
+                        </div>
+                        <input name="Avatar" type="file" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Сохранить" class="btn btn-primary" />
+                    </div>
+                </form>
         </div>
-    </div>
 
-    <div>
-        <a asp-action="Index">Назад</a>
-    </div>
+        <div>
+            <a asp-action="Index">Назад</a>
+        </div>
 </div>

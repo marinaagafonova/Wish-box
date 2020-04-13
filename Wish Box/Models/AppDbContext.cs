@@ -13,6 +13,7 @@ namespace Wish_Box.Models
         public DbSet<TakenWish> TakenWishes { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Following> Followings { get; set; }
+        public DbSet<WishRating> WishRatings { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

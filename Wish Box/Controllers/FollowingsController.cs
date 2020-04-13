@@ -10,7 +10,7 @@ namespace Wish_Box.Controllers
 {
     public class FollowingsController : Controller
     {
-        AppDbContext db;
+        readonly AppDbContext db;
 
         public FollowingsController(AppDbContext context)
         {
@@ -26,7 +26,8 @@ namespace Wish_Box.Controllers
                 UserFId = current_user.Id,
                 UserIsFId = followed_id
             });
-            return View();
+            db.SaveChanges();
+            return Redirect(Request.Headers["Referer"].ToString());
         }
 
         [HttpGet]
@@ -47,6 +48,18 @@ namespace Wish_Box.Controllers
             ViewBag.followingUsers = followedUsersList;
 
             return View();
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var follow = await db.Followings.FirstOrDefaultAsync(x => x.UserIsFId == id);
+            if (follow == null)
+            {
+                return NotFound();
+            }
+            db.Followings.Remove(follow);
+            db.SaveChanges();
+            return RedirectToAction("Show");
         }
     }
 }
