@@ -33,13 +33,13 @@ namespace Wish_Box.Controllers
         [HttpGet]
         public IActionResult Show()
         {
-            var currentUser = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
+            var CurrentUser = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
 
             List<User> followedUsersList = new List<User>();
 
             foreach (var followed in db.Followings)
             {
-                if (followed.UserFId == currentUser.Id)
+                if (followed.UserFId == CurrentUser.Id)
                 {
                     followedUsersList.Add(db.Users.FirstOrDefault(x => x.Id == followed.UserIsFId));
                 }
@@ -59,7 +59,7 @@ namespace Wish_Box.Controllers
             }
             db.Followings.Remove(follow);
             db.SaveChanges();
-            return RedirectToAction("Show");
+            return Redirect(Request.Headers["Referer"].ToString());
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Wish_Box.Controllers
             wish.UserId = wish.User.Id;
             db.Wishes.Add(wish);
             await db.SaveChangesAsync();
-            return RedirectToAction("OwnList", "Wish");
+            return Redirect(Request.Headers["Referer"].ToString());
         }
 
         public async Task<IActionResult> Edit()
@@ -93,7 +93,7 @@ namespace Wish_Box.Controllers
             }
             db.Wishes.Update(wish);
             await db.SaveChangesAsync();
-            return RedirectToAction("OwnList", "Wish");
+            return Redirect(Request.Headers["Referer"].ToString());
         }
 
         [HttpGet]
@@ -119,7 +119,7 @@ namespace Wish_Box.Controllers
                 Wish wish = new Wish { Id = id };
                 db.Entry(wish).State = EntityState.Deleted;
                 await db.SaveChangesAsync();
-                return RedirectToAction("OwnList", "Wish");
+                return Redirect(Request.Headers["Referer"].ToString());
             }
             return NotFound();
         }
@@ -159,7 +159,7 @@ namespace Wish_Box.Controllers
                 });
                 db.SaveChanges();
             }
-            return RedirectToAction("OwnList");
+            return Redirect(Request.Headers["Referer"].ToString());
         }
     }
 }
