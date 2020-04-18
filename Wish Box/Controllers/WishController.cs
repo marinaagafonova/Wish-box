@@ -13,7 +13,7 @@ namespace Wish_Box.Controllers
 {
     public class WishController : Controller
     {
-        private AppDbContext db;
+        private readonly AppDbContext db;
 
         public WishController(AppDbContext context)
         {
@@ -53,29 +53,20 @@ namespace Wish_Box.Controllers
             wish.UserId = wish.User.Id;
             db.Wishes.Add(wish);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("OwnList", "Wish");
         }
-
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id != null)
-        //    {
-        //        Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
-        //        if (wish != null)
-        //            return View(wish);
-        //    }
-        //    return NotFound();
-        //}
 
         public async Task<IActionResult> Edit()
         {
             var id = Convert.ToInt32(RouteData.Values["id"]);
-            if (id >=0)
+            if (id >= 0)
             {
                 Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
                 if (wish != null)
                 {
-                    return View(wish);
+                    User user = await db.Users.FirstOrDefaultAsync(p => p.Id == wish.UserId);
+                    if (user != null && user.Login == User.Identity.Name)
+                        return View(wish);
                 }
             }
             return NotFound();
@@ -107,26 +98,28 @@ namespace Wish_Box.Controllers
 
         [HttpGet]
         [ActionName("Delete")]
-        public async Task<IActionResult> ConfirmDelete(int? id)
+        public async Task<IActionResult> ConfirmDelete()
         {
-            if (id != null)
+            var id = Convert.ToInt32(RouteData.Values["id"]);
+            if (id >= 0)
             {
                 Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
                 if (wish != null)
-                    return View(wish);
+                    return PartialView(wish);
             }
             return NotFound();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete()
         {
-            if (id != null)
+            var id = Convert.ToInt32(RouteData.Values["id"]);
+            if (id >= 0)
             {
-                Wish wish = new Wish { Id = id.Value };
+                Wish wish = new Wish { Id = id };
                 db.Entry(wish).State = EntityState.Deleted;
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("OwnList", "Wish");
             }
             return NotFound();
         }
@@ -134,9 +127,39 @@ namespace Wish_Box.Controllers
         [HttpGet]
         public async Task<IActionResult> OwnList()
         {
-            var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
-            var wishes = db.Wishes.Where(p => p.UserId == current_user.Id).ToList();
-            return View(wishes);
+            if(User.Identity.Name != null)
+            {
+                var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
+                var wishes = await db.Wishes.Where(p => p.UserId == current_user.Id).ToListAsync();
+                return View(wishes);
+            }
+            return NotFound();
+        }
+
+        public async Task<IActionResult> Rating(int id)
+        {
+            var flag = Convert.ToBoolean(RouteData.Values["id"]);
+            var currentUser = await db.Users.FirstOrDefaultAsync(x => x.Login == User.Identity.Name);
+            var currentRate = await db.WishRatings.FirstOrDefaultAsync(x => x.UserId == currentUser.Id && x.WishId == id);
+            if (currentRate != null && currentRate.Rate == flag)
+            {
+                
+            }
+            else
+            {
+                if (currentRate.Rate != flag)
+                {
+                    db.WishRatings.Remove(currentRate);
+                }
+                db.WishRatings.Add(new WishRating
+                {
+                    UserId = currentUser.Id,
+                    WishId = id,
+                    Rate = flag
+                });
+                db.SaveChanges();
+            }
+            return RedirectToAction("OwnList");
         }
     }
 }

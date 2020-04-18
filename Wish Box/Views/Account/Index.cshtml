@@ -33,6 +33,7 @@
 
         $(function () {
             $.ajaxSetup({ cache: false });
+
             $(".btn-signup").click(function (e) {
                 console.log("sign up button was pressed");
                 e.preventDefault();
@@ -41,7 +42,7 @@
                     $('#modDialog').modal('show');
                 });
             });
-             $(".btn-light").click(function (e) {
+            $(".btn-light").click(function (e) {
                 console.log("sign in button was pressed");
                 e.preventDefault();
                 $.get(this.href, function (data) {

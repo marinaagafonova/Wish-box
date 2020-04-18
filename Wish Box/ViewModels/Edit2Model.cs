@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace Wish_Box.ViewModels
 {
-    public class EditModel
+    public class Edit2Model
     {
         [Required(ErrorMessage = "Не указан логин")]
         public string Login { get; set; }
@@ -20,5 +21,7 @@ namespace Wish_Box.ViewModels
 
         [Required(ErrorMessage = "Не указан город")]
         public string City { get; set; }
+        
+        public IFormFile Avatar { get; set; }
     }
 }

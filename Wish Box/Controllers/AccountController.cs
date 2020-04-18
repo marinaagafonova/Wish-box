@@ -8,12 +8,14 @@ using Wish_Box.Models; // пространство имен UserContext и кл�
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.IO;
+using System.Drawing;
+using Microsoft.AspNetCore.Http;
 
 namespace Wish_Box.Controllers
 {
     public class AccountController : Controller
     {
-        private AppDbContext db;
+        private readonly AppDbContext db;
         public AccountController(AppDbContext context)
         {
             db = context;
@@ -97,7 +99,7 @@ namespace Wish_Box.Controllers
                 User user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
                 if (user != null)
                 {
-                    EditModel e = new EditModel() 
+                    Edit1Model e = new Edit1Model() 
                     {
                         City = user.City,
                         Country = user.Country,
@@ -111,7 +113,7 @@ namespace Wish_Box.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(EditModel model)
+        public async Task<IActionResult> Edit(Edit1Model model)
         {
             if(ModelState.IsValid)
             {
