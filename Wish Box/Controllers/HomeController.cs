@@ -72,14 +72,16 @@ namespace Wish_Box.Controllers
         private List<string> GetCities()
         {
             List<string> cities = db.Users.Select(p => p.City).ToList();
-            cities.Insert(0, "Все");
-            return cities;
+            var list = cities.Distinct().ToList();
+            list.Insert(0, "Все");
+            return list;
         }
         private List<string> GetCountries()
         {
             List<string> countries = db.Users.Select(p => p.Country).ToList();
-            countries.Insert(0, "Все");
-            return countries;
+            var list = countries.Distinct().ToList();
+            list.Insert(0, "Все");
+            return list;
         }
 
         public IActionResult Filter(string country, string city, string name)
@@ -105,11 +107,15 @@ namespace Wish_Box.Controllers
             UserListViewModel viewModel = new UserListViewModel
             {
                 Users = users.ToList(),
-                Countries = new SelectList(countries),
-                Cities = new SelectList(cities),
+                Countries = new SelectList(countries, country),
+                Cities = new SelectList(cities, city),
                 Name = name
             };
+
+            ViewBag.keyword = name;
+
             return View("Search", viewModel);
         }
+
     }
 }
