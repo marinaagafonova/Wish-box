@@ -59,7 +59,7 @@ namespace Wish_Box.Controllers
             }
             db.Followings.Remove(follow);
             db.SaveChanges();
-            return RedirectToAction("Show");
+            return Redirect(Request.Headers["Referer"].ToString());
         }
     }
 }
