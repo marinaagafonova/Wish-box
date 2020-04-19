@@ -50,7 +50,7 @@
        
     <div class="container-fluid">
         <div class="row">
-            @{ if (User.Identity.IsAuthenticated)
+            @if(User.Identity.IsAuthenticated)
                 {
                     <div class="col-sm-3 col-lg-3 col-md-3 left">
                         <ul class="button-group">
@@ -61,7 +61,7 @@
                             </li>
                             <li class="menu-li">
                                 <div class="menu-btn-block">
-                                    <a href="" class="menu-btn"><img class="menu-image" src="~/Content/gift icon.png" asp-append-version="true" width="38" height="38">Подарить</a>
+                                    <a class="menu-btn" asp-controller="ToGive" asp-action="Index"><img class="menu-image" src="~/Content/gift icon.png" asp-append-version="true" width="38" height="38">Подарить</a>
                                 </div>
                             </li>
                             <li class="menu-li">
@@ -72,7 +72,6 @@
                         </ul>
                     </div>
                 }
-            }
             @RenderBody()
         </div>
     </div>

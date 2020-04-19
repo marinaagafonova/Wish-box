@@ -3,17 +3,25 @@
 }
 
 <div class="col-8 col-lg-8">
-    <table class="table table-striped">
-        @foreach(var user in ViewBag.followingUsers)
+    <div class="following">
+        <h4 style="text-align: center; font-weight: bold;">Мои подписки</h4>
+        @foreach (var user in ViewBag.followingUsers)
         {
-            <tr> 
-                <td><a class="btn-link" asp-area="" asp-controller="Userpage" asp-action="Show" asp-route-id="@user.Login">@user.Login</a><a class="btn btn-default" asp-controller="Followings" asp-action="Delete" asp-route-id="@user.Id">Удалить</a></td>
-            </tr>
+            <div class="user-block-search">
+                <a class="btn-link" asp-area="" asp-controller="Userpage" asp-action="Show" asp-route-id="@user.Login">
+                    @if (user.Avatar != null)
+                    {
+                        <img class="avatar" style='width:70px; height:70px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(user.Avatar))" />
+                    }
+                    else
+                    {
+                        <img class="avatar" src="~/Content/default_profile.jpg" asp-append-version="true" width="70"
+                             height="70" alt="My profile">
+                    }@user.Login
+                </a>
+                <a class="btn btn-default" style="float: right;" asp-controller="Followings" asp-action="Delete" asp-route-id="@user.Id">x</a>
+            </div>
         }
-    </table>
-    <div class="text-center">
-        <h1 class="display-4">Welcome</h1>
-        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     </div>
 </div>
 

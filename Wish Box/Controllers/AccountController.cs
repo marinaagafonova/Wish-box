@@ -139,6 +139,7 @@ namespace Wish_Box.Controllers
             }
             return View(model);
         }
+        [HttpGet]
         public async Task<IActionResult> ChangePassword()
         {
             if ( User.Identity.Name != null && await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name) != null)

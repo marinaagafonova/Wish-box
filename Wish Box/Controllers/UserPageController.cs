@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Wish_Box.Models;
 
 namespace Wish_Box.Controllers
@@ -16,16 +17,18 @@ namespace Wish_Box.Controllers
         }
 
         [HttpGet]
-        public IActionResult Show()
+        public async Task<IActionResult> Show()
         {
+            var currentUser = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
             var login = RouteData.Values["id"].ToString();
-            var currentUser = db.Users.FirstOrDefault(x => x.Login == login);
-            List<int> following_ids = db.Followings.Where(p => p.UserFId == currentUser.Id).Select(p => p.UserIsFId).ToList();
-            List<Wish> user_wishes = db.Wishes.Where(p => p.UserId == currentUser.Id).ToList();
+
+            var currentprofile = db.Users.FirstOrDefault(x => x.Login == login);
+            //var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
+            List<int> following_ids = await db.Followings.Where(p => p.UserFId == currentUser.Id).Select(p => p.UserIsFId).ToListAsync();
             ViewBag.following_ids = following_ids;
-            ViewBag.CurrentUser = currentUser;
-            ViewBag.Wishes = user_wishes;
-            return View();
+            ViewBag.CurrentUser = currentprofile;
+            return View(db.Wishes.ToList());
+
         }
     }
 }
