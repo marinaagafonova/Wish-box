@@ -30,6 +30,16 @@ namespace Wish_Box.Controllers
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
+        public async Task<IActionResult> Remove()
+        {
+            var followed_id = Convert.ToInt32(RouteData.Values["id"]);
+            var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
+            var follow = await db.Followings.FirstOrDefaultAsync(p => p.UserFId == current_user.Id && p.UserIsFId == followed_id);
+            db.Followings.Remove(follow);
+            db.SaveChanges();
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
         [HttpGet]
         public IActionResult Show()
         {

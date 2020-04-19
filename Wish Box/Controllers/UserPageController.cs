@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Wish_Box.Models;
+using Wish_Box.ViewModels;
 
 namespace Wish_Box.Controllers
 {
@@ -19,16 +20,19 @@ namespace Wish_Box.Controllers
         [HttpGet]
         public async Task<IActionResult> Show()
         {
-            var currentUser = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
             var login = RouteData.Values["id"].ToString();
-
             var currentprofile = db.Users.FirstOrDefault(x => x.Login == login);
-            //var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
-            List<int> following_ids = await db.Followings.Where(p => p.UserFId == currentUser.Id).Select(p => p.UserIsFId).ToListAsync();
-            ViewBag.following_ids = following_ids;
-            ViewBag.CurrentUser = currentprofile;
-            return View(db.Wishes.ToList());
+            List<int> following_ids = await db.Followings.Where(p => p.UserIsFId == currentprofile.Id).Select(p => p.UserFId).ToListAsync();
+            List<Wish> user_wishes = await db.Wishes.Where(p => p.UserId == currentprofile.Id).ToListAsync();
 
+            UserPageViewModel upvm = new UserPageViewModel()
+            {
+                User = currentprofile,
+                UserWishes = user_wishes,
+                Followers = following_ids,
+                CurrentUser = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name)
+            };
+            return View(upvm);
         }
     }
 }

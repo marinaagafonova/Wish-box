@@ -2,13 +2,14 @@
     ViewData["Title"] = "Show";
     bool flag = false;
 }
+@model Wish_Box.ViewModels.UserPageViewModel
 
 <div class="col-8 col-lg-8">
     <div class="user-info">
         <div style="width: 200px;height: 200px; float:left;">
-            @if (ViewBag.currentUser.Avatar != null)
+            @if (Model.User.Avatar != null)
             {
-                <img class="avatar" style="width: 200px;height: 200px;" src="data:image/jpeg;base64,@(Convert.ToBase64String(ViewBag.CurrentUser.Avatar))" />
+                <img class="avatar" style="width: 200px;height: 200px;" src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.User.Avatar))" />
             }
             else
             {
@@ -16,37 +17,35 @@
             }
         </div>
         <div class="user-info-block">
-            <label class="user-name">@ViewBag.CurrentUser.Login</label>
+            <label class="user-name">@Model.User.Login</label>
             <br />
-            <label class="user-place">@ViewBag.CurrentUser.City, @ViewBag.CurrentUser.Country</label>
+            <label class="user-place">@Model.User.City, @Model.User.Country</label>
             <div class="user-date">
                 <img src="~/Content/calendar-512.png" style="width: 30px; height: 30px; margin-right: 5px;" />
-                <label class="user-date-lb">@ViewBag.CurrentUser.dayOfBirth.ToShortDateString()</label>
+                <label class="user-date-lb">@Model.User.dayOfBirth.ToShortDateString()</label>
             </div>
         </div>
-        @if (ViewBag.CurrentUser.Login == User.Identity.Name)
+        @if (Model.User.Login == User.Identity.Name)
         {
             <a class="btn btn-light btn-lg edit-profile" asp-area="" asp-controller="Account" asp-action="Edit">Редактировать профиль</a>
         }
         else
         {
-            @if (!ViewBag.following_ids.Contains(ViewBag.CurrentUser.Id))
+            @if (!Model.Followers.Contains(Model.CurrentUser.Id))
             {
-                <a class="follow-btn" asp-controller="Followings" asp-action="Add" asp-route-id="@ViewBag.CurrentUser.Id" id="follow">Подписаться</a>
+                <a class="follow-btn" asp-controller="Followings" asp-action="Add" asp-route-id="@Model.User.Id" id="follow">Подписаться</a>
                 if (flag)
-
                 {
-                    ViewBag.Following_ids.Add(ViewBag.currentUser.Id);
+                    Model.Followers.Add(Model.User.Id);
                     flag = false;
                 }
             }
             else
-            {
-                <!-- Данила "to do" - action -->
-                <a class="btn btn-ligh unfollow-btn" asp-controller="Followings" asp-action="Delete" asp-route-id="@ViewBag.CurrentUser.Id" id="unfollow">Отписаться</a>
+            {                
+                <a class="btn btn-ligh unfollow-btn" asp-controller="Followings" asp-action="Delete" asp-route-id="@Model.User.Id" id="unfollow">Отписаться</a>
                 if (flag)
                 {
-                    ViewBag.Following_ids.Remove(ViewBag.currentUser.Id);
+                    Model.Followers.Remove(Model.User.Id);
                     flag = false;
                 }
             }
@@ -54,14 +53,14 @@
     </div>
 
     <div class="wishes">
-        @foreach (var wish in ViewBag.Wishes)
+        @foreach (var wish in Model.UserWishes)
         {
 
-            @if (wish.UserId == ViewBag.CurrentUser.Id)
+            @if (wish.UserId == Model.User.Id)
             {
                 <div class="col-auto">
                     <div class="wish-show">
-                        @if (ViewBag.currentUser.Login == User.Identity.Name)
+                        @if (Model.User.Login == Model.CurrentUser.Login)
                         {
                             <div class="dropdown">
 
@@ -75,7 +74,7 @@
                                 </div>
 
                             </div>
-                        }
+                                    }
 
                         <label class="wish-desc">@wish.Description</label>
                         <div class="attachment">
@@ -92,8 +91,8 @@
                     <a class="btn btn-outline-dark btn-get-comments" asp-controller="Comments" asp-action="GetComments" asp-route-id="@wish.Id" data-id="@(wish.Id)">Комменты</a>
                     <div class="comment-section-@(wish.Id)"></div>
                 </div>
-            
-        }
+             }
+         }
     </div>
 </div>
 
