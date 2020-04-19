@@ -37,14 +37,20 @@
             {
                 <a class="follow-btn" asp-controller="Followings" asp-action="Add" asp-route-id="@ViewBag.currentUser.Id" id="follow">Подписаться</a>
                 if (flag)
+                {
                     ViewBag.Following_ids.Add(ViewBag.currentUser.Id);
+                    flag = false;
+                }
             }
             else
             {
                 <!-- Данила "to do" - action -->
                 <a class="btn btn-ligh unfollow-btn" asp-controller="Followings" asp-action="Delete" asp-route-id="@ViewBag.currentUser.Id" id="unfollow">Отписаться</a>
                 if (flag)
+                {
                     ViewBag.Following_ids.Remove(ViewBag.currentUser.Id);
+                    flag = false;
+                }
             }
         }
     </div>
