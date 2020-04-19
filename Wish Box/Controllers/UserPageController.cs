@@ -21,12 +21,14 @@ namespace Wish_Box.Controllers
         {
             var currentUser = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
             var login = RouteData.Values["id"].ToString();
+
             var currentprofile = db.Users.FirstOrDefault(x => x.Login == login);
             //var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
             List<int> following_ids = await db.Followings.Where(p => p.UserFId == currentUser.Id).Select(p => p.UserIsFId).ToListAsync();
             ViewBag.following_ids = following_ids;
             ViewBag.CurrentUser = currentprofile;
             return View(db.Wishes.ToList());
+
         }
     }
 }

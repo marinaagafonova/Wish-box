@@ -3,8 +3,6 @@
     bool flag = false;
 }
 
-@model IEnumerable<Wish_Box.Models.Wish>
-
 <div class="col-8 col-lg-8">
     <div class="user-info">
         <div style="width: 200px;height: 200px; float:left;">
@@ -28,8 +26,7 @@
         </div>
         @if (ViewBag.CurrentUser.Login == User.Identity.Name)
         {
-            <a class="btn btn-light btn-lg edit-profile" asp-area="" asp-controller="Account" asp-action="Edit"
-               asp-route-id="@User.Identity.Name.ToString()">Редактировать профиль</a>
+            <a class="btn btn-light btn-lg edit-profile" asp-area="" asp-controller="Account" asp-action="Edit">Редактировать профиль</a>
         }
         else
         {
@@ -57,8 +54,9 @@
     </div>
 
     <div class="wishes">
-        @foreach (var wish in Model)
+        @foreach (var wish in ViewBag.Wishes)
         {
+
             @if (wish.UserId == ViewBag.CurrentUser.Id)
             {
                 <div class="col-auto">
@@ -94,7 +92,7 @@
                     <a class="btn btn-outline-dark btn-get-comments" asp-controller="Comments" asp-action="GetComments" asp-route-id="@wish.Id" data-id="@(wish.Id)">Комменты</a>
                     <div class="comment-section-@(wish.Id)"></div>
                 </div>
-            }
+            
         }
     </div>
 </div>
