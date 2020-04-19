@@ -30,5 +30,34 @@ namespace Wish_Box.Controllers
             }
             return NotFound();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Add()
+        {
+            int wishId = Convert.ToInt32(RouteData.Values["id"]);
+            int whoWishesId = (await db.Wishes.FirstOrDefaultAsync(w => w.Id == wishId)).UserId;
+            int whoGivesId = (await db.Users.FirstOrDefaultAsync(u => u.Login == User.Identity.Name)).Id;
+            TakenWish takenWish = new TakenWish()
+            {
+                IsGiven = true,
+                WhoGivesId = whoGivesId,
+                WhoWishesId = whoWishesId,
+                WishId = wishId
+            };
+            db.TakenWishes.Add(takenWish);
+            await db.SaveChangesAsync();
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Remove()
+        {
+            int wishId = Convert.ToInt32(RouteData.Values["id"]);
+            int whoGivesId = (await db.Users.FirstOrDefaultAsync(u => u.Login == User.Identity.Name)).Id;
+            TakenWish takenWish = (await db.TakenWishes.FirstOrDefaultAsync(t => (t.WishId == wishId && t.WhoGivesId == whoGivesId)));
+            db.Entry(takenWish).State = EntityState.Deleted;
+            await db.SaveChangesAsync();
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
     }
 }

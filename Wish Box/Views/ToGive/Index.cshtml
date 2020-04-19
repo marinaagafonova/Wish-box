@@ -23,6 +23,9 @@
                                 <img src="~/Content/gift icon.png" />
                             }
                         </div>
+                        <form asp-controller="ToGive" asp-action="Remove" asp-route-id="@wish.Id" method="post">
+                            <input class="btn btn-outline-dark btn-remove-togive-mark" type="submit" value="Убрать из &quot;Подарить&quot;" />
+                        </form>
                     </div>
                 </div>
             </div>

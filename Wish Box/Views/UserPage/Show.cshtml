@@ -88,7 +88,21 @@
                             }
                         </div>
                     </div>
-                    <a class="btn btn-outline-dark btn-get-comments" asp-controller="Comments" asp-action="GetComments" asp-route-id="@wish.Id" data-id="@(wish.Id)">Комменты</a>
+                    <div class="row">
+                        <a class="btn btn-outline-dark btn-get-comments" asp-controller="Comments" asp-action="GetComments" asp-route-id="@wish.Id" data-id="@(wish.Id)">Комменты</a>
+                        @if (Model.TakenWishes.Contains(wish.Id))
+                        {
+                            <form asp-controller="ToGive" asp-action="Remove" asp-route-id="@wish.Id" method="post">
+                                <input class="btn btn-outline-dark btn-remove-togive-mark" type="submit" value="Убрать из &quot;Подарить&quot;" />
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-controller="ToGive" asp-action="Add" asp-route-id="@wish.Id" method="post">
+                                <input class="btn btn-outline-dark btn-add-to-give-mark" type="submit" value="Добавить в &quot;Подарить&quot;" />
+                            </form>
+                        }
+                    </div>
                     <div class="comment-section-@(wish.Id)"></div>
                 </div>
              }
