@@ -450,3 +450,11 @@ a.menu-btn {
     width: 1250px;
     height: 350px;
 }
+
+.following {
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 660px;
+}
