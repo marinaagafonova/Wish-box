@@ -30,16 +30,26 @@ namespace Wish_Box.Controllers
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
+        public async Task<IActionResult> Remove()
+        {
+            var followed_id = Convert.ToInt32(RouteData.Values["id"]);
+            var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
+            var follow = await db.Followings.FirstOrDefaultAsync(p => p.UserFId == current_user.Id && p.UserIsFId == followed_id);
+            db.Followings.Remove(follow);
+            db.SaveChanges();
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
         [HttpGet]
         public IActionResult Show()
         {
-            var currentUser = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
+            var CurrentUser = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
 
             List<User> followedUsersList = new List<User>();
 
             foreach (var followed in db.Followings)
             {
-                if (followed.UserFId == currentUser.Id)
+                if (followed.UserFId == CurrentUser.Id)
                 {
                     followedUsersList.Add(db.Users.FirstOrDefault(x => x.Id == followed.UserIsFId));
                 }
@@ -59,7 +69,7 @@ namespace Wish_Box.Controllers
             }
             db.Followings.Remove(follow);
             db.SaveChanges();
-            return RedirectToAction("Show");
+            return Redirect(Request.Headers["Referer"].ToString());
         }
     }
 }

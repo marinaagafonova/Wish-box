@@ -46,7 +46,7 @@ namespace Wish_Box.Controllers
         {
             var user = db.Users.FirstOrDefault(u => u.Login == User.Identity.Name);
             var wish = db.Wishes.FirstOrDefault(p => p.Id == comment.WishId);
-            if (comment != null && user != null && wish != null)
+            if (comment != null && user != null && wish != null && comment.Description != "")
             {
                 Comment commentEntity = new Comment
                 {
