@@ -48,6 +48,6 @@
         </div>
 
         <div>
-            <a asp-action="Index">Назад</a>
+            <a asp-controller="UserPage" asp-action="Show" asp-route-id="@User.Identity.Name.ToString()">Назад</a>
         </div>
 </div>
