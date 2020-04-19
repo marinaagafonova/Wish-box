@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Show";
     bool flag = false;
 }
@@ -9,8 +8,7 @@
 <div class="col-8 col-lg-8">
     <div class="user-info">
         <div style="width: 200px;height: 200px; float:left;">
-
-            @if (ViewBag.CurrentUser.Avatar != null)
+            @if (ViewBag.currentUser.Avatar != null)
             {
                 <img class="avatar" style="width: 200px;height: 200px;" src="data:image/jpeg;base64,@(Convert.ToBase64String(ViewBag.CurrentUser.Avatar))" />
             }
@@ -56,42 +54,42 @@
         {
             @if (wish.UserId == ViewBag.CurrentUser.Id)
             {
-        <div class="wish-show">
-            @if (ViewBag.CurrentUser.Login == User.Identity.Name)
-            {
-                <div class="dropdown">
+                <div class="col-auto">
+                    <div class="wish-show">
+                        @if (ViewBag.currentUser.Login == User.Identity.Name)
+                        {
+                            <div class="dropdown">
 
-                    <button onclick="myFunction(@wish.Id)" class="dropbtn">&#8226;&#8226;&#8226;</button>
-                    @{
-                        string drop_id = "myDropdown" + wish.Id.ToString();
-                    }
-                    <div id="@drop_id" class="dropdown-content">
-                        <a asp-controller="Wish" asp-action="Edit" asp-route-id="@wish.Id">Редактировать желание</a>
-                        <a class="btn-delete" asp-controller="Wish" asp-action="Delete" asp-route-id="@wish.Id">Удалить желание</a>
+                                <button onclick="myFunction(@wish.Id)" class="dropbtn">&#8226;&#8226;&#8226;</button>
+                                @{
+                                    string drop_id = "myDropdown" + wish.Id.ToString();
+                                }
+                                <div id="@drop_id" class="dropdown-content">
+                                    <a asp-controller="Wish" asp-action="Edit" asp-route-id="@wish.Id">Редактировать желание</a>
+                                    <a class="btn-delete" asp-controller="Wish" asp-action="Delete" asp-route-id="@wish.Id">Удалить желание</a>
+                                </div>
+
+                            </div>
+                        }
+
+                        <label class="wish-desc">@wish.Description</label>
+                        <div class="attachment">
+                            @if (wish.Attachment != null)
+                            {
+                                <img src="data:image/jpeg;base64,@(Convert.ToBase64String(wish.Attachment))" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/gift icon.png" />
+                            }
+                        </div>
                     </div>
-
+                    <a class="btn btn-outline-dark btn-get-comments" asp-controller="Comments" asp-action="GetComments" asp-route-id="@wish.Id" data-id="@(wish.Id)">Комменты</a>
+                    <div class="comment-section-@(wish.Id)"></div>
                 </div>
-            }
-            
-            <label class="wish-desc">@wish.Description</label>
-            <div class="attachment">
-
-                @if (wish.Attachment != null)
-                {
-                    <img src="data:image/jpeg;base64,@(Convert.ToBase64String(wish.Attachment))" />
-                }
-                else
-                {
-                    <img src="~/Content/gift icon.png" />
-                }
-            </div>
-        </div>
-               
             }
         }
     </div>
-
-
 </div>
 
 
@@ -131,6 +129,21 @@
             });
         })
     </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".btn-get-comments").click(function (e) {
+                console.log("comments button was pressed");
+                e.preventDefault();
+                var id = $(this).attr("data-id");
+                $.get(this.href, function (data) {
+                    $('.comment-section-' + id).empty();
+                    $('.comment-section-' + id).prepend(data);
+                });
+            });
+        })
+    </script>
 }
 
 <script>
@@ -141,5 +154,6 @@
     unfollow.onclick = function (event) {
         console.log("unfollow button was pressed");
       @{flag = true;}
-  }
+    }
 </script>
+ 

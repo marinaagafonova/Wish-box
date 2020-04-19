@@ -115,24 +115,31 @@ namespace Wish_Box.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Edit1Model model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 string name = User.Identity.Name;
                 if (name != null)
                 {
-                    User user = await db.Users.FirstOrDefaultAsync(p => p.Login == name);
-                    user.Login = model.Login;
-                    user.City = model.City;
-                    user.Country = model.Country;
-                    user.dayOfBirth = model.dayOfBirth;
-                    db.Users.Update(user);
-                    await db.SaveChangesAsync();
-                    return RedirectToAction("Index", "Home");
+                    if (await db.Users.FirstOrDefaultAsync(p => p.Login == model.Login) == null)
+                    {
+                        User user = await db.Users.FirstOrDefaultAsync(p => p.Login == name);
+                        user.Login = model.Login;
+                        user.City = model.City;
+                        user.Country = model.Country;
+                        user.dayOfBirth = model.dayOfBirth;
+                        db.Users.Update(user);
+                        await db.SaveChangesAsync();
+                        await Authenticate(model.Login);
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                        ModelState.AddModelError("error - login isn't unique", "Имя пользователя занято!");
                 }
                 return NotFound();
             }
             return View(model);
         }
+        [HttpGet]
         public async Task<IActionResult> ChangePassword()
         {
             if ( User.Identity.Name != null && await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name) != null)
