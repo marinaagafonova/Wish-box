@@ -49,7 +49,7 @@ namespace Wish_Box.Controllers
                 wish.Attachment = imageData;
             }
             wish.IsTaken = false;
-            wish.User = db.Users.Where(p => p.Login == User.Identity.Name).ToList()[0];
+            wish.User = db.Users.Where(p => p.Login == User.Identity.Name).ToList()[0]; //await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
             wish.UserId = wish.User.Id;
             db.Wishes.Add(wish);
             await db.SaveChangesAsync();
@@ -114,7 +114,7 @@ namespace Wish_Box.Controllers
         public async Task<IActionResult> Delete()
         {
             var id = Convert.ToInt32(RouteData.Values["id"]);
-            if (id >= 0)
+            if (id > 0)
             {
                 Wish wish = new Wish { Id = id };
                 db.Entry(wish).State = EntityState.Deleted;
