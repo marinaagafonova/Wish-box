@@ -442,3 +442,11 @@ a.menu-btn {
     margin-left: 40px;
     margin-right: 20px;
 }
+
+.change-password {
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 20px;
+    width: 1250px;
+    height: 350px;
+}
