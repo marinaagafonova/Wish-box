@@ -22,20 +22,10 @@ namespace Wish_Box.Controllers
         {
             if(User.Identity.Name != null)
             {
-                int id = (await db.Users.FirstOrDefaultAsync(u => u.Login == User.Identity.Name)).Id;
-                var takenWishes = await( db.TakenWishes.Where(w => w.WhoGivesId == id)).ToListAsync();
-                List<int> wishId = new List<int>();
-                foreach(TakenWish t in takenWishes)
-                    wishId.Add(t.WishId);
+                List<int> wishId = await (db.TakenWishes
+                    .Where(w => w.WhoGivesId == (db.Users.FirstOrDefault(u => u.Login == User.Identity.Name)).Id)
+                    .Select(w => w.WishId)).ToListAsync();
                 var wishes = await db.Wishes.Where(w => wishId.Contains(w.Id)).ToListAsync();
-                //wishId.Clear();
-                //foreach (Wish w in wishes)
-                //    wishId.Add(w.UserId);
-                //var users = await db.Users.Where(w => wishId.Contains(w.Id)).ToListAsync();
-                //List<string> names = new List<string>();
-                //foreach (User u in users)
-                //    names.Add(u.Login);
-                //ViewBag.Names = names;
                 return View(wishes);
             }
             return NotFound();
