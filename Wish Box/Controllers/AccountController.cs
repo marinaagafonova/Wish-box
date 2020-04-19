@@ -130,7 +130,7 @@ namespace Wish_Box.Controllers
                         db.Users.Update(user);
                         await db.SaveChangesAsync();
                         await Authenticate(model.Login);
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Show", "UserPage");
                     }
                     else
                         ModelState.AddModelError("error - login isn't unique", "Имя пользователя занято!");
