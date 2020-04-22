@@ -34,7 +34,7 @@ namespace Wish_Box.Controllers
                         InReplyId = c.InReplyId,
                         WishId = c.WishId,
                         AuthorName = currentUser.Login,
-                        Avatar = currentUser.Avatar
+                        //Avatar = currentUser.Avatar
                     });
             }
             ViewBag.list = commentModels;

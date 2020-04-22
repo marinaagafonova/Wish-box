@@ -10,15 +10,19 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.IO;
 using System.Drawing;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Wish_Box.Controllers
 {
     public class AccountController : Controller
     {
         private readonly AppDbContext db;
-        public AccountController(AppDbContext context)
+        IWebHostEnvironment _appEnvironment;
+
+        public AccountController(AppDbContext context, IWebHostEnvironment appEnvironment)
         {
             db = context;
+            _appEnvironment = appEnvironment;
         }
         public IActionResult Index()
         {
@@ -70,14 +74,12 @@ namespace Wish_Box.Controllers
                     };
                     if (model.Avatar != null)
                     {
-                        byte[] imageData = null;
-                        // считываем переданный файл в массив байтов
-                        using (var binaryReader = new BinaryReader(model.Avatar.OpenReadStream()))
+                        string path = "/Files/" + model.Avatar.FileName;
+                        using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                         {
-                            imageData = binaryReader.ReadBytes((int)model.Avatar.Length);
+                            await model.Avatar.CopyToAsync(fileStream);
                         }
-                        // установка массива байтов
-                        new_user.Avatar = imageData;
+                        new_user.Avatar = path;
                     }
                     // добавляем пользователя в бд
                     db.Users.Add(new_user);

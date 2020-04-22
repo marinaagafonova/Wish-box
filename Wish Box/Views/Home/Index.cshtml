@@ -15,7 +15,7 @@
                     <a class="btn-default user-link" asp-controller="UserPage" asp-action="Show" asp-route-id="@wish.User.Login">
                         @if (wish.User.Avatar != null)
                         {
-                            <img class="avatar" style='width:55px; height:55px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(wish.User.Avatar))" />
+                            <img class="avatar" style='width:55px; height:55px;' src="@Url.Content(wish.User.Avatar)" />
                         }
                         else
                         {
@@ -27,12 +27,12 @@
                     <p>добавил(а) новое желание</p>
 
                     <div class="wish-desc">
-                        <label class="description">@wish.Description</label>
+                        <label class="wish-description">@wish.Description</label>
                         <div class="attachment">
 
                             @if (wish.Attachment != null)
                             {
-                                <img src="data:image/jpeg;base64,@(Convert.ToBase64String(wish.Attachment))" />
+                                <img src="@Url.Content(wish.Attachment)" />
                             }
                             else
                             {

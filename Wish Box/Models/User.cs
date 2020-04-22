@@ -13,6 +13,6 @@ namespace Wish_Box.Models
         public DateTime dayOfBirth { get; set; }
         public string Country { get; set; }
         public string City { get; set; }
-        public byte[] Avatar { get; set; }
+        public string Avatar { get; set; }
     }
 }

@@ -8,22 +8,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Wish_Box.Models;
 using System.Drawing;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Wish_Box.Controllers
 {
     public class WishController : Controller
     {
+        IWebHostEnvironment _appEnvironment;
         private readonly AppDbContext db;
 
-        public WishController(AppDbContext context)
+        public WishController(AppDbContext context, IWebHostEnvironment appEnvironment)
         {
             db = context;
+            _appEnvironment = appEnvironment;
         }
-
-        //public async Task<IActionResult> Index()
-        //{
-        //    return View(await db.Wishes.ToListAsync());
-        //}
 
         public IActionResult Create()
         {
@@ -39,21 +37,19 @@ namespace Wish_Box.Controllers
             };
             if (wvm.Attachment != null)
             {
-                byte[] imageData = null;
-                // считываем переданный файл в массив байтов
-                using (var binaryReader = new BinaryReader(wvm.Attachment.OpenReadStream()))
+                string path = "/Files/" + wvm.Attachment.FileName;
+                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                 {
-                    imageData = binaryReader.ReadBytes((int)wvm.Attachment.Length);
+                    await wvm.Attachment.CopyToAsync(fileStream);
                 }
-                // установка массива байтов
-                wish.Attachment = imageData;
+                wish.Attachment = path;
             }
             wish.IsTaken = false;
             wish.User = db.Users.Where(p => p.Login == User.Identity.Name).ToList()[0];
             wish.UserId = wish.User.Id;
             db.Wishes.Add(wish);
             await db.SaveChangesAsync();
-            return Redirect(Request.Headers["Referer"].ToString());
+            return RedirectToAction("OwnList");
         }
 
         public async Task<IActionResult> Edit()
@@ -78,14 +74,12 @@ namespace Wish_Box.Controllers
             Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == wvm.Id);
             if (wvm.Attachment != null)
             {
-                byte[] imageData = null;
-                // считываем переданный файл в массив байтов
-                using (var binaryReader = new BinaryReader(wvm.Attachment.OpenReadStream()))
+                string path = "/Files/" + wvm.Attachment.FileName;
+                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                 {
-                    imageData = binaryReader.ReadBytes((int)wvm.Attachment.Length);
+                    await wvm.Attachment.CopyToAsync(fileStream);
                 }
-                // установка массива байтов
-                wish.Attachment = imageData;
+                wish.Attachment = path;
             }
             if(wvm.Description != null)
             {
