@@ -22,23 +22,42 @@ namespace Wish_Box.Controllers
         {
             if(User.Identity.Name != null)
             {
-                int id = (await db.Users.FirstOrDefaultAsync(u => u.Login == User.Identity.Name)).Id;
-                var takenWishes = await( db.TakenWishes.Where(w => w.WhoGivesId == id)).ToListAsync();
-                List<int> wishId = new List<int>();
-                foreach(TakenWish t in takenWishes)
-                    wishId.Add(t.WishId);
+                List<int> wishId = await (db.TakenWishes
+                    .Where(w => w.WhoGivesId == (db.Users.FirstOrDefault(u => u.Login == User.Identity.Name)).Id)
+                    .Select(w => w.WishId)).ToListAsync();
                 var wishes = await db.Wishes.Where(w => wishId.Contains(w.Id)).ToListAsync();
-                //wishId.Clear();
-                //foreach (Wish w in wishes)
-                //    wishId.Add(w.UserId);
-                //var users = await db.Users.Where(w => wishId.Contains(w.Id)).ToListAsync();
-                //List<string> names = new List<string>();
-                //foreach (User u in users)
-                //    names.Add(u.Login);
-                //ViewBag.Names = names;
                 return View(wishes);
             }
             return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add()
+        {
+            int wishId = Convert.ToInt32(RouteData.Values["id"]);
+            int whoWishesId = (await db.Wishes.FirstOrDefaultAsync(w => w.Id == wishId)).UserId;
+            int whoGivesId = (await db.Users.FirstOrDefaultAsync(u => u.Login == User.Identity.Name)).Id;
+            TakenWish takenWish = new TakenWish()
+            {
+                IsGiven = true,
+                WhoGivesId = whoGivesId,
+                WhoWishesId = whoWishesId,
+                WishId = wishId
+            };
+            db.TakenWishes.Add(takenWish);
+            await db.SaveChangesAsync();
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Remove()
+        {
+            int wishId = Convert.ToInt32(RouteData.Values["id"]);
+            int whoGivesId = (await db.Users.FirstOrDefaultAsync(u => u.Login == User.Identity.Name)).Id;
+            TakenWish takenWish = (await db.TakenWishes.FirstOrDefaultAsync(t => (t.WishId == wishId && t.WhoGivesId == whoGivesId)));
+            db.Entry(takenWish).State = EntityState.Deleted;
+            await db.SaveChangesAsync();
+            return Redirect(Request.Headers["Referer"].ToString());
         }
     }
 }

@@ -12,5 +12,6 @@ namespace Wish_Box.ViewModels
         public User CurrentUser { get; set; }
         public List<Wish> UserWishes { get; set; }
         public List<int> Followers { get; set; }
+        public List<int> TakenWishes { get; set; }
     }
 }
