@@ -99,12 +99,12 @@ namespace Wish_Box.Controllers
                 User user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
                 if (user != null)
                 {
-                    Edit1Model e = new Edit1Model() 
+                    Edit1Model e = new Edit1Model()
                     {
                         City = user.City,
                         Country = user.Country,
                         dayOfBirth = user.dayOfBirth,
-                        Login = user.Login 
+                        Login = user.Login
                     };
                     return View(e);
                 }
@@ -120,7 +120,7 @@ namespace Wish_Box.Controllers
                 string name = User.Identity.Name;
                 if (name != null)
                 {
-                    if (await db.Users.FirstOrDefaultAsync(p => p.Login == model.Login) == null)
+                    if (CheckUserName(name, model.Login).Result)
                     {
                         User user = await db.Users.FirstOrDefaultAsync(p => p.Login == name);
                         user.Login = model.Login;
@@ -130,19 +130,26 @@ namespace Wish_Box.Controllers
                         db.Users.Update(user);
                         await db.SaveChangesAsync();
                         await Authenticate(model.Login);
-                        return RedirectToAction("Show", "UserPage");
+                        return RedirectToAction("Show", "UserPage", new { id = model.Login });
                     }
                     else
                         ModelState.AddModelError("error - login isn't unique", "Имя пользователя занято!");
                 }
-                return NotFound();
+                else return NotFound();
             }
             return View(model);
+        }
+        private async Task<bool> CheckUserName(string oldLogin, string newLogin)
+        {
+            if (oldLogin == newLogin)
+                return true;
+            else
+                return await db.Users.FirstOrDefaultAsync(p => p.Login == newLogin) == null;
         }
         [HttpGet]
         public async Task<IActionResult> ChangePassword()
         {
-            if ( User.Identity.Name != null && await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name) != null)
+            if (User.Identity.Name != null && await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name) != null)
                 return View();
             return NotFound();
         }
