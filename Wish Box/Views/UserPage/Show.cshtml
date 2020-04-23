@@ -42,7 +42,7 @@
             }
             else
             {                
-                <a class="btn btn-ligh unfollow-btn" asp-controller="Followings" asp-action="Delete" asp-route-id="@Model.User.Id" id="unfollow">Отписаться</a>
+                <a class="btn btn-ligh unfollow-btn" asp-controller="Followings" asp-action="Remove" asp-route-id="@Model.User.Id" id="unfollow">Отписаться</a>
                 if (flag)
                 {
                     Model.Followers.Remove(Model.User.Id);
@@ -77,6 +77,7 @@
                                     }
 
                         <label class="wish-desc">@wish.Description</label>
+                        <label class="wish-desc">Рейтинг: @wish.Rating.ToString()</label>
                         <div class="attachment">
                             @if (wish.Attachment != null)
                             {
@@ -90,6 +91,8 @@
                     </div>
                     <div class="row">
                         <a class="btn btn-outline-dark btn-get-comments" asp-controller="Comments" asp-action="GetComments" asp-route-id="@wish.Id" data-id="@(wish.Id)">Комменты</a>
+                        <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingPlus" asp-route-id="@wish.Id">+++</a>
+                        <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingMinus" asp-route-id="@wish.Id">---</a>
                         @if (Model.TakenWishes.Contains(wish.Id))
                         {
                             <form asp-controller="ToGive" asp-action="Remove" asp-route-id="@wish.Id" method="post">

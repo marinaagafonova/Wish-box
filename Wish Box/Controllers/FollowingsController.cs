@@ -35,6 +35,10 @@ namespace Wish_Box.Controllers
             var followed_id = Convert.ToInt32(RouteData.Values["id"]);
             var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
             var follow = await db.Followings.FirstOrDefaultAsync(p => p.UserFId == current_user.Id && p.UserIsFId == followed_id);
+            if (follow == null)
+            {
+                return NotFound();
+            }
             db.Followings.Remove(follow);
             db.SaveChanges();
             return Redirect(Request.Headers["Referer"].ToString());
@@ -59,18 +63,6 @@ namespace Wish_Box.Controllers
             ViewBag.followingUsers = followedUsersList;
 
             return View();
-        }
-
-        public async Task<IActionResult> Delete(int id)
-        {
-            var follow = await db.Followings.FirstOrDefaultAsync(x => x.UserIsFId == id);
-            if (follow == null)
-            {
-                return NotFound();
-            }
-            db.Followings.Remove(follow);
-            db.SaveChanges();
-            return Redirect(Request.Headers["Referer"].ToString());
         }
     }
 }
