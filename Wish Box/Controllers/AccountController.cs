@@ -17,7 +17,7 @@ namespace Wish_Box.Controllers
     public class AccountController : Controller
     {
         private readonly AppDbContext db;
-        IWebHostEnvironment _appEnvironment;
+        private readonly IWebHostEnvironment _appEnvironment;
 
         public AccountController(AppDbContext context, IWebHostEnvironment appEnvironment)
         {

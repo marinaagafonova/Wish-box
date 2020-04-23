@@ -67,5 +67,24 @@ namespace Wish_Box.Controllers
             }
             return RedirectToAction("Account", "Index");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> MarkAsGiven()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                int wishId = Convert.ToInt32(RouteData.Values["id"]);
+                int whoGivesId = (await db.Users.FirstOrDefaultAsync(u => u.Login == User.Identity.Name)).Id;
+                TakenWish takenWish = (await db.TakenWishes.FirstOrDefaultAsync(t => (t.WishId == wishId && t.WhoGivesId == whoGivesId)));
+                db.Entry(takenWish).State = EntityState.Deleted;
+                await db.SaveChangesAsync();
+                Wish wish = new Wish { Id = wishId };
+                db.Entry(wish).State = EntityState.Deleted;
+                await db.SaveChangesAsync();
+                
+                return Redirect(Request.Headers["Referer"].ToString());
+            }
+            return RedirectToAction("Account", "Index");
+        }
     }
 }
