@@ -1,8 +1,9 @@
-﻿@{
-    ViewData["Title"] = "Show";
+﻿
+@model Wish_Box.ViewModels.UserPageViewModel
+@{
+    ViewData["Title"] = Model.User.Login;
     bool flag = false;
 }
-@model Wish_Box.ViewModels.UserPageViewModel
 
 <div class="col-8 col-lg-8">
     <div class="user-info">
@@ -41,7 +42,7 @@
                 }
             }
             else
-            {                
+            {
                 <a class="btn btn-ligh unfollow-btn" asp-controller="Followings" asp-action="Remove" asp-route-id="@Model.User.Id" id="unfollow">Отписаться</a>
                 if (flag)
                 {
@@ -74,7 +75,7 @@
                                 </div>
 
                             </div>
-                                    }
+                        }
 
                         <label class="wish-desc">@wish.Description</label>
                         <label class="wish-desc">Рейтинг: @wish.Rating.ToString()</label>
@@ -92,10 +93,10 @@
                     <div class="row">
                         <a class="btn btn-outline-dark btn-get-comments" asp-controller="Comments" asp-action="GetComments" asp-route-id="@wish.Id" data-id="@(wish.Id)">Комменты</a>
                         @if (Model.User.Login != Model.CurrentUser.Login)
-                        { 
+                        {
                             <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingPlus" asp-route-id="@wish.Id">+++</a>
                             <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingMinus" asp-route-id="@wish.Id">---</a>
-                        
+
                             @if (Model.TakenWishes.Contains(wish.Id))
                             {
                                 <form asp-controller="ToGive" asp-action="Remove" asp-route-id="@wish.Id" method="post">
@@ -112,8 +113,8 @@
                     </div>
                     <div class="comment-section-@(wish.Id)"></div>
                 </div>
-             }
-         }
+            }
+        }
     </div>
 </div>
 
