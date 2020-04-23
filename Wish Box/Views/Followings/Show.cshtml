@@ -11,7 +11,7 @@
                 <a class="btn-link" asp-area="" asp-controller="Userpage" asp-action="Show" asp-route-id="@user.Login">
                     @if (user.Avatar != null)
                     {
-                        <img class="avatar" style='width:70px; height:70px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(user.Avatar))" />
+                        <img class="avatar" style='width:70px; height:70px;' src="@Url.Content(user.Avatar)" />
                     }
                     else
                     {
