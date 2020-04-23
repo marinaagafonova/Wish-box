@@ -25,139 +25,180 @@ namespace Wish_Box.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            return RedirectToAction("Account", "Index");
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(WishViewModel wvm)
         {
-            Wish wish = new Wish
+            if (User.Identity.IsAuthenticated)
             {
-                Description = wvm.Description
-            };
-            if (wvm.Attachment != null)
-            {
-                string path = "/Files/" + wvm.Attachment.FileName;
-                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                Wish wish = new Wish
                 {
-                    await wvm.Attachment.CopyToAsync(fileStream);
+                    Description = wvm.Description
+                };
+                if (wvm.Attachment != null)
+                {
+                    string path = "/Files/" + wvm.Attachment.FileName;
+                    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                    {
+                        await wvm.Attachment.CopyToAsync(fileStream);
+                    }
+                    wish.Attachment = path;
                 }
-                wish.Attachment = path;
+                wish.IsTaken = false;
+                wish.User = db.Users.Where(p => p.Login == User.Identity.Name).ToList()[0]; //await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
+                wish.UserId = wish.User.Id;
+                db.Wishes.Add(wish);
+                await db.SaveChangesAsync();
+                return RedirectToAction("OwnList");
+
             }
-            wish.IsTaken = false;
-            wish.User = db.Users.Where(p => p.Login == User.Identity.Name).ToList()[0]; //await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
-            wish.UserId = wish.User.Id;
-            db.Wishes.Add(wish);
-            await db.SaveChangesAsync();
-            return RedirectToAction("OwnList");
+            return RedirectToAction("Account", "Index");
+
         }
 
         public async Task<IActionResult> Edit()
         {
-            var id = Convert.ToInt32(RouteData.Values["id"]);
-            if (id >= 0)
+            if (User.Identity.IsAuthenticated)
             {
-                Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
-                if (wish != null)
+                var id = Convert.ToInt32(RouteData.Values["id"]);
+                if (id >= 0)
                 {
-                    User user = await db.Users.FirstOrDefaultAsync(p => p.Id == wish.UserId);
-                    if (user != null && user.Login == User.Identity.Name)
-                        return View(wish);
+                    Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
+                    if (wish != null)
+                    {
+                        User user = await db.Users.FirstOrDefaultAsync(p => p.Id == wish.UserId);
+                        if (user != null && user.Login == User.Identity.Name)
+                            return View(wish);
+                    }
                 }
+                return NotFound();
+
             }
-            return NotFound();
+            return RedirectToAction("Account", "Index");
+
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(WishViewModel wvm)
         {
-            Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == wvm.Id);
-            if (wvm.Attachment != null)
+            if (User.Identity.IsAuthenticated)
             {
-                string path = "/Files/" + wvm.Attachment.FileName;
-                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == wvm.Id);
+                if (wvm.Attachment != null)
                 {
-                    await wvm.Attachment.CopyToAsync(fileStream);
+                    string path = "/Files/" + wvm.Attachment.FileName;
+                    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                    {
+                        await wvm.Attachment.CopyToAsync(fileStream);
+                    }
+                    if (System.IO.File.Exists(_appEnvironment.WebRootPath + wish.Attachment))
+                    {
+                        System.IO.File.Delete(_appEnvironment.WebRootPath + wish.Attachment);
+                    }
+                    wish.Attachment = path;
                 }
-                if (System.IO.File.Exists(_appEnvironment.WebRootPath + wish.Attachment))
+                if (wvm.Description != null)
                 {
-                    System.IO.File.Delete(_appEnvironment.WebRootPath + wish.Attachment);
+                    wish.Description = wvm.Description;
                 }
-                wish.Attachment = path;
+                db.Wishes.Update(wish);
+                await db.SaveChangesAsync();
+                return RedirectToAction("OwnList");
+
             }
-            if(wvm.Description != null)
-            {
-                wish.Description = wvm.Description;
-            }
-            db.Wishes.Update(wish);
-            await db.SaveChangesAsync();
-            return RedirectToAction("OwnList");
+            return RedirectToAction("Account", "Index");
+
         }
 
         [HttpGet]
         [ActionName("Delete")]
         public async Task<IActionResult> ConfirmDelete()
         {
-            var id = Convert.ToInt32(RouteData.Values["id"]);
-            if (id >= 0)
+            if (User.Identity.IsAuthenticated)
             {
-                Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
-                if (wish != null)
-                    return PartialView(wish);
+                var id = Convert.ToInt32(RouteData.Values["id"]);
+                if (id >= 0)
+                {
+                    Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
+                    if (wish != null)
+                        return PartialView(wish);
+                }
+                return NotFound();
+
             }
-            return NotFound();
+            return RedirectToAction("Account", "Index");
+
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete()
         {
-            var id = Convert.ToInt32(RouteData.Values["id"]);
-            if (id > 0)
+            if (User.Identity.IsAuthenticated)
             {
-                Wish wish = new Wish { Id = id };
-                db.Entry(wish).State = EntityState.Deleted;
-                await db.SaveChangesAsync();
-                return Redirect(Request.Headers["Referer"].ToString());
+                var id = Convert.ToInt32(RouteData.Values["id"]);
+                if (id > 0)
+                {
+                    Wish wish = new Wish { Id = id };
+                    db.Entry(wish).State = EntityState.Deleted;
+                    await db.SaveChangesAsync();
+                    return Redirect(Request.Headers["Referer"].ToString());
+                }
+                return NotFound();
+
             }
-            return NotFound();
+            return RedirectToAction("Account", "Index");
+
         }
 
         [HttpGet]
         public async Task<IActionResult> OwnList()
         {
-            if(User.Identity.Name != null)
+
+            if (User.Identity.IsAuthenticated)
             {
                 var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
                 var wishes = await db.Wishes.Where(p => p.UserId == current_user.Id).ToListAsync();
                 return View(wishes);
             }
-            return NotFound();
+            return RedirectToAction("Account", "Index");
         }
 
         public async Task<IActionResult> Rating(int id)
         {
-            var flag = Convert.ToBoolean(RouteData.Values["id"]);
-            var currentUser = await db.Users.FirstOrDefaultAsync(x => x.Login == User.Identity.Name);
-            var currentRate = await db.WishRatings.FirstOrDefaultAsync(x => x.UserId == currentUser.Id && x.WishId == id);
-            if (currentRate != null && currentRate.Rate == flag)
+            if (User.Identity.IsAuthenticated)
             {
-                
-            }
-            else
-            {
-                if (currentRate.Rate != flag)
+                var flag = Convert.ToBoolean(RouteData.Values["id"]);
+                var currentUser = await db.Users.FirstOrDefaultAsync(x => x.Login == User.Identity.Name);
+                var currentRate = await db.WishRatings.FirstOrDefaultAsync(x => x.UserId == currentUser.Id && x.WishId == id);
+                if (currentRate != null && currentRate.Rate == flag)
                 {
-                    db.WishRatings.Remove(currentRate);
+
                 }
-                db.WishRatings.Add(new WishRating
+                else
                 {
-                    UserId = currentUser.Id,
-                    WishId = id,
-                    Rate = flag
-                });
-                db.SaveChanges();
+                    if (currentRate.Rate != flag)
+                    {
+                        db.WishRatings.Remove(currentRate);
+                    }
+                    db.WishRatings.Add(new WishRating
+                    {
+                        UserId = currentUser.Id,
+                        WishId = id,
+                        Rate = flag
+                    });
+                    db.SaveChanges();
+                }
+                return Redirect(Request.Headers["Referer"].ToString());
+
             }
-            return Redirect(Request.Headers["Referer"].ToString());
+            return RedirectToAction("Account", "Index");
+
         }
     }
 }
