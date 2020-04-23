@@ -64,11 +64,14 @@ namespace Wish_Box.Controllers
                         followedUsersList.Add(new_following);
                     }
                 }
-                ViewBag.followingUsers = followedUsersList;
+                FollowingViewModel fvm = new FollowingViewModel()
+                {
+                    followedUsersList = followedUsersList
+                };
 
-                return View();
+            return View(fvm);
             }
-            return RedirectToAction("Account", "Index");
+            return RedirectToAction("Index", "Account");
         }
     }
 }
