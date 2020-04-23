@@ -40,7 +40,7 @@
                                 else
                                 {
                                     <!-- Данила "to do" - action -->
-                                    <a class="btn btn-ligh unfollow-btn" asp-controller="Followings" asp-action="Delete" asp-route-id="@user.Id" id="unfollow">Отписаться</a>
+                                    <a class="btn btn-ligh unfollow-btn" asp-controller="Followings" asp-action="Remove" asp-route-id="@user.Id" id="unfollow">Отписаться</a>
                                     if(flag)
                                         Model.Following_ids.Remove(user.Id);
                                 }

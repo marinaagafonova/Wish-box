@@ -14,5 +14,6 @@ namespace Wish_Box.Models
         public User User { get; set; }
         public string Attachment { get; set; }
         public int Rating { get; set; }
+        public bool IsVisible { get; set; } = true;
     }
 }

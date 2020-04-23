@@ -70,17 +70,5 @@ namespace Wish_Box.Controllers
             }
             return RedirectToAction("Account", "Index");
         }
-
-        public async Task<IActionResult> Delete(int id)
-        {
-            var follow = await db.Followings.FirstOrDefaultAsync(x => x.UserIsFId == id);
-            if (follow == null)
-            {
-                return NotFound();
-            }
-            db.Followings.Remove(follow);
-            db.SaveChanges();
-            return Redirect(Request.Headers["Referer"].ToString());
-        }
     }
 }
