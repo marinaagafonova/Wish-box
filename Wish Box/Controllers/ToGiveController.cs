@@ -26,6 +26,10 @@ namespace Wish_Box.Controllers
                     .Where(w => w.WhoGivesId == (db.Users.FirstOrDefault(u => u.Login == User.Identity.Name)).Id)
                     .Select(w => w.WishId)).ToListAsync();
                 var wishes = await db.Wishes.Where(w => wishId.Contains(w.Id)).ToListAsync();
+                foreach (var wish in wishes)
+                {
+                    wish.User = db.Users.FirstOrDefault(p => p.Id == wish.UserId);
+                }
                 return View(wishes);
             }
             return RedirectToAction("Account", "Index");
