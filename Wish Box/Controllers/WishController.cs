@@ -191,7 +191,7 @@ namespace Wish_Box.Controllers
                     {
                         WishId = wish_id,
                         UserId = currentUser.Id,
-                        Rate = false
+                        Rate = true
                     });
                 }
                 else if (currentRate == null)
@@ -206,7 +206,7 @@ namespace Wish_Box.Controllers
                         Rate = true
                     });
                 }
-                if (currentWish.Rating >= 5)
+                if (currentWish.Rating > -5)
                 {
                     currentWish.IsVisible = true;
                     db.Wishes.Update(currentWish);
@@ -239,7 +239,7 @@ namespace Wish_Box.Controllers
                     {
                         WishId = wish_id,
                         UserId = currentUser.Id,
-                        Rate = true
+                        Rate = false
                     });
                 }
                 else if (currentRate == null)
