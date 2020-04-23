@@ -35,17 +35,18 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Account", "Index");
         }
 
-        public async Task<IActionResult> Remove() //should be [httpPost]
+        public async Task<IActionResult> Remove() //should be [HttpPost]
         {
             var followed_id = Convert.ToInt32(RouteData.Values["id"]);
             var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
-            var follow = await db.Followings.FirstOrDefaultAsync(p => p.UserFId == current_user.Id && p.UserIsFId == followed_id);
-            if (follow == null)
+            if (current_user!= null)
             {
-                return NotFound();
+                db.Entry(await db.Followings.FirstOrDefaultAsync(p => p.UserFId == current_user.Id && p.UserIsFId == followed_id)).State = EntityState.Deleted;
+                await db.SaveChangesAsync();
+                return Redirect(Request.Headers["Referer"].ToString());
             }
-            db.Followings.Remove(follow);
-            db.SaveChanges();
+            
+            return RedirectToAction("Account", "Index");
         }
 
         [HttpGet]
