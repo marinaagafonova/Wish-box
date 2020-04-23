@@ -106,7 +106,8 @@ namespace Wish_Box.Controllers
                         City = user.City,
                         Country = user.Country,
                         dayOfBirth = user.dayOfBirth,
-                        Login = user.Login
+                        Login = user.Login,
+                        Avatar = user.Avatar
                     };
                     return View(e);
                 }
@@ -115,7 +116,7 @@ namespace Wish_Box.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Edit1Model model)
+        public async Task<IActionResult> Edit(Edit2Model model)
         {
             if (ModelState.IsValid)
             {
@@ -129,6 +130,19 @@ namespace Wish_Box.Controllers
                         user.City = model.City;
                         user.Country = model.Country;
                         user.dayOfBirth = model.dayOfBirth;
+                        if (model.Avatar != null)
+                        {
+                            string path = "/Files/" + model.Avatar.FileName;
+                            using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                            {
+                                await model.Avatar.CopyToAsync(fileStream);
+                            }
+                            if (System.IO.File.Exists(_appEnvironment.WebRootPath + user.Avatar))
+                            {
+                                System.IO.File.Delete(_appEnvironment.WebRootPath + user.Avatar);
+                            }
+                            user.Avatar = path;
+                        }
                         db.Users.Update(user);
                         await db.SaveChangesAsync();
                         await Authenticate(model.Login);

@@ -41,20 +41,21 @@ namespace Wish_Box.Controllers
         }
 
         [HttpGet]
-        public IActionResult Show()
+        public async Task<IActionResult> Show()
         {
-            var CurrentUser = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
+            var CurrentUser = await db.Users.FirstOrDefaultAsync(x => x.Login == User.Identity.Name);
 
             List<User> followedUsersList = new List<User>();
 
-            foreach (var followed in db.Followings)
+            var followings = await db.Followings.Where(p => p.UserFId == CurrentUser.Id).ToListAsync();
+            if(followings != null)
             {
-                if (followed.UserFId == CurrentUser.Id)
+                foreach (var followed in followings)
                 {
-                    followedUsersList.Add(db.Users.FirstOrDefault(x => x.Id == followed.UserIsFId));
+                    var new_following = await db.Users.FirstOrDefaultAsync(x => x.Id == followed.UserIsFId);
+                    followedUsersList.Add(new_following);
                 }
             }
-
             ViewBag.followingUsers = followedUsersList;
 
             return View();
