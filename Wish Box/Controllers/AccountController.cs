@@ -140,7 +140,6 @@ namespace Wish_Box.Controllers
                             if (System.IO.File.Exists(_appEnvironment.WebRootPath + user.Avatar))
                             {
                                 System.IO.File.Delete(_appEnvironment.WebRootPath + user.Avatar);
-                                //System.IO.File.Delete("~" + user.Avatar);
                             }
                             user.Avatar = path;
                         }

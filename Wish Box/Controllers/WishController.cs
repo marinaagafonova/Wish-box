@@ -79,6 +79,10 @@ namespace Wish_Box.Controllers
                 {
                     await wvm.Attachment.CopyToAsync(fileStream);
                 }
+                if (System.IO.File.Exists(_appEnvironment.WebRootPath + wish.Attachment))
+                {
+                    System.IO.File.Delete(_appEnvironment.WebRootPath + wish.Attachment);
+                }
                 wish.Attachment = path;
             }
             if(wvm.Description != null)
