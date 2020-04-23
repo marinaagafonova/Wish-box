@@ -48,7 +48,7 @@ namespace Wish_Box.Controllers
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
-            return PartialView(model);
+            return RedirectToAction("Index", "Account");
         }
         [HttpGet]
         public IActionResult Register()
@@ -92,7 +92,7 @@ namespace Wish_Box.Controllers
                 else
                     ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
-            return PartialView(model);
+            return RedirectToAction("Index", "Account");
         }
         public async Task<IActionResult> Edit()
         {
