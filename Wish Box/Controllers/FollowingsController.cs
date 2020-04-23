@@ -21,16 +21,21 @@ namespace Wish_Box.Controllers
         {
             var followed_id = Convert.ToInt32(RouteData.Values["id"]);
             var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
-            db.Followings.Add(new Following
+            if (User.Identity.Name != null)
             {
-                UserFId = current_user.Id,
-                UserIsFId = followed_id
-            });
-            db.SaveChanges();
-            return Redirect(Request.Headers["Referer"].ToString());
+
+                db.Followings.Add(new Following
+                {
+                    UserFId = current_user.Id,
+                    UserIsFId = followed_id
+                });
+                await db.SaveChangesAsync();
+                return Redirect(Request.Headers["Referer"].ToString());
+            }
+            return RedirectToAction("Account", "Index");
         }
 
-        public async Task<IActionResult> Remove()
+        public async Task<IActionResult> Remove() //should be [httpPost]
         {
             var followed_id = Convert.ToInt32(RouteData.Values["id"]);
             var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
@@ -41,28 +46,29 @@ namespace Wish_Box.Controllers
             }
             db.Followings.Remove(follow);
             db.SaveChanges();
-            return Redirect(Request.Headers["Referer"].ToString());
         }
 
         [HttpGet]
         public async Task<IActionResult> Show()
         {
-            var CurrentUser = await db.Users.FirstOrDefaultAsync(x => x.Login == User.Identity.Name);
-
-            List<User> followedUsersList = new List<User>();
-
-            var followings = await db.Followings.Where(p => p.UserFId == CurrentUser.Id).ToListAsync();
-            if(followings != null)
+            if (User.Identity.IsAuthenticated)
             {
-                foreach (var followed in followings)
+                var CurrentUser = await db.Users.FirstOrDefaultAsync(x => x.Login == User.Identity.Name);
+                List<User> followedUsersList = new List<User>();
+                var followings = await db.Followings.Where(p => p.UserFId == CurrentUser.Id).ToListAsync();
+                if (followings != null)
                 {
-                    var new_following = await db.Users.FirstOrDefaultAsync(x => x.Id == followed.UserIsFId);
-                    followedUsersList.Add(new_following);
+                    foreach (var followed in followings)
+                    {
+                        var new_following = await db.Users.FirstOrDefaultAsync(x => x.Id == followed.UserIsFId);
+                        followedUsersList.Add(new_following);
+                    }
                 }
-            }
-            ViewBag.followingUsers = followedUsersList;
+                ViewBag.followingUsers = followedUsersList;
 
-            return View();
+                return View();
+            }
+            return RedirectToAction("Account", "Index");
         }
     }
 }
