@@ -1,11 +1,12 @@
-﻿@{
+@{
     ViewData["Title"] = "Show";
 }
+@model Wish_Box.ViewModels.FollowingViewModel
 
 <div class="col-8 col-lg-8">
     <div class="following">
         <h4 style="text-align: center; font-weight: bold;">Мои подписки</h4>
-        @foreach (var user in ViewBag.followingUsers)
+        @foreach (var user in Model.followedUsersList)
         {
             <div class="user-block-search">
                 <a class="btn-link" asp-area="" asp-controller="Userpage" asp-action="Show" asp-route-id="@user.Login">
@@ -24,5 +25,4 @@
         }
     </div>
 </div>
-
 
