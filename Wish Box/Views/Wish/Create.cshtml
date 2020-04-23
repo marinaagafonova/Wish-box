@@ -3,21 +3,27 @@
     ViewData["Title"] = "Create";
 }
 
-    <div class="col-sm-8 col-lg-8 col-md-8">
-        <h2 style="color:white; text-align: center; font-weight: bold; margin-bottom: 20px;">Добавить желание</h2>
-        <div class="add-wish-block">
-            <form asp-action="create" asp-controller="Wish" method="post" enctype="multipart/form-data" onsubmit="ym(62193592, 'reachGoal', 'create-wish'); return true;">
+<div class="col-sm-8 col-lg-8 col-md-8">
+    <h2 style="color:white; text-align: center; font-weight: bold; margin-bottom: 20px;">Добавить желание</h2>
+    <div class="add-wish-block">
+        <form asp-action="create" asp-controller="Wish" method="post" enctype="multipart/form-data" onsubmit="ym(62193592, 'reachGoal', 'create-wish'); return true;">
 
-                <div class="form-group">
-                    <label asp-for="Description" class="control-label">Описание:</label>
-                    <input type="text" asp-for="Description" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <input name="Attachment" type="file" class="form-control" /> 
-                </div>
-                <div class="form-group">
-                    <input style="margin-top: 10px;" class="btn btn-outline-success" type="submit" value="Cохранить" />
-                </div>
-            </form>
-        </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Описание:</label>
+                <input type="text" asp-for="Description" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input name="Attachment" type="file" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input style="margin-top: 10px;" class="btn btn-outline-success" type="submit" value="Cохранить" id="create_wish"/>
+            </div>
+        </form>
     </div>
+</div>
+
+<script>
+    create_wish.onclick = function (event) {
+        ym(62193592, 'reachGoal', 'create_wish');
+    }
+</script>
