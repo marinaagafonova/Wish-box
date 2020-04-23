@@ -68,7 +68,7 @@ namespace Wish_Box.Controllers
             var username = db.Users.FirstOrDefault(u => u.Id ==
                             db.Wishes.FirstOrDefault(w => w.Id == 
                              db.Comments.FirstOrDefault(c => c.Id == commentId).WishId).UserId).Login;
-            if (commentId > 0)
+            if (commentId > 0 && User.Identity.Name != null)
             {
                 Comment c = new Comment { Id = commentId };
                 db.Entry(c).State = EntityState.Deleted;
