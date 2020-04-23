@@ -91,7 +91,7 @@ namespace Wish_Box.Controllers
             }
             db.Wishes.Update(wish);
             await db.SaveChangesAsync();
-            return Redirect(Request.Headers["Referer"].ToString());
+            return RedirectToAction("OwnList");
         }
 
         [HttpGet]
