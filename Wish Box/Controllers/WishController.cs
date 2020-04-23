@@ -145,6 +145,11 @@ namespace Wish_Box.Controllers
                 if (id > 0)
                 {
                     Wish wish = new Wish { Id = id };
+                    var comments = await db.Comments.Where(p => p.WishId == id).ToListAsync();
+                    foreach(var comment in comments)
+                    {
+                        db.Entry(comment).State = EntityState.Deleted;
+                    }
                     db.Entry(wish).State = EntityState.Deleted;
                     await db.SaveChangesAsync();
                     return Redirect(Request.Headers["Referer"].ToString());

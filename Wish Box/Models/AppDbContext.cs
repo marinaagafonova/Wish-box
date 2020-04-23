@@ -39,6 +39,11 @@ namespace Wish_Box.Models
             .WithMany()
             .HasForeignKey("InReplyId")
             .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Wish>()
+                .HasOne(p => p.User)
+                .WithMany()
+                .HasForeignKey("UserId")
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
