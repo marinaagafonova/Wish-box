@@ -171,90 +171,98 @@ namespace Wish_Box.Controllers
 
         public async Task<IActionResult> RatingPlus()
         {
-            var wish_id = Convert.ToInt32(RouteData.Values["id"]);
-            var currentUser = await db.Users.FirstOrDefaultAsync(x => x.Login == User.Identity.Name);
-            var currentWish = await db.Wishes.FirstOrDefaultAsync(x => x.Id == wish_id);
-            var currentRate = await db.WishRatings.FirstOrDefaultAsync(x => x.UserId == currentUser.Id && x.WishId == wish_id);
-            if (currentRate != null && currentRate.Rate)
+            if (User.Identity.IsAuthenticated)
             {
-
-            }
-            else if (currentRate != null && !currentRate.Rate)
-            {
-                currentWish.Rating += 2;
-                db.Wishes.Update(currentWish);
-
-                db.WishRatings.Remove(currentRate);
-                db.WishRatings.Add(new WishRating()
+                var wish_id = Convert.ToInt32(RouteData.Values["id"]);
+                var currentUser = await db.Users.FirstOrDefaultAsync(x => x.Login == User.Identity.Name);
+                var currentWish = await db.Wishes.FirstOrDefaultAsync(x => x.Id == wish_id);
+                var currentRate = await db.WishRatings.FirstOrDefaultAsync(x => x.UserId == currentUser.Id && x.WishId == wish_id);
+                if (currentRate != null && currentRate.Rate)
                 {
-                    WishId = wish_id,
-                    UserId = currentUser.Id,
-                    Rate = false
-                });
-            }
-            else if (currentRate == null)
-            {
-                currentWish.Rating += 1;
-                db.Wishes.Update(currentWish);
 
-                db.WishRatings.Add(new WishRating()
+                }
+                else if (currentRate != null && !currentRate.Rate)
                 {
-                    WishId = wish_id,
-                    UserId = currentUser.Id,
-                    Rate = true
-                });
+                    currentWish.Rating += 2;
+                    db.Wishes.Update(currentWish);
+
+                    db.WishRatings.Remove(currentRate);
+                    db.WishRatings.Add(new WishRating()
+                    {
+                        WishId = wish_id,
+                        UserId = currentUser.Id,
+                        Rate = false
+                    });
+                }
+                else if (currentRate == null)
+                {
+                    currentWish.Rating += 1;
+                    db.Wishes.Update(currentWish);
+
+                    db.WishRatings.Add(new WishRating()
+                    {
+                        WishId = wish_id,
+                        UserId = currentUser.Id,
+                        Rate = true
+                    });
+                }
+                if (currentWish.Rating >= 5)
+                {
+                    currentWish.IsVisible = true;
+                    db.Wishes.Update(currentWish);
+                }
+                await db.SaveChangesAsync();
+                return Redirect(Request.Headers["Referer"].ToString());
             }
-            if (currentWish.Rating >= 5)
-            {
-                currentWish.IsVisible = true;
-                db.Wishes.Update(currentWish);
-            }
-            await db.SaveChangesAsync();
-            return Redirect(Request.Headers["Referer"].ToString());
+            return RedirectToAction("Account", "Index");
         }
 
         public async Task<IActionResult> RatingMinus()
         {
-            var wish_id = Convert.ToInt32(RouteData.Values["id"]);
-            var currentUser = await db.Users.FirstOrDefaultAsync(x => x.Login == User.Identity.Name);
-            var currentWish = await db.Wishes.FirstOrDefaultAsync(x => x.Id == wish_id);
-            var currentRate = await db.WishRatings.FirstOrDefaultAsync(x => x.UserId == currentUser.Id && x.WishId == wish_id);
-            if (currentRate != null && !currentRate.Rate)
+            if (User.Identity.IsAuthenticated)
             {
-
-            }
-            else if (currentRate != null && currentRate.Rate)
-            {
-                currentWish.Rating -= 2;
-                db.Wishes.Update(currentWish);
-
-                db.WishRatings.Remove(currentRate);
-                db.WishRatings.Add(new WishRating()
+                var wish_id = Convert.ToInt32(RouteData.Values["id"]);
+                var currentUser = await db.Users.FirstOrDefaultAsync(x => x.Login == User.Identity.Name);
+                var currentWish = await db.Wishes.FirstOrDefaultAsync(x => x.Id == wish_id);
+                var currentRate = await db.WishRatings.FirstOrDefaultAsync(x => x.UserId == currentUser.Id && x.WishId == wish_id);
+                if (currentRate != null && !currentRate.Rate)
                 {
-                    WishId = wish_id,
-                    UserId = currentUser.Id,
-                    Rate = true
-                });
-            }
-            else if (currentRate == null)
-            {
-                currentWish.Rating -= 1;
-                db.Wishes.Update(currentWish);
 
-                db.WishRatings.Add(new WishRating()
+                }
+                else if (currentRate != null && currentRate.Rate)
                 {
-                    WishId = wish_id,
-                    UserId = currentUser.Id,
-                    Rate = false
-                });
+                    currentWish.Rating -= 2;
+                    db.Wishes.Update(currentWish);
+
+                    db.WishRatings.Remove(currentRate);
+                    db.WishRatings.Add(new WishRating()
+                    {
+                        WishId = wish_id,
+                        UserId = currentUser.Id,
+                        Rate = true
+                    });
+                }
+                else if (currentRate == null)
+                {
+                    currentWish.Rating -= 1;
+                    db.Wishes.Update(currentWish);
+
+                    db.WishRatings.Add(new WishRating()
+                    {
+                        WishId = wish_id,
+                        UserId = currentUser.Id,
+                        Rate = false
+                    });
+                }
+                if (currentWish.Rating <= -5)
+                {
+                    currentWish.IsVisible = false;
+                    db.Wishes.Update(currentWish);
+                }
+                await db.SaveChangesAsync();
+                return Redirect(Request.Headers["Referer"].ToString());
             }
-            if (currentWish.Rating <= -5)
-            {
-                currentWish.IsVisible = false;
-                db.Wishes.Update(currentWish);
-            }
-            await db.SaveChangesAsync();
-            return Redirect(Request.Headers["Referer"].ToString());
+            return RedirectToAction("Account", "Index");
         }
     }
 }
