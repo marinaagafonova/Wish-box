@@ -22,6 +22,6 @@ namespace Wish_Box.ViewModels
         [Required(ErrorMessage = "Не указан город")]
         public string City { get; set; }
         
-        public byte[] Avatar { get; set; }
+        public string Avatar { get; set; }
     }
 }
