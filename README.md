@@ -20,6 +20,8 @@
 
 **Опубликованное приложение:** https://wish-box.azurewebsites.net/
 
+**Отчёт по второй аттестации:** https://github.com/marinaagafonova/Wish-box/blob/master/report_on_2_att.pdf
+
 # Участники проекта:
 ### Группа 4.2:
 * **Агафонова Марина:** agafonova_marina@yahoo.com
