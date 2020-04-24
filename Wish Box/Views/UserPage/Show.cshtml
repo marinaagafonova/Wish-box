@@ -94,8 +94,8 @@
                         <a class="btn btn-outline-dark btn-get-comments" asp-controller="Comments" asp-action="GetComments" asp-route-id="@wish.Id" data-id="@(wish.Id)">Комменты</a>
                         @if (Model.User.Login != Model.CurrentUser.Login)
                         {
-                            <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingPlus" asp-route-id="@wish.Id">+++</a>
-                            <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingMinus" asp-route-id="@wish.Id">---</a>
+                            <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingPlus" asp-route-id="@wish.Id" id="rate_of_wish_plus">+++</a>
+                            <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingMinus" asp-route-id="@wish.Id" id="rate_of_wish_minus">---</a>
 
                             @if (Model.TakenWishes.Contains(wish.Id))
                             {
