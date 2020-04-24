@@ -32,7 +32,7 @@ namespace Wish_Box.Controllers
                 }
                 return View(wishes);
             }
-            return RedirectToAction("Account", "Index");
+            return RedirectToAction("Index", "Account");
         }
 
         [HttpPost]
@@ -54,7 +54,7 @@ namespace Wish_Box.Controllers
                 await db.SaveChangesAsync();
                 return Redirect(Request.Headers["Referer"].ToString());
             }
-            return RedirectToAction("Account", "Index");
+            return RedirectToAction("Index", "Account");
         }
 
         [HttpPost]
@@ -69,7 +69,7 @@ namespace Wish_Box.Controllers
                 await db.SaveChangesAsync();
                 return Redirect(Request.Headers["Referer"].ToString());
             }
-            return RedirectToAction("Account", "Index");
+            return RedirectToAction("Index", "Account");
         }
 
         [HttpPost]

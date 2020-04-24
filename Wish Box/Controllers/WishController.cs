@@ -29,7 +29,7 @@ namespace Wish_Box.Controllers
             {
                 return View();
             }
-            return RedirectToAction("Account", "Index");
+            return RedirectToAction("Index", "Account");
         }
 
         [HttpPost]
@@ -56,10 +56,8 @@ namespace Wish_Box.Controllers
                 db.Wishes.Add(wish);
                 await db.SaveChangesAsync();
                 return RedirectToAction("OwnList");
-
             }
-            return RedirectToAction("Account", "Index");
-
+            return RedirectToAction("Index", "Account");
         }
 
         public async Task<IActionResult> Edit()
@@ -80,8 +78,7 @@ namespace Wish_Box.Controllers
                 return NotFound();
 
             }
-            return RedirectToAction("Account", "Index");
-
+            return RedirectToAction("Index", "Account");
         }
 
         [HttpPost]
@@ -112,8 +109,7 @@ namespace Wish_Box.Controllers
                 return RedirectToAction("OwnList");
 
             }
-            return RedirectToAction("Account", "Index");
-
+            return RedirectToAction("Index", "Account");
         }
 
         [HttpGet]
@@ -132,8 +128,7 @@ namespace Wish_Box.Controllers
                 return NotFound();
 
             }
-            return RedirectToAction("Account", "Index");
-
+            return RedirectToAction("Index", "Account");
         }
 
         [HttpPost]
@@ -157,8 +152,7 @@ namespace Wish_Box.Controllers
                 return NotFound();
 
             }
-            return RedirectToAction("Account", "Index");
-
+            return RedirectToAction("Index", "Account");
         }
 
         [HttpGet]
@@ -171,7 +165,7 @@ namespace Wish_Box.Controllers
                 var wishes = await db.Wishes.Where(p => p.UserId == current_user.Id).ToListAsync();
                 return View(wishes);
             }
-            return RedirectToAction("Account", "Index");
+            return RedirectToAction("Index", "Account");
         }
 
         public async Task<IActionResult> RatingPlus()
@@ -219,7 +213,7 @@ namespace Wish_Box.Controllers
                 await db.SaveChangesAsync();
                 return Redirect(Request.Headers["Referer"].ToString());
             }
-            return RedirectToAction("Account", "Index");
+            return RedirectToAction("Index", "Account");
         }
 
         public async Task<IActionResult> RatingMinus()
@@ -267,7 +261,7 @@ namespace Wish_Box.Controllers
                 await db.SaveChangesAsync();
                 return Redirect(Request.Headers["Referer"].ToString());
             }
-            return RedirectToAction("Account", "Index");
+            return RedirectToAction("Index", "Account");
         }
     }
 }

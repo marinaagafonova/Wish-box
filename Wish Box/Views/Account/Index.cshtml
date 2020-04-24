@@ -21,7 +21,7 @@
                 <a class="btn btn-signup  btn-lg" asp-area="" asp-controller="Account" asp-action="Register" id="register">Зарегистрироваться</a>
             </li>
             <li>
-                <a class="btn btn-light  btn-lg" asp-area="" asp-controller="Account" asp-action="Login">Войти</a>
+                <a class="btn btn-light  btn-lg" asp-area="" asp-controller="Account" asp-action="Login" id="login">Войти</a>
             </li>
         </ul>
     </div>
@@ -55,6 +55,12 @@
     <script>
         register.onclick = function (event) {
             ym(62193592, 'reachGoal', 'btn_register');
+        }
+    </script>
+
+    <script>
+        login.onclick = function (event) {
+            ym(62193592, 'reachGoal', 'btn_login');
         }
     </script>
 }
