@@ -1,0 +1,91 @@
+﻿@model Wish_Box.Models.UserListViewModel
+@{
+    ViewData["Title"] = "Поиск";
+    bool flag = false;
+}
+
+
+
+<div class="col-sm-8 col-lg-8 col-md-8">
+    <div class="row">
+        <div class="col-9 col-sm-8">
+            <div class="search-result">
+                <h4 style="text-align: center; font-weight: bold;">Результат поиска</h4>
+                @if (Model != null)
+                {
+                    @foreach (var user in Model.Users)
+                    {
+                        flag = false;
+                        <div class="user-block-search">
+                            <a class="btn-default user-link" asp-controller="UserPage" asp-action="Show" asp-route-id="@user.Login">
+                                @if (user.Avatar != null)
+                                {
+                                    <img class="avatar" style='width:70px; height:70px;' src="@Url.Content(user.Avatar)" />
+                                }
+                                else
+                                {
+                                    <img class="avatar" src="~/Content/default_profile.jpg" asp-append-version="true" width="70"
+                                         height="70" alt="My profile">
+                                }
+                                @user.Login
+                            </a>
+                            @if (user.Login != User.Identity.Name)
+                            {
+                                @if (!Model.Following_ids.Contains(user.Id))
+                                {
+                                    <a class="follow-btn" asp-controller="Followings" asp-action="Add" asp-route-id="@user.Id" id="follow">Подписаться</a>
+                                    if(flag)
+                                        Model.Following_ids.Add(user.Id);
+                                }
+                                else
+                                {
+                                    <!-- Данила "to do" - action -->
+                                    <a class="btn btn-ligh unfollow-btn" asp-controller="Followings" asp-action="Remove" asp-route-id="@user.Id" id="unfollow">Отписаться</a>
+                                    if(flag)
+                                        Model.Following_ids.Remove(user.Id);
+                                }
+
+                            }
+
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        <div class="col-3 col-sm-4">
+            <div class="search-filter">
+                <form method="get" asp-controller="Home" asp-action="Filter">
+                    <div class="form-inline form-group">
+                        <div>
+                            <label class="control-label">Имя: </label>
+                            <input style="margin-right:7px;" name="name" class="form-control" value="@ViewBag.keyword" />
+                        </div>
+                        <div>
+                            <label class="control-label">Страна: </label>
+                            <select style="margin-right:7px;" name="country" asp-items="Model.Countries" class="form-control"></select>
+                        </div>
+                        <div>
+                            <label class="control-label">Город: </label>
+                            <select style="margin-right:7px;" name="city" asp-items="Model.Cities" class="form-control"></select>
+                        </div>
+                        <div>
+                            <input type="submit" value="Искать" class="btn btn-info" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    follow.onclick = function (event) {
+        console.log("follow button was pressed");
+      @{flag = true;}
+    }
+    unfollow.onclick = function (event) {
+        console.log("unfollow button was pressed");
+      @{flag = true;}
+  }
+</script>

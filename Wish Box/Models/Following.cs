@@ -9,9 +9,9 @@ namespace Wish_Box.Models
     {
         public int Id { get; set; }
 
-        public int UserFId { get; set; }
+        public int UserFId { get; set; } //кто подписан на пользователь
     //    public User UserF { get; set; }
-        public int UserIsFId { get; set; }
+        public int UserIsFId { get; set; } //на кого подписан пользователь
     //    public User UserIsF { get; set; }
     }
 }

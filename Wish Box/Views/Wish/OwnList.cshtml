@@ -1,0 +1,82 @@
+﻿@model List<Wish_Box.Models.Wish>
+@{
+    ViewData["Title"] = "Мои желания";
+}
+
+<div class="col-sm-8 col-lg-8 col-md-8">
+    <h2 style="color:white; text-align: center; font-weight: bold; margin-bottom: 20px;">Мои желания</h2>
+    <div id="modDialog" class="modal fade">
+        <div id="dialogContent" class="modal-dialog"></div>
+    </div>
+    <div class="row">
+        @foreach (var wish in Model)
+        {
+            <div class="col-6">
+                <div class="wish-block">
+                    <div class="dropdown">
+                        <button onclick="myFunction(@wish.Id)" class="dropbtn">&#8226;&#8226;&#8226;</button>
+                        @{
+                            string drop_id = "myDropdown" + wish.Id.ToString();
+                        }
+                        <div id="@drop_id" class="dropdown-content">
+                            <a asp-controller="Wish" asp-action="Edit" asp-route-id="@wish.Id">Редактировать желание</a>
+                            <a class="btn-delete" asp-controller="Wish" asp-action="Delete" asp-route-id="@wish.Id">Удалить желание</a>
+                        </div>
+                    </div>
+                    <div style="transform: translate(10%, 20%); text-align:center">
+                        <label class="description">@wish.Description</label>
+                        <div class="attachment">
+
+                            @if (wish.Attachment != null)
+                            {
+                                <img src="@Url.Content(wish.Attachment)" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/gift.png" />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    function myFunction(id) {
+        console.log(id);
+        //console.log("myDropdown"+id);
+        document.getElementById("myDropdown" + id).classList.toggle("show");
+    }
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".btn-delete").click(function (e) {
+                console.log("delete button was pressed");
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
+        })
+    </script>
+}

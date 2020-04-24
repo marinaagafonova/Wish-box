@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Wish Box";
+}
+    <div id="modDialog" class="modal fade">
+        <div id="dialogContent" class="modal-dialog"></div>
+    </div>
+    <div id="modDialogSignIn" class="modal fade">
+        <div id="dialogSignIn" class="modal-dialog"></div>
+    </div>
+<div class="col-12 col-lg-12 col-sm-12 col-md-12">
+    <div class="text-center">
+        <img src="~/Content/logo.png" asp-append-version="true" width="577"
+             height="174">
+        <p class="app-desc">
+            Делитесь тем, чего желаете.
+            Получайте то, о чём
+            действительно мечтали.
+        </p>
+        <ul class="button-group">
+            <li>
+                <a class="btn btn-signup  btn-lg" asp-area="" asp-controller="Account" asp-action="Register" id="register">Зарегистрироваться</a>
+            </li>
+            <li>
+                <a class="btn btn-light  btn-lg" asp-area="" asp-controller="Account" asp-action="Login" id="login">Войти</a>
+            </li>
+        </ul>
+    </div>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+
+            $(".btn-signup").click(function (e) {
+                console.log("sign up button was pressed");
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
+            $(".btn-light").click(function (e) {
+                console.log("sign in button was pressed");
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogSignIn').html(data);
+                    $('#modDialogSignIn').modal('show');
+                });
+            });
+        })
+    </script>
+
+    <script>
+        register.onclick = function (event) {
+            ym(62193592, 'reachGoal', 'btn_register');
+        }
+    </script>
+
+    <script>
+        login.onclick = function (event) {
+            ym(62193592, 'reachGoal', 'btn_login');
+        }
+    </script>
+}

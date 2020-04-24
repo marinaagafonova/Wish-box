@@ -17,7 +17,7 @@ namespace Wish_Box
                     {
                         Login = "test_user",
                         Password = "test",
-                        dayOfBirth = DateTime.Now,
+                        dayOfBirth = DateTime.Now.Date,
                         Country = "Russia",
                         City = "Voronezh"
                     }
