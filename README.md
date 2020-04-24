@@ -12,7 +12,7 @@
 
 **Курсовой проект (формат docx):** https://github.com/marinaagafonova/Wish-box/blob/master/course_project_Wish_box.docx
 
-**Курсовой проект (формат docx):** https://github.com/marinaagafonova/Wish-box/blob/master/course_project_Wish_box.pdf
+**Курсовой проект (формат pdf):** https://github.com/marinaagafonova/Wish-box/blob/master/course_project_Wish_box.pdf
 
 **Trello:** https://trello.com/b/nvA1IXh0
 
