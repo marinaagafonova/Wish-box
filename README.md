@@ -18,6 +18,8 @@
 
 **Miro:** https://miro.com/app/board/o9J_kukMwds=/
 
+**Опубликованное приложение:** https://wish-box.azurewebsites.net/
+
 # Участники проекта:
 ### Группа 4.2:
 * **Агафонова Марина:** agafonova_marina@yahoo.com
