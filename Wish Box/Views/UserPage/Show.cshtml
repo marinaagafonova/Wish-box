@@ -91,8 +91,8 @@
                     </div>
                     <div class="row">
                         <a class="btn btn-outline-dark btn-get-comments" asp-controller="Comments" asp-action="GetComments" asp-route-id="@wish.Id" data-id="@(wish.Id)">Комменты</a>
-                        <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingPlus" asp-route-id="@wish.Id">+++</a>
-                        <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingMinus" asp-route-id="@wish.Id">---</a>
+                        <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingPlus" asp-route-id="@wish.Id" id="rate_of_wish_plus">+++</a>
+                        <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingMinus" asp-route-id="@wish.Id"id="rate_of_wish_minus">---</a>
                         @if (Model.TakenWishes.Contains(wish.Id))
                         {
                             <form asp-controller="ToGive" asp-action="Remove" asp-route-id="@wish.Id" method="post">
@@ -176,5 +176,11 @@
     unfollow.onclick = function (event) {
         console.log("unfollow button was pressed");
       @{flag = true;}
+    }
+    rate_of_wish_plus.onclick = function (event) {
+        ym(62193592, 'reachGoal', 'rate_of_wish_plus')
+    }
+    rate_of_wish_minus.onclick = function (event) {
+        ym(62193592, 'reachGoal', 'rate_of_wish_minus')
     }
 </script>

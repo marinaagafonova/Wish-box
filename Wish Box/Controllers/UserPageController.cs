@@ -38,7 +38,7 @@ namespace Wish_Box.Controllers
                 };
                 return View(upvm);
             }
-            return RedirectToAction("Account", "Index");
+            return RedirectToAction("Index", "Account");
         }
     }
 }

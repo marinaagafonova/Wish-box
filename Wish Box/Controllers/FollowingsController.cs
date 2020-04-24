@@ -33,7 +33,7 @@ namespace Wish_Box.Controllers
                 await db.SaveChangesAsync();
                 return Redirect(Request.Headers["Referer"].ToString());
             }
-            return RedirectToAction("Account", "Index");
+            return RedirectToAction("Index", "Account");
         }
 
         public async Task<IActionResult> Remove() //should be [httpPost]
@@ -46,7 +46,7 @@ namespace Wish_Box.Controllers
                 await db.SaveChangesAsync();
                 return Redirect(Request.Headers["Referer"].ToString());
             }
-            return RedirectToAction("Account", "Index");
+            return RedirectToAction("Index", "Account");
         }
 
         [HttpGet]
