@@ -12,9 +12,13 @@
 
 **Курсовой проект (формат docx):** https://github.com/marinaagafonova/Wish-box/blob/master/course_project_Wish_box.docx
 
+**Курсовой проект (формат pdf):** https://github.com/marinaagafonova/Wish-box/blob/master/course_project_Wish_box.pdf
+
 **Trello:** https://trello.com/b/nvA1IXh0
 
 **Miro:** https://miro.com/app/board/o9J_kukMwds=/
+
+**Опубликованное приложение:** https://wish-box.azurewebsites.net/
 
 # Участники проекта:
 ### Группа 4.2:
