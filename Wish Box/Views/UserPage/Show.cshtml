@@ -1,8 +1,7 @@
 ﻿@{
-    ViewData["Title"] = "Show";
+    ViewData["Title"] = Model.User.Login;
     bool flag = false;
 }
-@model Wish_Box.ViewModels.UserPageViewModel
 
 <div class="col-8 col-lg-8">
     <div class="user-info">
@@ -41,7 +40,7 @@
                 }
             }
             else
-            {                
+            {
                 <a class="btn btn-ligh unfollow-btn" asp-controller="Followings" asp-action="Remove" asp-route-id="@Model.User.Id" id="unfollow">Отписаться</a>
                 if (flag)
                 {
@@ -74,7 +73,7 @@
                                 </div>
 
                             </div>
-                                    }
+                        }
 
                         <label class="wish-desc">@wish.Description</label>
                         <label class="wish-desc">Рейтинг: @wish.Rating.ToString()</label>
@@ -91,25 +90,29 @@
                     </div>
                     <div class="row">
                         <a class="btn btn-outline-dark btn-get-comments" asp-controller="Comments" asp-action="GetComments" asp-route-id="@wish.Id" data-id="@(wish.Id)">Комменты</a>
-                        <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingPlus" asp-route-id="@wish.Id" id="rate_of_wish_plus">+++</a>
-                        <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingMinus" asp-route-id="@wish.Id"id="rate_of_wish_minus">---</a>
-                        @if (Model.TakenWishes.Contains(wish.Id))
+                        @if (Model.User.Login != Model.CurrentUser.Login)
                         {
-                            <form asp-controller="ToGive" asp-action="Remove" asp-route-id="@wish.Id" method="post">
-                                <input class="btn btn-outline-dark btn-remove-togive-mark" type="submit" value="Убрать из &quot;Подарить&quot;" />
-                            </form>
-                        }
-                        else
-                        {
-                            <form asp-controller="ToGive" asp-action="Add" asp-route-id="@wish.Id" method="post">
-                                <input class="btn btn-outline-dark btn-add-to-give-mark" type="submit" value="Добавить в &quot;Подарить&quot;" />
-                            </form>
+                            <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingPlus" asp-route-id="@wish.Id" id="rate_of_wish_plus">+++</a>
+                            <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingMinus" asp-route-id="@wish.Id" id="rate_of_wish_minus">---</a>
+
+                            @if (Model.TakenWishes.Contains(wish.Id))
+                            {
+                                <form asp-controller="ToGive" asp-action="Remove" asp-route-id="@wish.Id" method="post">
+                                    <input class="btn btn-outline-dark btn-remove-togive-mark" type="submit" value="Убрать из &quot;Подарить&quot;" />
+                                </form>
+                            }
+                            else
+                            {
+                                <form asp-controller="ToGive" asp-action="Add" asp-route-id="@wish.Id" method="post">
+                                    <input class="btn btn-outline-dark btn-add-to-give-mark" type="submit" value="Добавить в &quot;Подарить&quot;" />
+                                </form>
+                            }
                         }
                     </div>
                     <div class="comment-section-@(wish.Id)"></div>
                 </div>
-             }
-         }
+            }
+        }
     </div>
 </div>
 
