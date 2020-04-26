@@ -161,7 +161,7 @@
             $.ajaxSetup({ cache: false });
             $(".btn-get-comments").click(function (e) {
                 console.log("comments button was pressed");
-                ym(62193592, 'reachGoal', 'add_comment');
+                ym(62193592, 'reachGoal', 'get_comments');
                 e.preventDefault();
                 var id = $(this).attr("data-id");
                 $.get(this.href, function (data) {
