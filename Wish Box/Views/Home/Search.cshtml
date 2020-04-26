@@ -33,7 +33,7 @@
                             {
                                 @if (!Model.Following_ids.Contains(user.Id))
                                 {
-                                    <a class="follow-btn" asp-controller="Followings" asp-action="Add" asp-route-id="@user.Id" id="follow">Подписаться</a>
+                                    <a class="follow-btn" asp-controller="Followings" asp-action="Add" asp-route-id="@user.Id" id="follow" onclick="ym(62193592, 'reachGoal', 'follow'); return true;">Подписаться</a>
                                     if(flag)
                                         Model.Following_ids.Add(user.Id);
                                 }

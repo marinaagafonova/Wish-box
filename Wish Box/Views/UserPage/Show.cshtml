@@ -34,7 +34,7 @@
         {
             @if (!Model.Followers.Contains(Model.CurrentUser.Id))
             {
-                <a class="follow-btn" asp-controller="Followings" asp-action="Add" asp-route-id="@Model.User.Id" id="follow">Подписаться</a>
+                <a class="follow-btn" asp-controller="Followings" asp-action="Add" asp-route-id="@Model.User.Id" id="follow" onclick="ym(62193592, 'reachGoal', 'follow'); return true;">Подписаться</a>
                 if (flag)
                 {
                     Model.Followers.Add(Model.User.Id);
@@ -94,8 +94,8 @@
                         <a class="btn btn-outline-dark btn-get-comments" asp-controller="Comments" asp-action="GetComments" asp-route-id="@wish.Id" data-id="@(wish.Id)">Комменты</a>
                         @if (Model.User.Login != Model.CurrentUser.Login)
                         {
-                            <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingPlus" asp-route-id="@wish.Id" id="rate_of_wish_plus">+++</a>
-                            <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingMinus" asp-route-id="@wish.Id" id="rate_of_wish_minus">---</a>
+                            <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingPlus" asp-route-id="@wish.Id" id="rate_of_wish_plus" onclick="ym(62193592, 'reachGoal', 'rate_of_wish_plus'); return true;">+++</a>
+                            <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingMinus" asp-route-id="@wish.Id" id="rate_of_wish_minus" onclick="ym(62193592, 'reachGoal', 'rate_of_wish_minus'); return true;">---</a>
 
                             @if (Model.TakenWishes.Contains(wish.Id))
                             {
