@@ -94,8 +94,8 @@
                         <a class="btn btn-outline-dark btn-get-comments" asp-controller="Comments" asp-action="GetComments" asp-route-id="@wish.Id" data-id="@(wish.Id)">Комменты</a>
                         @if (Model.User.Login != Model.CurrentUser.Login)
                         {
-                            <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingPlus" asp-route-id="@wish.Id" id="rate_of_wish_plus" onclick="ym(62193592, 'reachGoal', 'rate_of_wish_plus'); return true;">+++</a>
-                            <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingMinus" asp-route-id="@wish.Id" id="rate_of_wish_minus" onclick="ym(62193592, 'reachGoal', 'rate_of_wish_minus'); return true;">---</a>
+                            <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingPlus" asp-route-id="@wish.Id" onclick="ym(62193592, 'reachGoal', 'rate_wish'); return true;">+++</a>
+                            <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingMinus" asp-route-id="@wish.Id" onclick="ym(62193592, 'reachGoal', 'rate_wish'); return true;">---</a>
 
                             @if (Model.TakenWishes.Contains(wish.Id))
                             {
@@ -105,7 +105,7 @@
                             }
                             else
                             {
-                                <form asp-controller="ToGive" asp-action="Add" asp-route-id="@wish.Id" method="post">
+                                <form asp-controller="ToGive" asp-action="Add" asp-route-id="@wish.Id" method="post" onsubmit="ym(62193592, 'reachGoal', 'to_give'); return true;">
                                     <input class="btn btn-outline-dark btn-add-to-give-mark" type="submit" value="Добавить в &quot;Подарить&quot;" />
                                 </form>
                             }
@@ -161,6 +161,7 @@
             $.ajaxSetup({ cache: false });
             $(".btn-get-comments").click(function (e) {
                 console.log("comments button was pressed");
+                ym(62193592, 'reachGoal', 'add_comment');
                 e.preventDefault();
                 var id = $(this).attr("data-id");
                 $.get(this.href, function (data) {
@@ -175,17 +176,10 @@
 <script>
     follow.onclick = function (event) {
         console.log("follow button was pressed");
-        ym(62193592, 'reachGoal', 'follow');
       @{flag = true;}
     }
     unfollow.onclick = function (event) {
         console.log("unfollow button was pressed");
       @{flag = true;}
-    }
-    rate_of_wish_plus.onclick = function (event) {
-        ym(62193592, 'reachGoal', 'rate_of_wish_plus')
-    }
-    rate_of_wish_minus.onclick = function (event) {
-        ym(62193592, 'reachGoal', 'rate_of_wish_minus')
     }
 </script>

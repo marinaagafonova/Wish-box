@@ -52,7 +52,7 @@
         </div>
         <br />
     }
-    <form asp-controller="Comments" asp-action="AddComment" method="post">
+    <form asp-controller="Comments" asp-action="AddComment" method="post" onsubmit="ym(62193592, 'reachGoal', 'add_comment'); return true;">
         <div class="form-group">
             <div class="col-auto" style="margin-left: 10px;">
                 <input type="hidden" asp-for="WishId" />

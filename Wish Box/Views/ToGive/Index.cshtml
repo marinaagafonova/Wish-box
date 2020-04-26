@@ -24,7 +24,7 @@
                             }
                         </div>
                         <p>Автор: <a class="btn-default user-link" asp-controller="UserPage" asp-action="Show" asp-route-id="@wish.User.Login">@wish.User.Login</a></p>
-                            <form asp-controller="ToGive" asp-action="MarkAsGiven" asp-route-id="@wish.Id" method="post">
+                            <form asp-controller="ToGive" asp-action="MarkAsGiven" asp-route-id="@wish.Id" method="post" onsubmit="ym(62193592, 'reachGoal', 'is_given'); return true;">
                                 <input class="btn" type="submit" value="Отметить как &quot;подарено&quot;" />
                             </form>
                             <form asp-controller="ToGive" asp-action="Remove" asp-route-id="@wish.Id" method="post">
