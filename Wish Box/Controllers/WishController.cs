@@ -176,24 +176,8 @@ namespace Wish_Box.Controllers
                 var currentUser = await db.Users.FirstOrDefaultAsync(x => x.Login == User.Identity.Name);
                 var currentWish = await db.Wishes.FirstOrDefaultAsync(x => x.Id == wish_id);
                 var currentRate = await db.WishRatings.FirstOrDefaultAsync(x => x.UserId == currentUser.Id && x.WishId == wish_id);
-                if (currentRate != null && currentRate.Rate)
-                {
 
-                }
-                else if (currentRate != null && !currentRate.Rate)
-                {
-                    currentWish.Rating += 2;
-                    db.Wishes.Update(currentWish);
-
-                    db.WishRatings.Remove(currentRate);
-                    db.WishRatings.Add(new WishRating()
-                    {
-                        WishId = wish_id,
-                        UserId = currentUser.Id,
-                        Rate = true
-                    });
-                }
-                else if (currentRate == null)
+                if (currentRate == null)
                 {
                     currentWish.Rating += 1;
                     db.Wishes.Update(currentWish);
@@ -205,6 +189,18 @@ namespace Wish_Box.Controllers
                         Rate = true
                     });
                 }
+                else
+                {
+                    if (!currentRate.Rate)
+                    {
+                        currentWish.Rating += 2;
+                        db.Wishes.Update(currentWish);
+
+                        currentRate.Rate = true;
+                        db.WishRatings.Update(currentRate);
+                    }
+                }
+
                 if (currentWish.Rating > -5)
                 {
                     currentWish.IsVisible = true;
@@ -224,24 +220,8 @@ namespace Wish_Box.Controllers
                 var currentUser = await db.Users.FirstOrDefaultAsync(x => x.Login == User.Identity.Name);
                 var currentWish = await db.Wishes.FirstOrDefaultAsync(x => x.Id == wish_id);
                 var currentRate = await db.WishRatings.FirstOrDefaultAsync(x => x.UserId == currentUser.Id && x.WishId == wish_id);
-                if (currentRate != null && !currentRate.Rate)
-                {
 
-                }
-                else if (currentRate != null && currentRate.Rate)
-                {
-                    currentWish.Rating -= 2;
-                    db.Wishes.Update(currentWish);
-
-                    db.WishRatings.Remove(currentRate);
-                    db.WishRatings.Add(new WishRating()
-                    {
-                        WishId = wish_id,
-                        UserId = currentUser.Id,
-                        Rate = false
-                    });
-                }
-                else if (currentRate == null)
+                if (currentRate == null)
                 {
                     currentWish.Rating -= 1;
                     db.Wishes.Update(currentWish);
@@ -253,6 +233,18 @@ namespace Wish_Box.Controllers
                         Rate = false
                     });
                 }
+                else
+                {
+                    if (currentRate.Rate)
+                    {
+                        currentWish.Rating -= 2;
+                        db.Wishes.Update(currentWish);
+
+                        currentRate.Rate = false;
+                        db.WishRatings.Update(currentRate);
+                    }
+                }
+
                 if (currentWish.Rating <= -5)
                 {
                     currentWish.IsVisible = false;
