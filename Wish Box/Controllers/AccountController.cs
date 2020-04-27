@@ -184,9 +184,10 @@ namespace Wish_Box.Controllers
                 if (name != null)
                 {
                     User user = await db.Users.FirstOrDefaultAsync(p => p.Login == name);
-                    if (user.Password == model.OldPassword)
+                    var hash_pass = Convert.ToBase64String(new MD5CryptoServiceProvider().ComputeHash(new UTF8Encoding().GetBytes(model.OldPassword)));
+                    if (user.Password == hash_pass)
                     {
-                        user.Password = model.Password;
+                        user.Password = Convert.ToBase64String(new MD5CryptoServiceProvider().ComputeHash(new UTF8Encoding().GetBytes(model.Password)));
                         db.Users.Update(user);
                         await db.SaveChangesAsync();
                         return RedirectToAction("Index", "Home");
