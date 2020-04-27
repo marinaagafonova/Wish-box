@@ -79,6 +79,12 @@ namespace Wish_Box.Controllers
             {
                 int wishId = Convert.ToInt32(RouteData.Values["id"]);
                 int whoGivesId = (await db.Users.FirstOrDefaultAsync(u => u.Login == User.Identity.Name)).Id;
+                var comments = await db.Comments.Where(p => p.WishId == wishId).ToListAsync();
+                foreach(var comment in comments)
+                {
+                    db.Entry(comment).State = EntityState.Deleted;
+                    await db.SaveChangesAsync();
+                }
                 TakenWish takenWish = (await db.TakenWishes.FirstOrDefaultAsync(t => (t.WishId == wishId && t.WhoGivesId == whoGivesId)));
                 db.Entry(takenWish).State = EntityState.Deleted;
                 await db.SaveChangesAsync();
