@@ -11,6 +11,9 @@ using System.IO;
 using System.Drawing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using System;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Wish_Box.Controllers
 {
@@ -39,7 +42,8 @@ namespace Wish_Box.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await db.Users.FirstOrDefaultAsync(u => u.Login == model.Login && u.Password == model.Password);
+                var hash_pass = Convert.ToBase64String(new MD5CryptoServiceProvider().ComputeHash(new UTF8Encoding().GetBytes(model.Password)));
+                User user = await db.Users.FirstOrDefaultAsync(u => u.Login == model.Login && u.Password == hash_pass);
                 if (user != null)
                 {
                     await Authenticate(model.Login); // аутентификация
@@ -64,10 +68,11 @@ namespace Wish_Box.Controllers
                 User user = await db.Users.FirstOrDefaultAsync(u => u.Login == model.Login);
                 if (user == null)
                 {
+                    var hash_pass = Convert.ToBase64String(new MD5CryptoServiceProvider().ComputeHash(new UTF8Encoding().GetBytes(model.Password)));
                     User new_user = new User
                     {
                         Login = model.Login,
-                        Password = model.Password,
+                        Password = hash_pass,
                         dayOfBirth = model.dayOfBirth,
                         Country = model.Country,
                         City = model.City
