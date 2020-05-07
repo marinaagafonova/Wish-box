@@ -10,55 +10,62 @@
 
     foreach (CommentViewModel commentVM in ViewBag.list)
     {
-        <div class="row" style="width: 100.3%; border-bottom: 1px solid #d2cece; margin-right: -14px; margin-left: -1px;">
-            <div class="row">
-                <div style="width:50px; height:50px; float:left; margin-right:5px">
-                    <div>@commentVM.AuthorName</div>
-                    @if (commentVM.Avatar != null)
-                    {
-                        <img class="avatar" style="width:50px; height:50px;" src="data:image/jpeg;base64,@(Convert.ToBase64String(commentVM.Avatar))" />
-                    }
-                    else
-                    {
-                        <img class="avatar" style="width:50px; height:50px;" src="~/Content/default_profile.jpg" />
-                    }
-                </div>
-                <div class="commentDetails">
-                    <p style="margin-left:5px; margin-top: 27px; font-size: 16px;"> @commentVM.Description </p>
-                </div>
-                @if (commentVM.InReplyId != null)
+    <div class="row" style="margin-top:10px;">
+
+        <div style="width: 90%; margin-left: 20px;">
+            <a class="btn-default user-link" asp-controller="UserPage" asp-action="Show" asp-route-id="@commentVM.AuthorName">
+                @if (commentVM.Avatar != null)
                 {
-                    <div>This comment is the reply for comment:</div>
+                    <img class="avatar" style='width:55px; height:55px;' src="@Url.Content(commentVM.Avatar)" />
+                }
+                else
+                {
+                    <img class="avatar" src="~/Content/default_profile.jpg" asp-append-version="true" width="55"
+                         height="55" alt="My profile">
+                }
+                @commentVM.AuthorName
+            </a>
+
+        </div>
+        @if (commentVM.AuthorName == User.Identity.Name)
+        {
+            <div style="float:right">
+                <form asp-controller="Comments" asp-action="Delete" asp-route-id="@commentVM.Id" method="post">
+                    <input class="btn" type="submit" value="x" />
+                </form>
+            </div>
+        }
+        <div class="commentDetails" style="width: 100%;">
+            <p style="margin-left: 30px; margin-top: 10px; font-size: 16px;"> @commentVM.Description </p>
+        </div>
+        @if (commentVM.InReplyId != null)
+        {
+            <div style="width:100%; margin-left: 40px;">
+                <div>
+                    This comment is the reply for comment:  
                     @foreach (CommentViewModel com in ViewBag.list)
                     {
                         @if (com.Id == commentVM.InReplyId)
                         {
-                            <div>"@com.Description"</div>
+                            <label>@com.Description</label>
                             break;
                         }
                     }
-                }
-
-                @if (commentVM.AuthorName == User.Identity.Name)
-                {
-                    <div style="float:right">
-                        <form asp-controller="Comments" asp-action="Delete" asp-route-id="@commentVM.Id" method="post">
-                            <input class="btn btn-danger" type="submit" value="Удалить" />
-                        </form>
-                    </div>
-                }
-                <div><input type="button" class="btn btn-reply" style="width:auto" data-desc="@commentVM.Description" data-id="@commentVM.Id" value="Ответить" /></div>
+                </div>
             </div>
-        </div>
-        <br />
+        }
+
+
+        <div><input type="button" class="btn btn-reply btn-outline-info" style="width:auto; margin-left:20px;" data-desc="@commentVM.Description" data-id="@commentVM.Id" value="Ответить" /></div>
+    </div>
     }
-    <form asp-controller="Comments" asp-action="AddComment" method="post" onsubmit="ym(62193592, 'reachGoal', 'add_comment'); return true;">
+    <form class="border-top" asp-controller="Comments" asp-action="AddComment" method="post" onsubmit="ym(62193592, 'reachGoal', 'add_comment'); return true;" style="margin-top:20px;">
         <div class="form-group">
             <div class="col-auto" style="margin-left: 10px;">
                 <input type="hidden" asp-for="WishId" />
                 <input type="hidden" asp-for="AuthorName" value="@User.Identity.Name" />
                 <div class="reply"></div>
-                <input style="margin-top: 10px; margin-left: 10px;" type="text" asp-for="Description"
+                <input style="margin-top: 10px;" type="text" asp-for="Description"
                        class="form-control" placeholder="Добавить комментарий..." />
                 <input style="margin-top: 10px;" class="btn btn-outline-success" type="submit" value="Отправить" />
             </div>

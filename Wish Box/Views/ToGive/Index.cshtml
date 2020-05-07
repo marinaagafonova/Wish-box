@@ -11,25 +11,31 @@
         {
             <div class="col-6">
                 <div class="wish-block">
-                    <div style="transform: translate(10%, 20%); text-align:center">
-                        <label class="description">@wish.Description</label>
-                        <div class="attachment">
-                            @if (wish.Attachment != null)
-                            {
-                                <img src="@Url.Content(wish.Attachment)" />
-                            }
-                            else
-                            {
-                                <img src="~/Content/gift.png" />
-                            }
-                        </div>
-                        <p>Автор: <a class="btn-default user-link" asp-controller="UserPage" asp-action="Show" asp-route-id="@wish.User.Login">@wish.User.Login</a></p>
-                            <form asp-controller="ToGive" asp-action="MarkAsGiven" asp-route-id="@wish.Id" method="post" onsubmit="ym(62193592, 'reachGoal', 'is_given'); return true;">
-                                <input class="btn" type="submit" value="Отметить как &quot;подарено&quot;" />
-                            </form>
-                            <form asp-controller="ToGive" asp-action="Remove" asp-route-id="@wish.Id" method="post">
-                                <input class="btn btn-outline-dark btn-remove-togive-mark" type="submit" value="Убрать из &quot;Подарить&quot;" />
-                            </form>
+                    <div class="to-give-info">
+                        <!--<div style="transform: translate(10%, 20%); text-align:center">-->
+                        <p class="description">@wish.Description</p>
+                        
+                    </div>
+                    <div class="attachment">
+                        @if (wish.Attachment != null)
+                        {
+                            <img src="@Url.Content(wish.Attachment)" />
+                        }
+                        else
+                        {
+                            <img src="~/Content/gift.png" />
+                        }
+                    </div>
+
+                    <form asp-controller="ToGive" asp-action="Remove" asp-route-id="@wish.Id" method="post">
+                        <input class="btn btn-outline-dark btn-remove-togive-mark" type="submit" value="x" />
+                    </form>
+                    <!--</div>-->
+                    <div style="display: table-row">
+                        <label class="author" style="float: left;">Автор: <a class="btn-default user-link" asp-controller="UserPage" asp-action="Show" asp-route-id="@wish.User.Login">@wish.User.Login</a></label>
+                        <form asp-controller="ToGive" asp-action="MarkAsGiven" asp-route-id="@wish.Id" method="post" onsubmit="ym(62193592, 'reachGoal', 'is_given'); return true;" style="float: left;">
+                            <input class="btn" type="submit" value="Отметить как &quot;подарено&quot;" />
+                        </form>
                     </div>
                 </div>
             </div>

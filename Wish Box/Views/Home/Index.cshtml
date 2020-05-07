@@ -10,7 +10,7 @@
         {
             @foreach (var wish in Model)
             {
-                <div class="news-block">
+                <div class="news-block" style="margin-bottom: 20px;">
 
                     <a class="btn-default user-link" asp-controller="UserPage" asp-action="Show" asp-route-id="@wish.User.Login">
                         @if (wish.User.Avatar != null)
@@ -26,9 +26,8 @@
                     </a>
                     <p>добавил(а) новое желание</p>
 
-                    <div class="wish-desc">
-                        <label class="wish-description">@wish.Description</label>
-                        <label class="wish-desc">Рейтинг: @wish.Rating.ToString()</label>
+                    <div class="wish-desc" style="display:table;">
+                        <label class="wish-description" style="display: table-cell; vertical-align: middle; width: 80%;">@wish.Description</label>
                         <div class="attachment">
 
                             @if (wish.Attachment != null)
@@ -41,6 +40,8 @@
                             }
                         </div>
                     </div>
+                    <label style="display:table-row; margin-bottom: 10px;">Рейтинг: @wish.Rating.ToString()</label>
+
                 </div>
             }
         }

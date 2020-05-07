@@ -13,6 +13,6 @@ namespace Wish_Box.ViewModels
         public int WishId { get; set; }
         public int? InReplyId { get; set; }
         public string AuthorName { get; set; }
-        public byte[] Avatar { get; set; }
+        public string Avatar { get; set; }
     }
 }
