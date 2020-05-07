@@ -60,10 +60,11 @@
             @if (wish.UserId == Model.User.Id)
             {
                 <div class="col-auto">
-                    <div class="wish-show">
+                    <div class="wish-show row">
                         @if (Model.User.Login == Model.CurrentUser.Login)
                         {
-                            <div class="dropdown">
+                        <div class="row">
+                            <div class="dropdown" style="margin-left:auto; margin-right: 20px;">
 
                                 <button onclick="myFunction(@wish.Id)" class="dropbtn">&#8226;&#8226;&#8226;</button>
                                 @{
@@ -75,44 +76,61 @@
                                 </div>
 
                             </div>
+                        </div>
                         }
+                        <div class="col-12">
+                            <div class="desc-block col-8">
+                                <label class="wish-desc">@wish.Description</label>
 
-                        <label class="wish-desc">@wish.Description</label>
-                        <label class="wish-desc">Рейтинг: @wish.Rating.ToString()</label>
-                        <div class="attachment">
-                            @if (wish.Attachment != null)
+                            </div>
+                            <div class="attachment col-4">
+                                @if (wish.Attachment != null)
+                                {
+                                    <img src="@Url.Content(wish.Attachment)" />
+                                }
+                                else
+                                {
+                                    <img src="~/Content/gift.png" />
+                                }
+                            </div>
+
+                        </div>
+                        <div class="wish-func col-12">
+                            <a class="btn btn-get-comments" style="margin-right: 20px; float:left;" asp-controller="Comments" asp-action="GetComments" asp-route-id="@wish.Id" data-id="@(wish.Id)">
+                                <img class="icon" style="width: 40px;height: 40px;" src="~/Content/comment.png" />
+                            </a>
+
+                            @if (Model.User.Login != Model.CurrentUser.Login)
+                            {<a asp-controller="Wish" asp-action="RatingPlus" asp-route-id="@wish.Id" onclick="ym(62193592, 'reachGoal', 'rate_wish'); return true;" style="float:left"> <img class="icon" style="width: 14px;height: 35px;" src="~/Content/ratingPlus available.png" /></a>}
+
+                            <label class="rating-desc" style="float:left;">Рейтинг: @wish.Rating.ToString()</label>
+
+                            @if (Model.User.Login != Model.CurrentUser.Login)
+                            {<a asp-controller="Wish" asp-action="RatingMinus" asp-route-id="@wish.Id" onclick="ym(62193592, 'reachGoal', 'rate_wish'); return true;" style="float: left"> <img class="icon" style="width: 14px;height: 35px;" src="~/Content/ratingMinus available.png" /></a>}
+
+
+                            @if (Model.User.Login != Model.CurrentUser.Login)
                             {
-                                <img src="@Url.Content(wish.Attachment)" />
-                            }
-                            else
-                            {
-                                <img src="~/Content/gift.png" />
+
+                                @if (Model.TakenWishes.Contains(wish.Id))
+                                {
+                                    <form asp-controller="ToGive" asp-action="Remove" asp-route-id="@wish.Id" method="post" style="float:left;">
+                                        <button class="btn btn-add-to-give-mark" type="submit"><img class="icon" style="width: 39px;height: 30px;" src="~/Content/tick_to_give.png" />Добавлено в "Подарить"</button>
+
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form asp-controller="ToGive" asp-action="Add" asp-route-id="@wish.Id" method="post" onsubmit="ym(62193592, 'reachGoal', 'to_give'); return true;" style="float:left;">
+                                        <button class="btn btn-add-to-give-mark" type="submit"><img class="icon" style="width: 30px;height: 30px;" src="~/Content/plus.png" />Добавить в "Подарить"</button>
+                                    </form>
+                                }
                             }
                         </div>
-                    </div>
-                    <div class="row">
-                        <a class="btn btn-outline-dark btn-get-comments" asp-controller="Comments" asp-action="GetComments" asp-route-id="@wish.Id" data-id="@(wish.Id)">Комменты</a>
-                        @if (Model.User.Login != Model.CurrentUser.Login)
-                        {
-                            <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingPlus" asp-route-id="@wish.Id" onclick="ym(62193592, 'reachGoal', 'rate_wish'); return true;">+++</a>
-                            <a class="btn btn-outline-dark" asp-controller="Wish" asp-action="RatingMinus" asp-route-id="@wish.Id" onclick="ym(62193592, 'reachGoal', 'rate_wish'); return true;">---</a>
 
-                            @if (Model.TakenWishes.Contains(wish.Id))
-                            {
-                                <form asp-controller="ToGive" asp-action="Remove" asp-route-id="@wish.Id" method="post">
-                                    <input class="btn btn-outline-dark btn-remove-togive-mark" type="submit" value="Убрать из &quot;Подарить&quot;" />
-                                </form>
-                            }
-                            else
-                            {
-                                <form asp-controller="ToGive" asp-action="Add" asp-route-id="@wish.Id" method="post" onsubmit="ym(62193592, 'reachGoal', 'to_give'); return true;">
-                                    <input class="btn btn-outline-dark btn-add-to-give-mark" type="submit" value="Добавить в &quot;Подарить&quot;" />
-                                </form>
-                            }
-                        }
                     </div>
-                    <div class="comment-section-@(wish.Id)"></div>
-                </div>
+                 <div class="comment-block comment-section-@(wish.Id)"></div>
+             </div>
             }
         }
     </div>
