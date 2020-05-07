@@ -25,6 +25,8 @@ namespace Wish_Box.ViewModels
 
         [Required(ErrorMessage = "Не указан пароль")]
         [DataType(DataType.Password)]
+        [MinLength(5,ErrorMessage = "Минимальное количество символов - 5"), 
+            RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]*$", ErrorMessage = "Пароль должен содержать заглавные и прописные буквы, а также цифры")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]

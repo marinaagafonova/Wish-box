@@ -2,34 +2,56 @@
 @{
     ViewData["Title"] = "Войти";
 }
-    <div class="modal-content sign-in-window">
-        <div class="modal-header">
-            <h2 style="margin-left:auto; margin-right:auto;">Вход</h2>             
-        </div>
-        <div class="modal-body">
-            <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true">
-                <div class="validation" asp-validation-summary="ModelOnly" />
-                <div>
-                    <div class="form-group">
-                        <label asp-for="Login"><strong>Введите Логин</strong></label>
-                        <input type="text" class="form-control" asp-for="Login" />
-                        <span asp-validation-for="Login"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Password"><strong>Введите пароль</strong></label>
-                        <input type="password" class="form-control" asp-for="Password" />
-                        <span asp-validation-for="Password"></span>
-                    </div>
-                    <div class="form-group">
-                        <input class="btn btn-outline-success sign-in-btn" type="submit" value="Войти" class="btn btn-outline-dark" id="finish_login" />
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 
-    <script>
-        finish_login.onclick = function (event) {
+<div class="modal-content sign-in-window" id="modelcontent">    
+    <div class="modal-header">
+        <h2 style="margin-left:auto; margin-right:auto;">Вход</h2>
+    </div>
+    <div class="modal-body" id="modelbody">
+        <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true" id="signin_window">
+            <div class="validation" asp-validation-summary="ModelOnly" />
+            <div id="dialog-alert" class="text-danger"></div>
+            <div>
+                <div class="form-group" id="Login">
+                    <label asp-for="Login"><strong>Введите Логин</strong></label>
+                    <input type="text" class="form-control" asp-for="Login" />
+                    <span asp-validation-for="Login" class="text-danger"></span>
+                </div>
+                <div class="form-group" id="PassWord">
+                    <label asp-for="Password"><strong>Введите пароль</strong></label>
+                    <input type="password" class="form-control" asp-for="Password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-outline-success sign-in-btn" type="submit" value="Войти" class="btn btn-outline-dark" id="finish_login" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".btn-outline-success").click(function (e) {
+                console.log("ajax login start");
+                e.preventDefault();
+                $.ajax({
+                    url: "@Url.Action("Login", "Account")",
+                    type: "POST",
+                    data: $('form').serialize(),
+                    success: function (result) {
+                        $('#modelcontent').replaceWith(result);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("login_error");
+                        $("#dialog-alert").html("Некорректные логин и(или) пароль");
+                    }
+                });
+            });
+        })
+
+        finish_login.onclick = function (e) {
             ym(62193592, 'reachGoal', 'finish_login')
         }
-    </script>
+</script>
