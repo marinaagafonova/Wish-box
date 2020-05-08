@@ -47,7 +47,7 @@
                         <input name="Avatar" type="file" class="form-control" />
                     </div>
                     <div>
-                        <input class="btn btn-outline-success sign-up-btn" type="submit" value="Регистрация" id="finish_register" />
+                        <input class="btn btn-outline-success sign-up-btn" type="submit" value="Регистрация" id="finish_register" name="finish_register" />
                     </div>
                 </div>
             </form>
@@ -58,7 +58,7 @@
     $(function () {
         $.ajaxSetup({ cache: false });
 
-        $(".btn-outline-success").click(function (e) {
+        $("#finish_register").click(function (e) {
             console.log("ajax register start");
             e.preventDefault();
             $.ajax({
@@ -73,6 +73,7 @@
                     $("#dialog-alert").html("Имя пользователя занято");
                 }
             });
+            return false;
         });
     })
 
