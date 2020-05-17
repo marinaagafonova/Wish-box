@@ -38,6 +38,7 @@ namespace Wish_Box.Controllers
                     });
             }
             ViewBag.list = commentModels;
+            ViewBag.wishId = wishId;
             return PartialView(new CommentViewModel { WishId = wishId });
         }
 
@@ -58,7 +59,7 @@ namespace Wish_Box.Controllers
                 db.Comments.Add(commentEntity);
                 db.SaveChanges();
             }
-            return RedirectToAction("Show", "UserPage",new { id = db.Users.FirstOrDefault(u => u.Id == wish.UserId).Login });
+            return RedirectToAction("Show", "UserPage", new { id = db.Users.FirstOrDefault(u => u.Id == wish.UserId).Login });
         }
 
         [HttpPost]
