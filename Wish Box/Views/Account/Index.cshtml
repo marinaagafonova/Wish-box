@@ -1,12 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Wish Box";
 }
-    <div id="modDialog" class="modal fade">
-        <div id="dialogContent" class="modal-dialog"></div>
-    </div>
-    <div id="modDialogSignIn" class="modal fade">
-        <div id="dialogSignIn" class="modal-dialog"></div>
-    </div>
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+<div id="modDialogSignIn" class="modal fade">
+    <div id="dialogSignIn" class="modal-dialog"></div>
+</div>
 <div class="col-12 col-lg-12 col-sm-12 col-md-12">
     <div class="text-center">
         <img src="~/Content/logo.png" asp-append-version="true" width="577"
@@ -61,6 +61,32 @@
     <script>
         login.onclick = function (event) {
             ym(62193592, 'reachGoal', 'btn_login');
+        }
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            var fileInput = $('#upload-file');
+            var maxSize = fileInput.data('max-size');
+            $('#upload-form').submit(function (e) {
+                if (fileInput.get(0).files.length) {
+                    var fileSize = fileInput.get(0).files[0].size; // in bytes
+                    alert('maxsize is ' + maxSize + ' filesize is ' + fileSize);
+                    if (fileSize > maxSize) {
+                        alert('Размер файла больше, чем 3 MB');
+                        return false;
+                    }
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState["Error"].Errors.Count > 0)
+        {
+            <text>
+            $(document).ready(function() {
+                alert('@ViewData.ModelState["Error"].Errors.First().ErrorMessage');
+            });
+            </text>
         }
     </script>
 }

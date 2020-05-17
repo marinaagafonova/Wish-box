@@ -52,7 +52,7 @@ namespace Wish_Box.Controllers
                     string extension = Path.GetExtension(wvm.Attachment.FileName);
                     if (!formats.Contains(extension))
                     {
-                        ModelState.AddModelError("Error", "Wrong type");
+                        ModelState.AddModelError("Error", "Wrong file type");
                         return View("Create");
                     }
                    
@@ -102,6 +102,13 @@ namespace Wish_Box.Controllers
                 if (wvm.Attachment != null)
                 {
                     string path = "/Files/" + wvm.Attachment.FileName;
+                    string extension = Path.GetExtension(wvm.Attachment.FileName);
+                    if (!formats.Contains(extension))
+                    {
+                        ModelState.AddModelError("Error", "Wrong file type");
+                        wish.Description = wvm.Description;
+                        return View("Edit", wish);
+                    }
                     using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                     {
                         await wvm.Attachment.CopyToAsync(fileStream);
