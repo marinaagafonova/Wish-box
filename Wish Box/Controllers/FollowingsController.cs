@@ -9,6 +9,8 @@ using Wish_Box.ViewModels;
 
 namespace Wish_Box.Controllers
 {
+    [Route("[controller]")]
+    [ApiController]
     public class FollowingsController : Controller
     {
         readonly AppDbContext db;
@@ -18,7 +20,10 @@ namespace Wish_Box.Controllers
             db = context;
         }
 
-        public async Task<IActionResult> Add()
+        //[Route("Add/{id:int}")]
+        //[HttpPost]
+        [HttpPost("{id:int}")]
+        public async Task<ActionResult<Following>> Add([FromRoute] int id)
         {
             var followed_id = Convert.ToInt32(RouteData.Values["id"]);
             var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
@@ -28,7 +33,7 @@ namespace Wish_Box.Controllers
                 db.Followings.Add(new Following
                 {
                     UserFId = current_user.Id,
-                    UserIsFId = followed_id
+                    UserIsFId = id
                 });
                 await db.SaveChangesAsync();
                 return Redirect(Request.Headers["Referer"].ToString());
@@ -36,13 +41,16 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        public async Task<IActionResult> Remove() //should be [httpPost]
+        //[Route("Remove/{id:int}")]
+        //[HttpDelete]
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<Following>> Remove([FromRoute]int id)
         {
-            var followed_id = Convert.ToInt32(RouteData.Values["id"]);
+            //var followed_id = Convert.ToInt32(RouteData.Values["id"]);
             var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
             if (current_user != null)
             {
-                db.Entry(await db.Followings.FirstOrDefaultAsync(p => p.UserFId == current_user.Id && p.UserIsFId == followed_id)).State = EntityState.Deleted;
+                db.Entry(await db.Followings.FirstOrDefaultAsync(p => p.UserFId == current_user.Id && p.UserIsFId == id)).State = EntityState.Deleted;
                 await db.SaveChangesAsync();
                 return Redirect(Request.Headers["Referer"].ToString());
             }
@@ -50,7 +58,7 @@ namespace Wish_Box.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Show()
+        public async Task<ActionResult<IEnumerable<Following>>> Show()
         {
             if (User.Identity.IsAuthenticated)
             {

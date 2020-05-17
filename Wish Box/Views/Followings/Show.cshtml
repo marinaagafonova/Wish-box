@@ -8,21 +8,38 @@
         <h4 style="text-align: center; font-weight: bold;">Мои подписки</h4>
         @foreach (var user in Model.followedUsersList)
         {
-            <div class="user-block-search">
-                <a class="btn-link" asp-area="" asp-controller="Userpage" asp-action="Show" asp-route-id="@user.Login">
-                    @if (user.Avatar != null)
-                    {
-                        <img class="avatar" style='width:70px; height:70px;' src="@Url.Content(user.Avatar)" />
-                    }
-                    else
-                    {
-                        <img class="avatar" src="~/Content/default_profile.jpg" asp-append-version="true" width="70"
-                             height="70" alt="My profile">
-                    }@user.Login
-                </a>
-                <a class="btn btn-default" style="float: right;" asp-controller="Followings" asp-action="Remove" asp-route-id="@user.Id">x</a>
-            </div>
+    <div class="user-block-search">
+        <a class="btn-link" asp-area="" asp-controller="Userpage" asp-action="Show" asp-route-id="@user.Login">
+            @if (user.Avatar != null)
+            {
+                <img class="avatar" style='width:70px; height:70px;' src="@Url.Content(user.Avatar)" />
+            }
+            else
+            {
+                <img class="avatar" src="~/Content/default_profile.jpg" asp-append-version="true" width="70"
+                     height="70" alt="My profile">
+            }@user.Login
+        </a>
+        <a class="btn btn-default" id="btn_delete" style="float: right;" asp-controller="Followings" asp-action="Remove" asp-route-id="@user.Id" data-id="@user.Id">x</a>         
+    </div>
         }
     </div>
 </div>
+
+@*@section scripts
+{
+<script type="text/javascript">
+    $(function () {
+        $.ajaxSetup({ cache: false });
+        $(".btn-detele").on('click', function (e) {
+            var id = $(this).attr("data-id");
+            $.ajax({
+                type: 'Delete',
+                url: '/Followings?id=' + id
+            });
+            console.log("delete following with id" + id);
+        })
+    })
+</script>
+}*@
 
