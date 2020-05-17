@@ -10,13 +10,13 @@
 
             <div class="form-group">
                 <label asp-for="Description" class="control-label">Описание:</label>
-                <input type="text" asp-for="Description" class="form-control" />
+                <input type="text" asp-for="Description" class="form-control" maxlength="150" />
             </div>
             <div class="form-group">
                 <input name="Attachment" type="file" class="form-control" />
             </div>
             <div class="form-group">
-                <input style="margin-top: 10px;" class="btn btn-outline-success" type="submit" value="Cохранить" id="create_wish"/>
+                <input style="margin-top: 10px;" class="btn btn-outline-success" type="submit" value="Cохранить" id="create_wish" />
             </div>
         </form>
     </div>
