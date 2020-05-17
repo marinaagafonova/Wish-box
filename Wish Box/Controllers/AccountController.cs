@@ -54,8 +54,6 @@ namespace Wish_Box.Controllers
                     await Authenticate(model.Login); // аутентификация
                     return PartialView("SuccessLogin");
                 }
-                //throw new Exception("Некорректные логин и(или) пароль");
-                //ModelState.TryAddModelException("", new Exception("Некорректные логин и(или) пароль"));
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
             return PartialView("Login", model);
@@ -101,7 +99,6 @@ namespace Wish_Box.Controllers
                     return PartialView("SuccessRegister");
                 }
                     ModelState.AddModelError("", "Имя пользователя занято");
-                    //throw new Exception("Имя пользователя занято");
             }
             return PartialView("Register", model);
         }
