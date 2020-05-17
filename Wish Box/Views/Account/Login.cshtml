@@ -9,8 +9,7 @@
     </div>
     <div class="modal-body" id="modelbody">
         <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true" id="signin_window">
-            <div class="validation" asp-validation-summary="ModelOnly" />
-            <div id="dialog-alert" class="text-danger"></div>
+            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
             <div>
                 <div class="form-group" id="Login">
                     <label asp-for="Login"><strong>Введите Логин</strong></label>
@@ -39,14 +38,14 @@
                 $.ajax({
                     url: "@Url.Action("Login", "Account")",
                     type: "POST",
-                    data: $('form').serialize(),
+                    data: $('#signin_window').serialize(),
                     success: function (result) {
                         $('#modelcontent').replaceWith(result);
                     },
                     error: function (xhr, status, error) {
                         console.log("login_error");
-                        console.log(arguments);
                         //$("#dialog-alert").html("Некорректные логин и(или) пароль");
+                        //$('#modelcontent').replaceWith(result);
                     }
                 });
                 return false;

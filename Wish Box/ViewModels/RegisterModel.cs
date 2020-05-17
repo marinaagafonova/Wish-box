@@ -25,12 +25,12 @@ namespace Wish_Box.ViewModels
 
         [Required(ErrorMessage = "Не указан пароль")]
         [DataType(DataType.Password)]
-        [MinLength(5,ErrorMessage = "Минимальное количество символов - 5"), 
-            RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]*$", ErrorMessage = "Пароль должен содержать заглавные и прописные буквы, а также цифры")]
+        [MinLength(5,ErrorMessage = "Пароль должен содержать латинские заглавные и прописные буквы, а также цифры. Минимальное кол-во символов - 5"), 
+            RegularExpression(@"^[a-zA-Z0-9'\s-]*$", ErrorMessage = "Пароль должен содержать латинские заглавные и прописные буквы, а также цифры. Минимальное кол-во символов - 5")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Пароль введен неверно")]
+        [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         public string ConfirmPassword { get; set; }
 
         public IFormFile Avatar { get; set; }

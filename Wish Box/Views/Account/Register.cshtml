@@ -3,15 +3,14 @@
     ViewData["Title"] = "Регистрация";
 }
 
-    <div class="modal-content sign-up-window" id="modelcontent">        
+    <div class="modal-content sign-up-window" id="modelcontentregister">        
         <div class="modal-header">
             <h2 style="margin-left:auto; margin-right:auto;">Регистрация</h2>
         </div>
         <div class="modal-body">
             <form asp-action="Register" asp-controller="Account" asp-anti-forgery="true"
-                  method="post" enctype="multipart/form-data">
-                <div class="validation" asp-validation-summary="ModelOnly"> </div>
-                <div id="dialog-alert" class="text-danger"></div>
+                  method="post" enctype="multipart/form-data" id="registerform">
+                <div class="text-danger" asp-validation-summary="ModelOnly"> </div>
                 <div>
                     <div class="form-group">
                         <label asp-for="Login"><strong>Введите логин</strong></label><br />
@@ -35,6 +34,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Password"><strong>Введите пароль</strong></label><br />
+                        <label class="text-info">Пароль должен содержать латинские заглавные и прописные буквы, а также цифры. Минимальное кол-во символов - 5</label><br />
                         <input type="password" class="form-control" asp-for="Password" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
@@ -64,12 +64,13 @@
             $.ajax({
                 url: "@Url.Action("Register", "Account")",
                 type: "POST",
-                data: $('form').serialize(),
+                data: $('#registerform').serialize(),
                 success: function (result) {
-                    $('#modelcontent').replaceWith(result);
+                    $('#modelcontentregister').replaceWith(result);
                 },
                 error: function (xhr, status, error) {
                     console.log("register_error");
+                    //$('#modelcontentregister').replaceWith(result);
                     //$("#dialog-alert").html("Имя пользователя занято");
                 }
             });
