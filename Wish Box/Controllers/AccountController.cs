@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Wish_Box.Controllers
 {
@@ -21,6 +23,8 @@ namespace Wish_Box.Controllers
     {
         private readonly AppDbContext db;
         private readonly IWebHostEnvironment _appEnvironment;
+        private List<string> countries;
+
         private List<string> formats = new List<string>()
         {
             ".gif",".jpg",".jpeg",".png"
@@ -29,6 +33,54 @@ namespace Wish_Box.Controllers
         {
             db = context;
             _appEnvironment = appEnvironment;
+        }
+        private void InitCountryList()
+        {
+            if(countries == null)
+            {
+                countries = new List<string>();
+                string connectionString = "Server=(localdb)\\mssqllocaldb;Database=aspnet-Wish_Box-FE7D3E55-F2B7-4477-88B5-C537D05A53C6;Trusted_Connection=True;MultipleActiveResultSets=true";
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string sql = "Select * From country";
+                    SqlCommand command = new SqlCommand(sql, connection);
+                    using (SqlDataReader dataReader = command.ExecuteReader())
+                    {
+                        while (dataReader.Read())
+                        {
+                            Country country = new Country();
+                            country.Id = Convert.ToInt32(dataReader["CountryId"]);
+                            country.CountryName = Convert.ToString(dataReader["CountryName"]);
+                            countries.Add(country.CountryName);
+                        }
+                    }
+                    connection.Close();
+                }
+            }
+        }
+        private List<string> GetCityList(int countryId)
+        {
+            List<string> cities = new List<string>();
+            string connectionString = "Server=(localdb)\\mssqllocaldb;Database=aspnet-Wish_Box-FE7D3E55-F2B7-4477-88B5-C537D05A53C6;Trusted_Connection=True;MultipleActiveResultSets=true";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string sql = "Select CityName From City Where CityId="+countryId;
+                SqlCommand command = new SqlCommand(sql, connection);
+                using (SqlDataReader dataReader = command.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        //Country country = new Country();
+                        //country.Id = Convert.ToInt32(dataReader["CountryId"]);
+                        //country.CountryName = Convert.ToString(dataReader["CountryName"]);
+                        cities.Add(Convert.ToString(dataReader["CityName"]));
+                    }
+                }
+                connection.Close();
+            }
+            return cities;
         }
         public IActionResult Index()
         {
@@ -60,6 +112,9 @@ namespace Wish_Box.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            InitCountryList();
+            SelectList sl = new SelectList(countries);
+            ViewBag.Countries = sl;
             return PartialView();
         }
         [HttpPost]
