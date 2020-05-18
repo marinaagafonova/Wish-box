@@ -13,28 +13,32 @@
         {
             <div class="col-6">
                 <div class="wish-block">
-                    <div class="dropdown">
-                        <button onclick="myFunction(@wish.Id)" class="dropbtn">&#8226;&#8226;&#8226;</button>
-                        @{
-                            string drop_id = "myDropdown" + wish.Id.ToString();
-                        }
-                        <div id="@drop_id" class="dropdown-content">
-                            <a asp-controller="Wish" asp-action="Edit" asp-route-id="@wish.Id">Редактировать желание</a>
-                            <a class="btn-delete" asp-controller="Wish" asp-action="Delete" asp-route-id="@wish.Id">Удалить желание</a>
+                    <div class="row">
+                        <div class="dropdown" style="margin-left:auto; margin-right:10px;">
+                            <button onclick="myFunction(@wish.Id)" class="dropbtn">&#8226;&#8226;&#8226;</button>
+                            @{
+                                string drop_id = "myDropdown" + wish.Id.ToString();
+                            }
+                            <div id="@drop_id" class="dropdown-content">
+                                <a asp-controller="Wish" asp-action="Edit" asp-route-id="@wish.Id">Редактировать желание</a>
+                                <a class="btn-delete" asp-controller="Wish" asp-action="Delete" asp-route-id="@wish.Id">Удалить желание</a>
+                            </div>
                         </div>
                     </div>
-                    <div style="transform: translate(10%, 20%); text-align:center">
-                        <label class="description">@wish.Description</label>
-                        <div class="attachment">
+                    <div class="row" style="display: table;">
+                        <label class="description col-7" style="display: table-cell; vertical-align: middle;">@wish.Description</label>
+                        <div class="col-5">
+                            <div class="attachment">
 
-                            @if (wish.Attachment != null)
-                            {
-                                <img src="@Url.Content(wish.Attachment)" />
-                            }
-                            else
-                            {
-                                <img src="~/Content/gift.png" />
-                            }
+                                @if (wish.Attachment != null)
+                                {
+                                    <img src="@Url.Content(wish.Attachment)" />
+                                }
+                                else
+                                {
+                                    <img src="~/Content/gift.png" />
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>

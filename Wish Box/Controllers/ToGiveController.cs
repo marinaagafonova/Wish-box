@@ -12,7 +12,7 @@ namespace Wish_Box.Controllers
     public class ToGiveController : Controller
     {
         private readonly AppDbContext db;
-        
+
         public ToGiveController(AppDbContext context)
         {
             db = context;
@@ -27,9 +27,7 @@ namespace Wish_Box.Controllers
                     .Select(w => w.WishId)).ToListAsync();
                 var wishes = await db.Wishes.Where(w => wishId.Contains(w.Id)).ToListAsync();
                 foreach (var wish in wishes)
-                {
                     wish.User = db.Users.FirstOrDefault(p => p.Id == wish.UserId);
-                }
                 return View(wishes);
             }
             return RedirectToAction("Index", "Account");
@@ -80,7 +78,7 @@ namespace Wish_Box.Controllers
                 int wishId = Convert.ToInt32(RouteData.Values["id"]);
                 int whoGivesId = (await db.Users.FirstOrDefaultAsync(u => u.Login == User.Identity.Name)).Id;
                 var comments = await db.Comments.Where(p => p.WishId == wishId).ToListAsync();
-                foreach(var comment in comments)
+                foreach (var comment in comments)
                 {
                     db.Entry(comment).State = EntityState.Deleted;
                     await db.SaveChangesAsync();
@@ -91,7 +89,7 @@ namespace Wish_Box.Controllers
                 Wish wish = new Wish { Id = wishId };
                 db.Entry(wish).State = EntityState.Deleted;
                 await db.SaveChangesAsync();
-                
+
                 return Redirect(Request.Headers["Referer"].ToString());
             }
             return RedirectToAction("Account", "Index");

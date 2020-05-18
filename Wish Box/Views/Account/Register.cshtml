@@ -1,8 +1,7 @@
-﻿@model Wish_Box.ViewModels.RegisterModel
+@model Wish_Box.ViewModels.RegisterModel
 @{
     ViewData["Title"] = "Регистрация";
 }
-
     <div class="modal-content sign-up-window" id="modelcontentregister">        
         <div class="modal-header">
             <h2 style="margin-left:auto; margin-right:auto;">Регистрация</h2>
@@ -53,6 +52,8 @@
             </form>
         </div>
     </div>
+</div>
+
 
 <script type="text/javascript">
     $(function () {
@@ -75,6 +76,7 @@
             return false;
         });
     })
+<script>
 
     finish_register.onclick = function (event) {
         ym(62193592, 'reachGoal', 'finish_register');
