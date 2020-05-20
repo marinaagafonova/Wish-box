@@ -17,6 +17,11 @@ namespace Wish_Box.Controllers
         private readonly IWebHostEnvironment _appEnvironment;
         private readonly AppDbContext db;
 
+        private List<string> formats = new List<string>()
+        {
+            ".gif",".jpg",".jpeg",".png"
+        };
+
         public WishController(AppDbContext context, IWebHostEnvironment appEnvironment)
         {
             db = context;
@@ -44,6 +49,13 @@ namespace Wish_Box.Controllers
                 if (wvm.Attachment != null)
                 {
                     string path = "/Files/" + wvm.Attachment.FileName;
+                    string extension = Path.GetExtension(wvm.Attachment.FileName);
+                    if (!formats.Contains(extension))
+                    {
+                        ModelState.AddModelError("Error", "Wrong file type");
+                        return View("Create");
+                    }
+                   
                     using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                     {
                         await wvm.Attachment.CopyToAsync(fileStream);
@@ -90,6 +102,13 @@ namespace Wish_Box.Controllers
                 if (wvm.Attachment != null)
                 {
                     string path = "/Files/" + wvm.Attachment.FileName;
+                    string extension = Path.GetExtension(wvm.Attachment.FileName);
+                    if (!formats.Contains(extension))
+                    {
+                        ModelState.AddModelError("Error", "Wrong file type");
+                        wish.Description = wvm.Description;
+                        return View("Edit", wish);
+                    }
                     using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                     {
                         await wvm.Attachment.CopyToAsync(fileStream);

@@ -6,7 +6,7 @@
 
 <div class="col-sm-8 col-lg-8 col-md-8">
     <h2 style="color:white; text-align: center; font-weight: bold; margin-bottom: 20px;">Редактирование профиля</h2>
-    <form class="edit" asp-action="Edit" method="post" enctype="multipart/form-data">
+    <form class="edit" asp-action="Edit" method="post" enctype="multipart/form-data" id="upload-form">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="Login" class="control-label">Имя</label>
@@ -27,10 +27,11 @@
             <label asp-for="City" class="control-label">Город</label>
             <input asp-for="City" class="form-control" />
             <span asp-validation-for="City" class="text-danger"></span>
+
         </div>
         <div class="form-group">
             <div class="attachment">
-                @if (@Model.Avatar != null)
+                @if (@Model.Avatar != null && ViewData.ModelState.IsValid)
                 {
                     <img src="@Url.Content(Model.Avatar)" />
                 }
@@ -39,7 +40,7 @@
                     <img src="~/Content/default_profile.jpg" asp-append-version="true">
                 }
             </div>
-            <input name="Avatar" type="file" class="form-control" />
+            <input id="upload-file" name="Avatar" type="file" accept=".gif,.jpg,.jpeg,.png" data-max-size="3145728" class="form-control" />
         </div>
         <div class="form-group">
             <a asp-action="ChangePassword" asp-controller="Account" value="ь" class="btn btn-light">Изменить пароль</a>
@@ -50,3 +51,32 @@
     </form>
 </div>
 
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            var fileInput = $('#upload-file');
+            var maxSize = fileInput.data('max-size');
+            $('#upload-form').submit(function (e) {
+                if (fileInput.get(0).files.length) {
+                    var fileSize = fileInput.get(0).files[0].size; // in bytes
+                    if (fileSize > maxSize) {
+                        alert('Размер файла больше, чем 3 MB');
+                        return false;
+                    }
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState["Error"].Errors.Count > 0)
+        {
+            <text>
+            $(document).ready(function() {
+                alert('@ViewData.ModelState["Error"].Errors.First().ErrorMessage');
+            });
+            </text>
+        }
+    </script>
+}

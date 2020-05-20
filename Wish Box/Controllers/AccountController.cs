@@ -26,7 +26,10 @@ namespace Wish_Box.Controllers
     {
         private readonly AppDbContext db;
         private readonly IWebHostEnvironment _appEnvironment;
-
+        private List<string> formats = new List<string>()
+        {
+            ".gif",".jpg",".jpeg",".png"
+        };
         public AccountController(AppDbContext context, IWebHostEnvironment appEnvironment)
         {
             db = context;
@@ -84,6 +87,12 @@ namespace Wish_Box.Controllers
                     if (model.Avatar != null)
                     {
                         string path = "/Files/" + model.Avatar.FileName;
+                        string extension = Path.GetExtension(model.Avatar.FileName);
+                        if (!formats.Contains(extension))
+                        {
+                            ModelState.AddModelError("Error", "Wrong file type");
+                            return PartialView("Register");
+                        }
                         using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                         {
                             await model.Avatar.CopyToAsync(fileStream);
@@ -141,6 +150,20 @@ namespace Wish_Box.Controllers
                         if (model.Avatar != null)
                         {
                             string path = "/Files/" + model.Avatar.FileName;
+                            string extension = Path.GetExtension(model.Avatar.FileName);
+                            if (!formats.Contains(extension))
+                            {
+                                ModelState.AddModelError("Error", "Wrong file type");
+                                Edit1Model e = new Edit1Model()
+                                {
+                                    City = model.City,
+                                    Country = model.Country,
+                                    dayOfBirth = model.dayOfBirth,
+                                    Login = model.Login,
+                                    Avatar = user.Avatar
+                                };
+                                return View("Edit", e);
+                            }
                             using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                             {
                                 await model.Avatar.CopyToAsync(fileStream);
