@@ -6,7 +6,7 @@
     </div>
     <div class="modal-body">
         <form asp-action="Register" asp-controller="Account" asp-anti-forgery="true"
-              method="post" enctype="multipart/form-data">
+              method="post" enctype="multipart/form-data" id="upload-form">
             <div class="validation" asp-validation-summary="ModelOnly"> </div>
             <div>
                 <div class="form-group">
@@ -40,7 +40,7 @@
                     <span asp-validation-for="ConfirmPassword"></span>
                 </div>
                 <div>
-                    <input name="Avatar" type="file" class="form-control" />
+                    <input id="upload-file" accept=".gif,.jpg,.jpeg,.png" data-max-size="3145728" name="Avatar" type="file" class="form-control" />
                 </div>
                 <div>
                     <input class="btn btn-outline-success sign-up-btn" type="submit" value="Регистрация" id="finish_register" />
@@ -55,3 +55,34 @@
         ym(62193592, 'reachGoal', 'finish_register');
     }
 </script>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            var fileInput = $('#upload-file');
+            var maxSize = fileInput.data('max-size');
+            $('#upload-form').submit(function (e) {
+                if (fileInput.get(0).files.length) {
+                    var fileSize = fileInput.get(0).files[0].size; // in bytes
+                    alert('maxsize is ' + maxSize + ' filesize is ' + fileSize);
+                    if (fileSize > maxSize) {
+                        alert('Размер файла больше, чем 3 MB');
+                        return false;
+                    }
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState["Error"].Errors.Count > 0)
+        {
+            <text>
+            $(document).ready(function() {
+                alert('@ViewData.ModelState["Error"].Errors.First().ErrorMessage');
+            });
+            </text>
+        }
+    </script>
+}

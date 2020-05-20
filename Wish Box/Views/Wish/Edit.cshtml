@@ -5,7 +5,7 @@
 
 <div class="col-sm-8 col-lg-8 col-md-8">
     <h2 style="text-align: center; color:white; font-weight: bold; margin-bottom: 20px;">Редактировать желание</h2>
-    <form class="edit" asp-action="edit" asp-controller="Wish" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+    <form class="edit" asp-action="edit" asp-controller="Wish" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data" id="upload-form">
         <div class="form-group">
             <label asp-for="Description" class="control-label">Описание:</label>
             <input type="text" asp-for="Description" class="form-control" value="@Model.Description" maxlength="150"/>
@@ -21,10 +21,39 @@
                     <img src="~/Content/gift.png" asp-append-version="true">
                 }
             </div>
-            <input name="Attachment" type="file" class="form-control" />
+            <input id="upload-file" accept=".gif,.jpg,.jpeg,.png" data-max-size="3145728" name="Attachment" type="file" class="form-control" />
         </div>
         <div class="form-group">
             <input style="margin-top: 10px;" class="btn btn-outline-success" type="submit" value="Cохранить" />
         </div>
     </form>
 </div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            var fileInput = $('#upload-file');
+            var maxSize = fileInput.data('max-size');
+            $('#upload-form').submit(function (e) {
+                if (fileInput.get(0).files.length) {
+                    var fileSize = fileInput.get(0).files[0].size; // in bytes
+                    if (fileSize > maxSize) {
+                        alert('Размер файла больше, чем 3 MB');
+                        return false;
+                    }
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState["Error"].Errors.Count > 0)
+        {
+            <text>
+            $(document).ready(function() {
+                alert('@ViewData.ModelState["Error"].Errors.First().ErrorMessage');
+            });
+            </text>
+        }
+    </script>
+}
