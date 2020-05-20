@@ -160,7 +160,7 @@ namespace Wish_Box.Controllers
                 {
                     Wish wish = new Wish { Id = id };
                     var comments = await db.Comments.Where(p => p.WishId == id).ToListAsync();
-                    foreach(var comment in comments)
+                    foreach (var comment in comments)
                     {
                         db.Entry(comment).State = EntityState.Deleted;
                     }
@@ -185,6 +185,12 @@ namespace Wish_Box.Controllers
                 return View(wishes);
             }
             return RedirectToAction("Index", "Account");
+        }
+
+        public int GetRating()
+        {
+            try { return db.Wishes.FirstOrDefault(w => w.Id == Convert.ToInt32(RouteData.Values["id"])).Rating; }
+            catch (Exception e) { Console.WriteLine(e.Message); return -999; }
         }
 
         public async Task<IActionResult> RatingPlus()
