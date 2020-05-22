@@ -1,10 +1,7 @@
 ﻿@model Wish_Box.Models.UserListViewModel
 @{
     ViewData["Title"] = "Поиск";
-    bool flag = false;
 }
-
-
 
 <div class="col-sm-8 col-lg-8 col-md-8">
     <div class="row">
@@ -15,7 +12,6 @@
                 {
                     @foreach (var user in Model.Users)
                     {
-                        flag = false;
                         <div class="user-block-search">
                             <a class="btn-default user-link" asp-controller="UserPage" asp-action="Show" asp-route-id="@user.Login">
                                 @if (user.Avatar != null)
@@ -31,20 +27,17 @@
                             </a>
                             @if (user.Login != User.Identity.Name)
                             {
-                                @if (!Model.Following_ids.Contains(user.Id))
-                                {
-                                    <a class="follow-btn" asp-controller="Followings" asp-action="Add" asp-route-id="@user.Id" id="follow" onclick="ym(62193592, 'reachGoal', 'follow'); return true;">Подписаться</a>
-                                    if(flag)
-                                        Model.Following_ids.Add(user.Id);
-                                }
-                                else
-                                {
-                                    <!-- Данила "to do" - action -->
-                                    <a class="btn btn-ligh unfollow-btn" asp-controller="Followings" asp-action="Remove" asp-route-id="@user.Id" id="unfollow">Отписаться</a>
-                                    if(flag)
-                                        Model.Following_ids.Remove(user.Id);
-                                }
-
+                                <div class="follow-btn-section-@user.Id">
+                                    @if (!Model.Following_ids.Contains(user.Id))
+                                    {
+                                        <button class="btn follow-btn" onclick="follow(@user.Id, '/followings/add/');">Подписаться</button>
+                                    }
+                                    else
+                                    {
+                                        <!-- Данила "to do" - action -->
+                                        <button class="btn btn-light unfollow-btn" onclick="unfollow(@user.Id, '/followings/remove/');">Отписаться</button>
+                                    }
+                                </div>
                             }
 
                         </div>
@@ -78,16 +71,31 @@
     </div>
 </div>
 
-
 <script>
-    follow.onclick = function (event) {
-        console.log("follow button was pressed");
-      @{flag = true;}
+    function follow(id, my_link) {
+        $.ajax({
+            type: 'GET',
+            url: my_link + id,
+            success: function () {
+                $('.follow-btn-section-' + id).empty();
+                $('.follow-btn-section-' + id).prepend('<button class="btn btn-light unfollow-btn" onclick="unfollow(' + id + ', \'/followings/remove/\');">Отписаться</button>');
+                console.log('follow success');
+                ym(62193592, 'reachGoal', 'follow');
+            }
+        });
     }
-    unfollow.onclick = function (event) {
-        console.log("unfollow button was pressed");
-      @{flag = true;}
-  }
+
+    function unfollow(id, my_link) {
+        $.ajax({
+            type: 'GET',
+            url: my_link + id,
+            success: function () {
+                $('.follow-btn-section-' + id).empty();
+                $('.follow-btn-section-' + id).prepend('<button class="btn follow-btn" onclick="follow(' + id + ',\'/followings/add/\');">Подписаться</button>');
+                console.log('unfollow success');
+            }
+        });
+    }
 </script>
 <script type="text/javascript">
     function myFunction(obj) {
