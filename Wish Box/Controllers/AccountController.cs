@@ -16,6 +16,11 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace Wish_Box.Controllers
 {
@@ -111,12 +116,11 @@ namespace Wish_Box.Controllers
                 if (user != null)
                 {
                     await Authenticate(model.Login); // аутентификация
-
-                    return RedirectToAction("Index", "Home");
+                    return PartialView("SuccessLogin");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
-            return RedirectToAction("Index", "Account");
+            return PartialView("Login", model);
         }
         [HttpGet]
         public IActionResult Register()
@@ -192,12 +196,11 @@ namespace Wish_Box.Controllers
 
                     await Authenticate(model.Login); // аутентификация
 
-                    return RedirectToAction("Index", "Home");
+                    return PartialView("SuccessRegister");
                 }
-                else
-                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                    ModelState.AddModelError("", "Имя пользователя занято");
             }
-            return RedirectToAction("Index", "Account");
+            return PartialView("Register", model);
         }
         public async Task<IActionResult> Edit()
         {
