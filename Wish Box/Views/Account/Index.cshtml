@@ -89,4 +89,22 @@
             </text>
         }
     </script>
+    <script type="text/javascript">
+        function myFunction(obj) {
+            console.log("countryList was changed");
+            var countryId = obj.value;
+
+            $.ajax({
+                type: "post",
+                url: "/Account/GetCityList/" + countryId,
+                contentType: "html",
+                success: function (response) {
+                    $("#citylist").empty();
+                    $("#citylist").append(response);
+                }
+
+            })
+        }
+            
+    </script>
 }
