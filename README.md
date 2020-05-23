@@ -18,7 +18,7 @@
 
 **Miro:** https://miro.com/app/board/o9J_kukMwds=/
 
-**Опубликованное приложение:** https://wish-box.azurewebsites.net/
+**Опубликованное приложение:** https://wish--box.azurewebsites.net/
 
 **Отчёт по второй аттестации:** https://github.com/marinaagafonova/Wish-box/blob/master/report_on_2_att.pdf
 
