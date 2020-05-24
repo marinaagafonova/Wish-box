@@ -55,11 +55,11 @@
                         </div>
                         <div>
                             <label class="control-label">Страна: </label>
-                            <select style="margin-right:7px;" name="country" asp-items="Model.Countries" class="form-control"></select>
+                            <select style="margin-right:7px;" onchange="myFunction(this)" name="country" asp-items="Model.Countries" class="form-control"></select>
                         </div>
                         <div>
                             <label class="control-label">Город: </label>
-                            <select style="margin-right:7px;" name="city" asp-items="Model.Cities" class="form-control"></select>
+                            <select style="margin-right:7px;" id="citylist" name="city" asp-items="Model.Cities" class="form-control"></select>
                         </div>
                         <div>
                             <input type="submit" value="Искать" class="btn btn-info" />
@@ -96,4 +96,22 @@
             }
         });
     }
+</script>
+<script type="text/javascript">
+    function myFunction(obj) {
+        console.log("countryList was changed");
+        var countryId = obj.value;
+
+        $.ajax({
+            type: "post",
+            url: "/Account/GetCityList/" + countryId,
+            contentType: "html",
+            success: function (response) {
+                $("#citylist").empty();
+                $("#citylist").append(response);
+            }
+
+        })
+    }
+
 </script>

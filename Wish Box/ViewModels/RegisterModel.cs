@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Wish_Box.ViewModels
 {
@@ -34,6 +35,8 @@ namespace Wish_Box.ViewModels
         public string ConfirmPassword { get; set; }
 
         public IFormFile Avatar { get; set; }
+        public SelectList Countries { get; set; }
+        public SelectList Cities { get; set; }
 
     }
 }

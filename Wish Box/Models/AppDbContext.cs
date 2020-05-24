@@ -10,10 +10,6 @@ using System.Threading.Tasks;
 
 namespace Wish_Box.Models
 {
-    class Country
-    {
-        List<string> cities;
-    }
     public class AppDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
@@ -26,44 +22,7 @@ namespace Wish_Box.Models
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
             Database.EnsureCreated();
-            string json = File.ReadAllText("wwwroot/Content/countries.json");
-            //var c = JsonConvert.DeserializeXmlNode(json);
-            
-            var countries = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(json);
-            int countryId = 1;
-            string connectionString = "Server=(localdb)\\mssqllocaldb;Database=aspnet-Wish_Box-FE7D3E55-F2B7-4477-88B5-C537D05A53C6;Trusted_Connection=True;MultipleActiveResultSets=true";
-
-            foreach (KeyValuePair<string, List<string>> country in countries)
-            {
-                string countryName = country.Key;
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    string sql = $"Insert Into country (CountryName) Values ('{countryName}')";
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        command.CommandType = CommandType.Text;
-                        connection.Open();
-                        command.ExecuteNonQuery();
-                        connection.Close();
-                    }
-                }
-                List<string> cities = country.Value;
-                foreach(string city in cities)
-                {
-                    using (SqlConnection connection = new SqlConnection(connectionString))
-                    {
-                        string sql = $"Insert Into City (CityName, CountryId) Values ('{city}', '{countryId}')";
-                        using (SqlCommand command = new SqlCommand(sql, connection))
-                        {
-                            command.CommandType = CommandType.Text;
-                            connection.Open();
-                            command.ExecuteNonQuery();
-                            connection.Close();
-                        }
-                    }
-                }
-                countryId++;
-            }
+            //InsertDataOfCitiesCountries();
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -90,6 +49,64 @@ namespace Wish_Box.Models
                 .WithMany()
                 .HasForeignKey("UserId")
                 .OnDelete(DeleteBehavior.Restrict);
+        }
+
+        private void InsertDataOfCitiesCountries()
+        {
+            #region insert data from json to DB
+            string json = File.ReadAllText("wwwroot/Content/countries.json");
+            var countries = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(json);
+            int countryId = 1;
+            string connectionString = "Server=(localdb)\\mssqllocaldb;Database=aspnet-Wish_Box-FE7D3E55-F2B7-4477-88B5-C537D05A53C6;Trusted_Connection=True;MultipleActiveResultSets=true";
+
+            foreach (KeyValuePair<string, List<string>> country in countries)
+            {
+                string countryName = country.Key;
+                SqlConnection connection = new SqlConnection(connectionString);
+                connection.Open();
+
+                string check = "select count(1) from country";
+                SqlCommand check_cmd = new SqlCommand(check, connection);
+                object counts = check_cmd.ExecuteScalar();
+                int count = Convert.ToInt32(counts);
+                if (count == 155)
+                    break;
+                connection.Close();
+
+                string sql = $"Insert Into country (CountryName) Values ('{countryName}')";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.CommandType = CommandType.Text;
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+                string sql2 = "select top 1 * from country order by CountryId desc";
+                connection.Open();
+
+                SqlCommand command2 = new SqlCommand(sql2, connection);
+                using (SqlDataReader dataReader = command2.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        countryId = Convert.ToInt32(dataReader["CountryId"]);
+                    }
+                }
+                connection.Close();
+                List<string> cities = country.Value;
+                foreach (string city in cities)
+                {
+                    sql = $"Insert Into City (CityName, CountryId) Values ('{city}', '{countryId}')";
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        command.CommandType = CommandType.Text;
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                }
+            }
+            #endregion
         }
     }
 }

@@ -20,12 +20,12 @@
         </div>
         <div class="form-group">
             <label asp-for="Country" class="control-label">Страна</label>
-            <input asp-for="Country" class="form-control" />
+            <select id="countrylist" onchange="myFunction(this)" asp-for="Country" asp-items="ViewBag.Countries" class="form-control"></select>
             <span asp-validation-for="Country" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="City" class="control-label">Город</label>
-            <input asp-for="City" class="form-control" />
+            @Html.DropDownListFor(m => m.City, new SelectList(ViewBag.CitiesFirst), new { @class = "form-control", @id = "citylist" })
             <span asp-validation-for="City" class="text-danger"></span>
 
         </div>
@@ -78,5 +78,23 @@
             });
             </text>
         }
+    </script>
+    <script type="text/javascript">
+        function myFunction(obj) {
+            console.log("countryList was changed");
+            var countryId = obj.value;
+
+            $.ajax({
+                type: "post",
+                url: "/Account/GetCityList/" + countryId,
+                contentType: "html",
+                success: function (response) {
+                    $("#citylist").empty();
+                    $("#citylist").append(response);
+                }
+
+            })
+        }
+
     </script>
 }
