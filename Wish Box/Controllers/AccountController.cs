@@ -21,6 +21,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace Wish_Box.Controllers
 {
@@ -34,7 +35,7 @@ namespace Wish_Box.Controllers
         {
             ".gif",".jpg",".jpeg",".png"
         };
-        public AccountController(AppDbContext context, IWebHostEnvironment appEnvironment)
+        public AccountController(AppDbContext context, IWebHostEnvironment appEnvironment, IConfiguration configuration)
         {
             db = context;
             _appEnvironment = appEnvironment;
@@ -44,7 +45,7 @@ namespace Wish_Box.Controllers
             if(countries == null)
             {
                 countries = new List<string>();
-                string connectionString = "Server=(localdb)\\mssqllocaldb;Database=aspnet-Wish_Box-FE7D3E55-F2B7-4477-88B5-C537D05A53C6;Trusted_Connection=True;MultipleActiveResultSets=true";
+                string connectionString = ConnectionString.Value;
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
@@ -68,8 +69,7 @@ namespace Wish_Box.Controllers
         {
             List<string> cities = new List<string>();
             List<int> country_id = new List<int>();
-
-            string connectionString = "Server=(localdb)\\mssqllocaldb;Database=aspnet-Wish_Box-FE7D3E55-F2B7-4477-88B5-C537D05A53C6;Trusted_Connection=True;MultipleActiveResultSets=true";
+            string connectionString = ConnectionString.Value;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -129,7 +129,7 @@ namespace Wish_Box.Controllers
             SelectList sl = new SelectList(countries);
             ViewBag.Countries = sl;
             List<string> cities = new List<string>();
-            string connectionString = "Server=(localdb)\\mssqllocaldb;Database=aspnet-Wish_Box-FE7D3E55-F2B7-4477-88B5-C537D05A53C6;Trusted_Connection=True;MultipleActiveResultSets=true";
+            string connectionString = ConnectionString.Value;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -210,7 +210,7 @@ namespace Wish_Box.Controllers
                 SelectList sl = new SelectList(countries);
                 ViewBag.Countries = sl;
                 List<string> cities = new List<string>();
-                string connectionString = "Server=(localdb)\\mssqllocaldb;Database=aspnet-Wish_Box-FE7D3E55-F2B7-4477-88B5-C537D05A53C6;Trusted_Connection=True;MultipleActiveResultSets=true";
+                string connectionString = ConnectionString.Value;
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();

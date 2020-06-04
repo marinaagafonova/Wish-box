@@ -22,7 +22,7 @@ namespace Wish_Box.Models
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
             Database.EnsureCreated();
-            //InsertDataOfCitiesCountries();
+           // InsertDataOfCitiesCountries();
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -57,7 +57,7 @@ namespace Wish_Box.Models
             string json = File.ReadAllText("wwwroot/Content/countries.json");
             var countries = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(json);
             int countryId = 1;
-            string connectionString = "Server=(localdb)\\mssqllocaldb;Database=aspnet-Wish_Box-FE7D3E55-F2B7-4477-88B5-C537D05A53C6;Trusted_Connection=True;MultipleActiveResultSets=true";
+            string connectionString = ConnectionString.Value;
 
             foreach (KeyValuePair<string, List<string>> country in countries)
             {

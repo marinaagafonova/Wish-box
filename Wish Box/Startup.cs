@@ -18,6 +18,10 @@ using Wish_Box.Models;
 
 namespace Wish_Box
 {
+    public static class ConnectionString
+    {
+        public static string Value { get; set; }
+    }
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -26,6 +30,7 @@ namespace Wish_Box
         }
 
         public IConfiguration Configuration { get; }
+
 
         //This method gets called by the runtime.Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -38,7 +43,7 @@ namespace Wish_Box
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(builder =>
                 builder.UseSqlServer(connectionString));
-
+            ConnectionString.Value = Configuration.GetConnectionString("DefaultConnection");
             // установка конфигурации подключения
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => //CookieAuthenticationOptions
@@ -46,7 +51,7 @@ namespace Wish_Box
             options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                 });
             services.AddControllersWithViews();
-
+            services.AddSingleton<IConfiguration>(Configuration);
             services.AddRazorPages();
             services.AddSwaggerGen(x =>
             {

@@ -64,10 +64,8 @@ namespace Wish_Box.Controllers
         {
             var keyword = Request.Query["keyword"].ToString();
             var users = db.Users.Where(u => u.Login.Contains(keyword));
-            //List<string> countries = GetCountries();
             List<string> cities = GetCities("Afghanistan");
             GetCountries();
-            //ViewBag.CitiesFirst = cities;
             var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
             List<int> following_ids = await db.Followings.Where(p => p.UserFId == current_user.Id).Select(p => p.UserIsFId).ToListAsync();
             if (model.Users == null)
@@ -91,7 +89,7 @@ namespace Wish_Box.Controllers
             List<string> cities = new List<string>();
             int country_id = 0;
 
-            string connectionString = "Server=(localdb)\\mssqllocaldb;Database=aspnet-Wish_Box-FE7D3E55-F2B7-4477-88B5-C537D05A53C6;Trusted_Connection=True;MultipleActiveResultSets=true";
+            string connectionString = ConnectionString.Value;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -124,7 +122,7 @@ namespace Wish_Box.Controllers
             if (countries == null)
             {
                 countries = new List<string>();
-                string connectionString = "Server=(localdb)\\mssqllocaldb;Database=aspnet-Wish_Box-FE7D3E55-F2B7-4477-88B5-C537D05A53C6;Trusted_Connection=True;MultipleActiveResultSets=true";
+                string connectionString = ConnectionString.Value;
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
@@ -161,7 +159,6 @@ namespace Wish_Box.Controllers
                 users = users.Where(p => p.Login.Contains(name));
             }
 
-           // List<string> countries = GetCountries();
 
             List<string> cities = GetCities(country);
             var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);

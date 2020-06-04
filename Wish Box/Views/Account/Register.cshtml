@@ -9,74 +9,37 @@
                 <div class="text-danger" asp-validation-summary="ModelOnly"> </div>
                 <div class="form-group">
                     <label asp-for="Login"><strong>Введите логин</strong></label><br />
-                    <input type="text" class="form-control" asp-for="Login" maxlength="50" />
-                    <span asp-validation-for="Login"></span>
+                    <input type="text" class="form-control" asp-for="Login" />
+                    <span asp-validation-for="Login" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="dayOfBirth"><strong>Введите дату рождения</strong></label><br />
                     <input type="date" class="form-control" asp-for="dayOfBirth" />
-                    <span asp-validation-for="dayOfBirth"></span>
+                    <span asp-validation-for="dayOfBirth" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Country"><strong>Введите страну</strong></label><br />
-                    <!--Html.DropDownListFor(m => m.Country, ViewBag.Counties as SelectList, "Выберете город", new { class = "form-control" }) -->
                     <select id="countrylist" onchange="myFunction(this)" asp-for="Country" asp-items="ViewBag.Countries" class="form-control"></select>
-                    <!-- <span asp-validation-for="Country"></span>-->
                 </div>
                 <div class="form-group">
                     <label asp-for="City"><strong>Введите город</strong></label><br />
                     @Html.DropDownListFor(m => m.City, new SelectList(ViewBag.CitiesFirst), new { @class = "form-control", @id = "citylist" })
-                    <!-- <input type="text" class="form-control" asp-for="City" /> -->
-                    <!--  <span asp-validation-for="City"></span>-->
                 </div>
                 <div class="form-group">
                     <label asp-for="Password"><strong>Введите пароль</strong></label><br />
+                    <label class="text-info">Пароль должен содержать латинские заглавные и прописные буквы, а также цифры. Минимальное кол-во символов - 5</label><br />
                     <input type="password" class="form-control" asp-for="Password" />
-                    <span asp-validation-for="Password"></span>
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="ConfirmPassword"><strong>Повторите пароль</strong></label><br />
                     <input type="password" class="form-control" asp-for="ConfirmPassword" />
-                    <span asp-validation-for="ConfirmPassword"></span>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
                 <div>
                     <input id="upload-file" accept=".gif,.jpg,.jpeg,.png" data-max-size="3145728" name="Avatar" type="file" class="form-control" />
                 </div>
                 <div>
-                    <div class="form-group">
-                        <label asp-for="Login"><strong>Введите логин</strong></label><br />
-                        <input type="text" class="form-control" asp-for="Login" />
-                        <span asp-validation-for="Login" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="dayOfBirth"><strong>Введите дату рождения</strong></label><br />
-                        <input type="date" class="form-control" asp-for="dayOfBirth" />
-                        <span asp-validation-for="dayOfBirth" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Country"><strong>Введите страну</strong></label><br />
-                        <input type="text" class="form-control" asp-for="Country" />
-                        <span asp-validation-for="Country" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="City"><strong>Введите город</strong></label><br />
-                        <input type="text" class="form-control" asp-for="City" />
-                        <span asp-validation-for="City" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Password"><strong>Введите пароль</strong></label><br />
-                        <label class="text-info">Пароль должен содержать латинские заглавные и прописные буквы, а также цифры. Минимальное кол-во символов - 5</label><br />
-                        <input type="password" class="form-control" asp-for="Password" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ConfirmPassword"><strong>Повторите пароль</strong></label><br />
-                        <input type="password" class="form-control" asp-for="ConfirmPassword" />
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                    </div>
-                    <div>
-                        <input name="Avatar" type="file" class="form-control" />
-                    </div>
                     <div>
                         <input class="btn btn-outline-success sign-up-btn" type="submit" value="Регистрация" id="finish_register" name="finish_register" />
                     </div>
@@ -84,7 +47,7 @@
             </form>
         </div>
     </div>
-</div>
+
 
 
 <script type="text/javascript">
