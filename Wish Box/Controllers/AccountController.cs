@@ -22,12 +22,15 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
+using Wish_Box.Repositories;
 
 namespace Wish_Box.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly AppDbContext db;
+        //private readonly AppDbContext db;
+        private readonly IRepository<User> userRepository;
+
         private readonly IWebHostEnvironment _appEnvironment;
         private List<string> countries;
 
@@ -35,9 +38,10 @@ namespace Wish_Box.Controllers
         {
             ".gif",".jpg",".jpeg",".png"
         };
-        public AccountController(AppDbContext context, IWebHostEnvironment appEnvironment, IConfiguration configuration)
+        public AccountController(IRepository<User> userRepository, IWebHostEnvironment appEnvironment, IConfiguration configuration)
         {
-            db = context;
+            //db = context;
+            this.userRepository = userRepository;
             _appEnvironment = appEnvironment;
         }
         private void InitCountryList()
@@ -112,7 +116,7 @@ namespace Wish_Box.Controllers
             if (ModelState.IsValid)
             {
                 var hash_pass = Convert.ToBase64String(new MD5CryptoServiceProvider().ComputeHash(new UTF8Encoding().GetBytes(model.Password)));
-                User user = await db.Users.FirstOrDefaultAsync(u => u.Login == model.Login && u.Password == hash_pass);
+                User user = await userRepository.FindFirstOrDefault(u => u.Login == model.Login && u.Password == hash_pass);
                 if (user != null)
                 {
                     await Authenticate(model.Login); // аутентификация
@@ -163,7 +167,7 @@ namespace Wish_Box.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await db.Users.FirstOrDefaultAsync(u => u.Login == model.Login);
+                User user = await userRepository.FindFirstOrDefault(u => u.Login == model.Login);
                 if (user == null)
                 {
                     var hash_pass = Convert.ToBase64String(new MD5CryptoServiceProvider().ComputeHash(new UTF8Encoding().GetBytes(model.Password)));
@@ -191,8 +195,8 @@ namespace Wish_Box.Controllers
                         new_user.Avatar = path;
                     }
                     // добавляем пользователя в бд
-                    db.Users.Add(new_user);
-                    await db.SaveChangesAsync();
+                    await userRepository.Create(new_user);
+                    //await db.SaveChangesAsync();
 
                     await Authenticate(model.Login); // аутентификация
 
@@ -236,7 +240,7 @@ namespace Wish_Box.Controllers
                     connection.Close();
                 }
                 ViewBag.CitiesFirst = cities;
-                User user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
+                User user = await userRepository.FindFirstOrDefault(p => p.Login == User.Identity.Name);
                 if (user != null)
                 {
                     Edit1Model e = new Edit1Model()
@@ -263,7 +267,7 @@ namespace Wish_Box.Controllers
                 {
                     if (CheckUserName(name, model.Login).Result)
                     {
-                        User user = await db.Users.FirstOrDefaultAsync(p => p.Login == name);
+                        User user = await userRepository.FindFirstOrDefault(p => p.Login == name);
                         user.Login = model.Login;
                         user.City = model.City;
                         user.Country = model.Country;
@@ -295,8 +299,8 @@ namespace Wish_Box.Controllers
                             }
                             user.Avatar = path;
                         }
-                        db.Users.Update(user);
-                        await db.SaveChangesAsync();
+                        await userRepository.Update(user);
+                        //await db.SaveChangesAsync();
                         await Authenticate(model.Login);
                         return RedirectToAction("Show", "UserPage", new { id = model.Login });
                     }
@@ -312,12 +316,12 @@ namespace Wish_Box.Controllers
             if (oldLogin == newLogin)
                 return true;
             else
-                return await db.Users.FirstOrDefaultAsync(p => p.Login == newLogin) == null;
+                return await userRepository.FindFirstOrDefault(p => p.Login == newLogin) == null;
         }
         [HttpGet]
         public async Task<IActionResult> ChangePassword()
         {
-            if (User.Identity.Name != null && await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name) != null)
+            if (User.Identity.Name != null && await userRepository.FindFirstOrDefault(p => p.Login == User.Identity.Name) != null)
                 return View();
             return NotFound();
         }
@@ -330,13 +334,13 @@ namespace Wish_Box.Controllers
                 string name = User.Identity.Name;
                 if (name != null)
                 {
-                    User user = await db.Users.FirstOrDefaultAsync(p => p.Login == name);
+                    User user = await userRepository.FindFirstOrDefault(p => p.Login == name);
                     var hash_pass = Convert.ToBase64String(new MD5CryptoServiceProvider().ComputeHash(new UTF8Encoding().GetBytes(model.OldPassword)));
                     if (user.Password == hash_pass)
                     {
                         user.Password = Convert.ToBase64String(new MD5CryptoServiceProvider().ComputeHash(new UTF8Encoding().GetBytes(model.Password)));
-                        db.Users.Update(user);
-                        await db.SaveChangesAsync();
+                        await userRepository.Update(user);
+                        //await db.SaveChangesAsync();
                         return RedirectToAction("Index", "Home");
                     }
                     else

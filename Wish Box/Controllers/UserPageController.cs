@@ -5,16 +5,25 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Wish_Box.Models;
+using Wish_Box.Repositories;
 using Wish_Box.ViewModels;
 
 namespace Wish_Box.Controllers
 {
     public class UserPageController : Controller
     {
-        private readonly AppDbContext db;
-        public UserPageController(AppDbContext context)
+        //private readonly AppDbContext db;
+        private readonly IRepository<User> userRepository;
+        private readonly IRepository<Following> followingRepository;
+        private readonly IRepository<Wish> wishRepository;
+        private readonly IRepository<TakenWish> takenWishRepository;
+        public UserPageController(IRepository<User> userRepository, IRepository<Following> followingRepository, IRepository<Wish> wishRepository, IRepository<TakenWish> takenWishRepository)
         {
-            db = context;
+            //db = context;
+            this.userRepository = userRepository;
+            this.followingRepository = followingRepository;
+            this.wishRepository = wishRepository;
+            this.takenWishRepository = takenWishRepository;
         }
 
         [HttpGet]
@@ -23,11 +32,11 @@ namespace Wish_Box.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var login = RouteData.Values["id"].ToString();
-                User user = db.Users.FirstOrDefault(x => x.Login == login);//the owner of the page we're on
-                User currentUser = db.Users.FirstOrDefault(x => x.Login == User.Identity.Name);//current logged in user
-                List<int> following_ids = await db.Followings.Where(p => p.UserIsFId == user.Id).Select(p => p.UserFId).ToListAsync();
-                List<Wish> user_wishes = await db.Wishes.Where(p => p.UserId == user.Id).ToListAsync();
-                List<int> takenWishes = await db.TakenWishes.Where(t => t.WhoGivesId == currentUser.Id).Select(t => t.WishId).ToListAsync();
+                User user = await userRepository.FindFirstOrDefault(x => x.Login == login); //the owner of the page we're on
+                User currentUser = await userRepository.FindFirstOrDefault(x => x.Login == User.Identity.Name); //current logged in user
+                List<int> following_ids = followingRepository.Find(p => p.UserIsFId == user.Id).Select(p => p.UserFId).ToList();
+                List<Wish> user_wishes = wishRepository.Find(p => p.UserId == user.Id).ToList();
+                List<int> takenWishes = takenWishRepository.Find(t => t.WhoGivesId == currentUser.Id).Select(t => t.WishId).ToList();
                 UserPageViewModel upvm = new UserPageViewModel()
                 {
                     User = user,
