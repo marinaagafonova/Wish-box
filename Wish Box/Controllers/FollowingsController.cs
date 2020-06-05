@@ -9,7 +9,8 @@ using Wish_Box.ViewModels;
 
 namespace Wish_Box.Controllers
 {
-    [Route("[controller]")]
+    //[ApiController]
+    [Route("api/[controller]")]
     [ApiController]
     public class FollowingsController : Controller
     {
@@ -20,12 +21,14 @@ namespace Wish_Box.Controllers
             db = context;
         }
 
-        //[Route("Add/{id:int}")]
+        [Route("PostFollowing/{id}")]
         //[HttpPost]
-        [HttpPost("{id:int}")]
-        public async Task<ActionResult<Following>> Add([FromRoute] int id)
+        // [HttpPost("{id:int}")]
+        //[HttpPost ("Add/{id}")]
+        [HttpPost("PostFollowing/{id}")]
+        public async Task<ActionResult<Following>> PostFollowing(int id)
         {
-            var followed_id = Convert.ToInt32(RouteData.Values["id"]);
+            //var id = Convert.ToInt32(RouteData.Values["id"]);
             var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
             if (User.Identity.Name != null)
             {
@@ -41,7 +44,7 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        //[Route("Remove/{id:int}")]
+        [Route("Remove/{id:int}")]
         //[HttpDelete]
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<Following>> Remove([FromRoute]int id)

@@ -52,7 +52,7 @@ namespace Wish_Box
             {
                 x.SwaggerDoc("v1", new OpenApiInfo{ Title = "Wishbox API", Version = "v1"});
             });
-
+            services.AddMvc(option => option.EnableEndpointRouting = false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -93,19 +93,39 @@ namespace Wish_Box
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllerRoute(
+            //        name: "default",
+            //        pattern: "{controller=Home}/{action=Index}/{id?}");
+            //    //endpoints.MapControllers();
+            //    endpoints.MapRazorPages();
+            //});
+            //app.UseMvc(
+            //routes =>
+            //{
+            //    routes.MapRoute("Add", "{controller=Following}/{action=Add}");
+            //}
+            //);
+
+
+
+            app.UseMvc(routes =>
             {
-                endpoints.MapControllerRoute(
+                routes.MapRoute("api", "api/post", new { controller = "Following", action = "PostFollowing" });
+                routes.MapRoute("following", "following/delete", new { controller = "Following", action = "Remove" });
+
+                routes.MapRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-                //endpoints.MapControllers();
-                endpoints.MapRazorPages();
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
 
+
+            //app.UseMvcWithDefaultRoute();
             //app.UseMvc(routes =>
             //{
             //    routes.MapRoute(
-            //        name:"default",
+            //        name: "default",
             //        template: "{controller=Home}/{action=Search}/{id?}");
             //});
         }
