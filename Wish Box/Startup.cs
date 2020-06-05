@@ -45,7 +45,7 @@ namespace Wish_Box
             services.AddDbContext<AppDbContext>(builder =>
                 builder.UseSqlServer(connectionString));
             ConnectionString.Value = Configuration.GetConnectionString("DefaultConnection");
-            // óñòàíîâêà êîíôèãóðàöèè ïîäêëþ÷åíèÿ
+            // Ã³Ã±Ã²Ã Ã­Ã®Ã¢ÃªÃ  ÃªÃ®Ã­Ã´Ã¨Ã£Ã³Ã°Ã Ã¶Ã¨Ã¨ Ã¯Ã®Ã¤ÃªÃ«Ã¾Ã·Ã¥Ã­Ã¨Ã¿
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => //CookieAuthenticationOptions
                 {
@@ -59,8 +59,8 @@ namespace Wish_Box
                 x.SwaggerDoc("v1", new OpenApiInfo{ Title = "Wishbox API", Version = "v1"});
             });
 
-            services.AddScoped<IRepository<Following>, FollowingsRepository>();
-            services.AddScoped<IRepository<User>, UserRepository>();
+            services.AddTransient<IRepository<Following>, FollowingsRepository>();
+            services.AddTransient<IRepository<User>, UserRepository>();
 
             services.AddTransient<IRepository<TakenWish>, TakenWishRepository>();
             services.AddTransient<IRepository<Comment>, CommentRepository>();
