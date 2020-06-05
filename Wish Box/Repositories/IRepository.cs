@@ -13,8 +13,8 @@ namespace Wish_Box.Repositories
 		Task<T> FindFirstOrDefault(Func<T, Boolean> predicate);
 
 
-		void Create(T item);
-		void Update(T item);
-		void Delete(int id);
+		Task Create(T item);
+		Task Update(T item);
+		Task Delete(int id);
 	}
 }
