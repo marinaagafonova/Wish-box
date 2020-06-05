@@ -70,7 +70,7 @@ namespace Wish_Box.Controllers
                     wish.Attachment = path;
                 }
                 wish.IsTaken = false;
-                wish.User = user_rep.Find(p => p.Login == User.Identity.Name).ToList()[0];
+                wish.User = await user_rep.FindFirstOrDefault(p => p.Login == User.Identity.Name);
                 wish.UserId = wish.User.Id;
                 await wish_rep.Create(wish);
                 return RedirectToAction("OwnList");
@@ -160,7 +160,7 @@ namespace Wish_Box.Controllers
                 var id = Convert.ToInt32(RouteData.Values["id"]);
                 if (id > 0)
                 {
-                    var comments = comment_rep.Find(p => p.WishId == id);
+                    var comments = comment_rep.Find(p => p.WishId == id).ToList();
                     foreach (var comment in comments)
                     {
                         await comment_rep.Delete(comment.Id);
@@ -204,7 +204,7 @@ namespace Wish_Box.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var wish_id = Convert.ToInt32(RouteData.Values["id"]);
-                var currentUser = user_rep.Find(x => x.Login == User.Identity.Name).ToList()[0];
+                var currentUser = user_rep.FindFirstOrDefault(x => x.Login == User.Identity.Name);
                 Wish currentWish = await wish_rep.FindFirstOrDefault(p => p.Id == wish_id);
                 List<WishRating> currentRates = wishRate_rep.Find(x => x.UserId == currentUser.Id && x.WishId == wish_id).ToList();
                 var currentRate = new WishRating();
@@ -250,7 +250,7 @@ namespace Wish_Box.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var wish_id = Convert.ToInt32(RouteData.Values["id"]);
-                var currentUser = user_rep.Find(x => x.Login == User.Identity.Name).ToList()[0];
+                var currentUser = user_rep.FindFirstOrDefault(x => x.Login == User.Identity.Name);
                 Wish currentWish = await wish_rep.FindFirstOrDefault(p => p.Id == wish_id);
                 var currentRates = wishRate_rep.Find(x => x.UserId == currentUser.Id && x.WishId == wish_id).ToList();
                 var currentRate = new WishRating();
