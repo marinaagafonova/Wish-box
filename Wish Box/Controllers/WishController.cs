@@ -26,10 +26,12 @@ namespace Wish_Box.Controllers
             ".gif",".jpg",".jpeg",".png"
         };
 
-        public WishController(IRepository<Wish> wishRepository, IRepository<User> userRepository, IWebHostEnvironment appEnvironment)
+        public WishController(IRepository<Wish> wishRepository, IRepository<User> userRepository, IRepository<WishRating> wishRateRepository, IRepository<Comment> commentRepository, IWebHostEnvironment appEnvironment)
         {
             wish_rep = wishRepository;
             user_rep = userRepository;
+            wishRate_rep = wishRateRepository;
+            comment_rep = commentRepository;
             _appEnvironment = appEnvironment;
         }
 
