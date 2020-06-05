@@ -14,17 +14,18 @@ namespace Wish_Box.Repositories
         {
             db = context;
         }
-        public void Create(User item)
+        public async void Create(User item)
         {
             db.Users.Add(item);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async void Delete(int id)
         {
             User item = db.Users.Find(id);
-            db.Users.Remove(item);
-            db.SaveChanges();
+            if (item != null)
+                db.Users.Remove(item);
+            await db.SaveChangesAsync();
         }
 
         public IEnumerable<User> Find(Func<User, bool> predicate)
@@ -45,10 +46,10 @@ namespace Wish_Box.Repositories
             return list ?? new List<User>();
         }
 
-        public void Update(User item)
+        public async void Update(User item)
         {
             db.Entry(item).State = EntityState.Modified;
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
     }
 }
