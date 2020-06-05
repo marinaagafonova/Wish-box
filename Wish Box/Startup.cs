@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Wish_Box.Options;
 using Microsoft.OpenApi.Models;
 using Wish_Box.Models;
+using Wish_Box.Repositories;
 
 namespace Wish_Box
 {
@@ -57,6 +58,9 @@ namespace Wish_Box
             {
                 x.SwaggerDoc("v1", new OpenApiInfo{ Title = "Wishbox API", Version = "v1"});
             });
+
+            services.AddScoped<IRepository<Following>, FollowingsRepository>();
+            services.AddScoped<IRepository<User>, UserRepository>();
 
             services.AddTransient<IRepository<TakenWish>, TakenWishRepository>();
             services.AddTransient<IRepository<Comment>, CommentRepository>();
