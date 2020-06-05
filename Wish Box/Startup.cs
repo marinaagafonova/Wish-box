@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Wish_Box.Options;
 using Microsoft.OpenApi.Models;
 using Wish_Box.Models;
+using Wish_Box.Repositories;
 
 namespace Wish_Box
 {
@@ -60,6 +61,8 @@ namespace Wish_Box
 
             services.AddTransient<IRepository<TakenWish>, TakenWishRepository>();
             services.AddTransient<IRepository<Comment>, CommentRepository>();
+            services.AddTransient<IRepository<Wish>, WishRepository>();
+            services.AddTransient<IRepository<WishRating>, WishRatingRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

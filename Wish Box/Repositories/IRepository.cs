@@ -10,7 +10,7 @@ namespace Wish_Box.Repositories
 		IEnumerable<T> GetAll();
 		Task<T> Get(int id);
 		IEnumerable<T> Find(Func<T, Boolean> predicate);
-		Task<T> FindFirstOrDefault(Func<T, Boolean> predicate);
+		Task<T> FindFirstOrDefault(System.Linq.Expressions.Expression<Func<T, Boolean>> predicate);
 
 
 		Task Create(T item);
