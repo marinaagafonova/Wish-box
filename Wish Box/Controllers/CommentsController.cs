@@ -6,29 +6,39 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Wish_Box.Models;
+using Wish_Box.Repositories;
 using Wish_Box.ViewModels;
 
 namespace Wish_Box.Controllers
 {
     public class CommentsController : Controller
     {
-        private readonly AppDbContext db;
+        //private readonly AppDbContext db;
+        private readonly IRepository<Comment> comment_rep;
+        private readonly IRepository<User> user_rep;
+        private readonly IRepository<Wish> wish_rep;
 
-        public CommentsController(AppDbContext context)
+        public CommentsController(IRepository<Wish> wishRepository, IRepository<User> userRepository, IRepository<Comment> commentRepository)
         {
-            db = context;
+            comment_rep = commentRepository;
+            user_rep = userRepository;
+            wish_rep = wishRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetComments()
         {
+            string id = RouteData.Values["id"].ToString();
             var wishId = Convert.ToInt32(RouteData.Values["id"]);
-            var comments = await db.Comments.Where(c => c.Wish.Id == wishId).OrderBy(p=>p.Id).ToListAsync();
-            
+            var comments = comment_rep.Find(c => c.WishId == wishId)/*.OrderBy(p=>p.Id).ToList()*/;
+            if(comments != null)
+            {
+                comments = comments.OrderBy(p => p.Id).ToList();
+            }
             List<CommentViewModel> commentModels = new List<CommentViewModel>();
             foreach(Comment c in comments)
             {
-                var currentUser = await db.Users.FirstOrDefaultAsync(u => u.Id == c.UserId);
+                var currentUser = await user_rep.FindFirstOrDefault(u => u.Id == c.UserId);
                 commentModels.Add(
                     new CommentViewModel
                     {
@@ -46,10 +56,10 @@ namespace Wish_Box.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddComment(CommentViewModel comment)
+        public async Task<IActionResult> AddComment(CommentViewModel comment)
         {
-            var user = db.Users.FirstOrDefault(u => u.Login == User.Identity.Name);
-            var wish = db.Wishes.FirstOrDefault(p => p.Id == comment.WishId);
+            var user = await user_rep.FindFirstOrDefault(u => u.Login == User.Identity.Name);
+            var wish = await wish_rep.FindFirstOrDefault(p => p.Id == comment.WishId);
             if (comment != null && user != null && wish != null && comment.Description != "")
             {
                 Comment commentEntity = new Comment
@@ -59,24 +69,21 @@ namespace Wish_Box.Controllers
                     UserId = user.Id,
                     InReplyId = comment.InReplyId
                 };
-                db.Comments.Add(commentEntity);
-                db.SaveChanges();
+                await comment_rep.Create(commentEntity);
             }
-            return RedirectToAction("Show", "UserPage", new { id = db.Users.FirstOrDefault(u => u.Id == wish.UserId).Login });
+            return RedirectToAction("Show", "UserPage", new { id = (await user_rep.FindFirstOrDefault(u => u.Id == wish.UserId)).Login });
         }
 
         [HttpPost]//[HttpDelete]
-        public IActionResult Delete()
+        public async Task<IActionResult> Delete()
         {
             var commentId = Convert.ToInt32(RouteData.Values["id"]);
-            var username = db.Users.FirstOrDefault(u => u.Id ==
-                            db.Wishes.FirstOrDefault(w => w.Id == 
-                             db.Comments.FirstOrDefault(c => c.Id == commentId).WishId).UserId).Login;
+            var wishId = (await comment_rep.FindFirstOrDefault(c => c.Id == commentId)).WishId;
+            var userId = (await wish_rep.FindFirstOrDefault(p => p.Id == wishId)).UserId;
+            var username = (await user_rep.FindFirstOrDefault(u => u.Id == userId)).Login;
             if (commentId > 0 && User.Identity.Name != null)
             {
-                Comment c = new Comment { Id = commentId };
-                db.Entry(c).State = EntityState.Deleted;
-                db.SaveChanges();
+                await comment_rep.Delete(commentId);
                 return RedirectToAction("Show", "UserPage", new { id = username });
             }
             return NotFound();

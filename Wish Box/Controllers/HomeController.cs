@@ -36,7 +36,7 @@ namespace Wish_Box.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var current_user = user_rep.FindFirstOrDefault(p => p.Login == User.Identity.Name);
+                var current_user = await user_rep.FindFirstOrDefault(p => p.Login == User.Identity.Name);
                 var followings = following_rep.Find(p => p.UserFId == current_user.Id).ToList();
                 var wishes = new List<Wish>();
                 if(followings.Count > 0)
