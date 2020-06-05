@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Wish_Box.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Wish_Box.Repositories
 {
@@ -14,13 +15,13 @@ namespace Wish_Box.Repositories
         {
             db = context;
         }
-        public async void Create(User item)
+        public async Task Create(User item)
         {
             db.Users.Add(item);
             await db.SaveChangesAsync();
         }
 
-        public async void Delete(int id)
+        public async Task Delete(int id)
         {
             User item = db.Users.Find(id);
             if (item != null)
@@ -33,9 +34,14 @@ namespace Wish_Box.Repositories
             return db.Users.Where(predicate).ToList();
         }
 
-        public User Get(int id)
+        public async Task<User> FindFirstOrDefault(Expression<Func<User, bool>> predicate)
         {
-            User item = db.Users.Find(id);
+            return await db.Users.FirstOrDefaultAsync(predicate, System.Threading.CancellationToken.None);
+        }
+
+        public async Task<User> Get(int id)
+        {
+            var item = await db.Users.FindAsync(id);
             return item;
         }
 
@@ -46,7 +52,7 @@ namespace Wish_Box.Repositories
             return list ?? new List<User>();
         }
 
-        public async void Update(User item)
+        public async Task Update(User item)
         {
             db.Entry(item).State = EntityState.Modified;
             await db.SaveChangesAsync();

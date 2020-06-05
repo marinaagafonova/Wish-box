@@ -15,13 +15,13 @@ namespace Wish_Box.Repositories
         {
             db = context;
         }
-        public async void Create(Following item)
+        public async Task Create(Following item)
         {
             db.Followings.Add(item);
             await db.SaveChangesAsync();
         }
 
-        public async void Delete(int id)
+        public async Task Delete(int id)
         {
             Following following = db.Followings.Find(id);
 
@@ -36,9 +36,14 @@ namespace Wish_Box.Repositories
             return db.Followings.Where(predicate).ToList();
         }
 
-        public Following Get(int id)
+        public async Task<Following> FindFirstOrDefault(System.Linq.Expressions.Expression<Func<Following, bool>> predicate)
         {
-            Following item = db.Followings.Find(id);
+            return await db.Followings.FirstOrDefaultAsync(predicate, System.Threading.CancellationToken.None);
+        }
+
+        public async Task<Following> Get(int id)
+        {
+            var item = await db.Followings.FindAsync(id);
             return item;
         }
 
@@ -49,7 +54,7 @@ namespace Wish_Box.Repositories
             return list ?? new List<Following>();
         }
 
-        public async void Update(Following item)
+        public async Task Update(Following item)
         {
             db.Entry(item).State = EntityState.Modified;
             await db.SaveChangesAsync();
