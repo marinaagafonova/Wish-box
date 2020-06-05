@@ -18,10 +18,13 @@ namespace Wish_Box.Controllers
         {
             db = context;
         }
+
+        [HttpGet]
         public async Task<IActionResult> GetComments()
         {
             var wishId = Convert.ToInt32(RouteData.Values["id"]);
             var comments = await db.Comments.Where(c => c.Wish.Id == wishId).OrderBy(p=>p.Id).ToListAsync();
+            
             List<CommentViewModel> commentModels = new List<CommentViewModel>();
             foreach(Comment c in comments)
             {
@@ -62,7 +65,7 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Show", "UserPage", new { id = db.Users.FirstOrDefault(u => u.Id == wish.UserId).Login });
         }
 
-        [HttpPost]
+        [HttpPost]//[HttpDelete]
         public IActionResult Delete()
         {
             var commentId = Convert.ToInt32(RouteData.Values["id"]);

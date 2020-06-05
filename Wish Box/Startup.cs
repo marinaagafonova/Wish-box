@@ -58,6 +58,8 @@ namespace Wish_Box
                 x.SwaggerDoc("v1", new OpenApiInfo{ Title = "Wishbox API", Version = "v1"});
             });
 
+            services.AddTransient<IRepository<TakenWish>, TakenWishRepository>();
+            services.AddTransient<IRepository<Comment>, CommentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
