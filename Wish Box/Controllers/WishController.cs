@@ -9,22 +9,27 @@ using Microsoft.EntityFrameworkCore;
 using Wish_Box.Models;
 using System.Drawing;
 using Microsoft.AspNetCore.Hosting;
+using Wish_Box.Repositories;
 
 namespace Wish_Box.Controllers
 {
     public class WishController : Controller
     {
         private readonly IWebHostEnvironment _appEnvironment;
-        private readonly AppDbContext db;
+        private readonly IRepository<Wish> wish_rep;
+        private readonly IRepository<User> user_rep;
+        private readonly IRepository<WishRating> wishRate_rep;
+
 
         private List<string> formats = new List<string>()
         {
             ".gif",".jpg",".jpeg",".png"
         };
 
-        public WishController(AppDbContext context, IWebHostEnvironment appEnvironment)
+        public WishController(IRepository<Wish> wishRepository, IRepository<User> userRepository, IWebHostEnvironment appEnvironment)
         {
-            db = context;
+            wish_rep = wishRepository;
+            user_rep = userRepository;
             _appEnvironment = appEnvironment;
         }
 
@@ -63,10 +68,9 @@ namespace Wish_Box.Controllers
                     wish.Attachment = path;
                 }
                 wish.IsTaken = false;
-                wish.User = db.Users.Where(p => p.Login == User.Identity.Name).ToList()[0]; //await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
+                wish.User = user_rep.Find(p => p.Login == User.Identity.Name).ToList()[0];
                 wish.UserId = wish.User.Id;
-                db.Wishes.Add(wish);
-                await db.SaveChangesAsync();
+                wish_rep.Create(wish);
                 return RedirectToAction("OwnList");
             }
             return RedirectToAction("Index", "Account");
@@ -79,16 +83,15 @@ namespace Wish_Box.Controllers
                 var id = Convert.ToInt32(RouteData.Values["id"]);
                 if (id >= 0)
                 {
-                    Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
+                    Wish wish = wish_rep.Get(id);
                     if (wish != null)
                     {
-                        User user = await db.Users.FirstOrDefaultAsync(p => p.Id == wish.UserId);
+                        User user = user_rep.Get(wish.UserId);
                         if (user != null && user.Login == User.Identity.Name)
                             return View(wish);
                     }
                 }
                 return NotFound();
-
             }
             return RedirectToAction("Index", "Account");
         }
@@ -98,7 +101,7 @@ namespace Wish_Box.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == wvm.Id);
+                Wish wish = wish_rep.Get(wvm.Id);
                 if (wvm.Attachment != null)
                 {
                     string path = "/Files/" + wvm.Attachment.FileName;
@@ -123,10 +126,8 @@ namespace Wish_Box.Controllers
                 {
                     wish.Description = wvm.Description;
                 }
-                db.Wishes.Update(wish);
-                await db.SaveChangesAsync();
+                wish_rep.Update(wish);
                 return RedirectToAction("OwnList");
-
             }
             return RedirectToAction("Index", "Account");
         }
@@ -140,12 +141,11 @@ namespace Wish_Box.Controllers
                 var id = Convert.ToInt32(RouteData.Values["id"]);
                 if (id >= 0)
                 {
-                    Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
+                    Wish wish = wish_rep.Get(id);
                     if (wish != null)
                         return PartialView(wish);
                 }
                 return NotFound();
-
             }
             return RedirectToAction("Index", "Account");
         }
@@ -158,14 +158,12 @@ namespace Wish_Box.Controllers
                 var id = Convert.ToInt32(RouteData.Values["id"]);
                 if (id > 0)
                 {
-                    Wish wish = new Wish { Id = id };
                     var comments = await db.Comments.Where(p => p.WishId == id).ToListAsync();
                     foreach (var comment in comments)
                     {
                         db.Entry(comment).State = EntityState.Deleted;
                     }
-                    db.Entry(wish).State = EntityState.Deleted;
-                    await db.SaveChangesAsync();
+                    wish_rep.Delete(id);
                     return Redirect(Request.Headers["Referer"].ToString());
                 }
                 return NotFound();
@@ -180,8 +178,8 @@ namespace Wish_Box.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
-                var wishes = await db.Wishes.Where(p => p.UserId == current_user.Id).ToListAsync();
+                var current_user = user_rep.Find(p => p.Login == User.Identity.Name).ToList()[0];
+                var wishes = wish_rep.Find(p => p.UserId == current_user.Id).ToList();
                 return View(wishes);
             }
             return RedirectToAction("Index", "Account");
@@ -189,8 +187,14 @@ namespace Wish_Box.Controllers
 
         public int GetRating()
         {
-            try { return db.Wishes.FirstOrDefault(w => w.Id == Convert.ToInt32(RouteData.Values["id"])).Rating; }
-            catch (Exception e) { Console.WriteLine(e.Message); return -999; }
+            try 
+            { 
+                return wish_rep.Get(Convert.ToInt32(RouteData.Values["id"])).Rating;
+            }
+            catch (Exception e) 
+            { 
+                Console.WriteLine(e.Message); return -999; 
+            }
         }
 
         public async Task<IActionResult> RatingPlus()
@@ -198,16 +202,19 @@ namespace Wish_Box.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var wish_id = Convert.ToInt32(RouteData.Values["id"]);
-                var currentUser = await db.Users.FirstOrDefaultAsync(x => x.Login == User.Identity.Name);
-                var currentWish = await db.Wishes.FirstOrDefaultAsync(x => x.Id == wish_id);
-                var currentRate = await db.WishRatings.FirstOrDefaultAsync(x => x.UserId == currentUser.Id && x.WishId == wish_id);
+                var currentUser = user_rep.Find(x => x.Login == User.Identity.Name).ToList()[0];
+                var currentWish = wish_rep.Get(wish_id);
+                var currentRates = wishRate_rep.Find(x => x.UserId == currentUser.Id && x.WishId == wish_id).ToList();
+                var currentRate = new WishRating();
+                if (currentRates != null)
+                    currentRate = currentRates[0];
 
                 if (currentRate == null)
                 {
                     currentWish.Rating += 1;
-                    db.Wishes.Update(currentWish);
+                    wish_rep.Update(currentWish);
 
-                    db.WishRatings.Add(new WishRating()
+                    wishRate_rep.Create(new WishRating()
                     {
                         WishId = wish_id,
                         UserId = currentUser.Id,
@@ -219,19 +226,18 @@ namespace Wish_Box.Controllers
                     if (!currentRate.Rate)
                     {
                         currentWish.Rating += 2;
-                        db.Wishes.Update(currentWish);
+                        wish_rep.Update(currentWish);
 
                         currentRate.Rate = true;
-                        db.WishRatings.Update(currentRate);
+                        wishRate_rep.Update(currentRate);
                     }
                 }
 
                 if (currentWish.Rating > -5)
                 {
                     currentWish.IsVisible = true;
-                    db.Wishes.Update(currentWish);
+                    wish_rep.Update(currentWish);
                 }
-                await db.SaveChangesAsync();
                 return Redirect(Request.Headers["Referer"].ToString());
             }
             return RedirectToAction("Index", "Account");
@@ -242,16 +248,19 @@ namespace Wish_Box.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var wish_id = Convert.ToInt32(RouteData.Values["id"]);
-                var currentUser = await db.Users.FirstOrDefaultAsync(x => x.Login == User.Identity.Name);
-                var currentWish = await db.Wishes.FirstOrDefaultAsync(x => x.Id == wish_id);
-                var currentRate = await db.WishRatings.FirstOrDefaultAsync(x => x.UserId == currentUser.Id && x.WishId == wish_id);
+                var currentUser = user_rep.Find(x => x.Login == User.Identity.Name).ToList()[0];
+                var currentWish = wish_rep.Get(wish_id);
+                var currentRates = wishRate_rep.Find(x => x.UserId == currentUser.Id && x.WishId == wish_id).ToList();
+                var currentRate = new WishRating();
+                if (currentRates != null)
+                    currentRate = currentRates[0];
 
                 if (currentRate == null)
                 {
                     currentWish.Rating -= 1;
-                    db.Wishes.Update(currentWish);
+                    wish_rep.Update(currentWish);
 
-                    db.WishRatings.Add(new WishRating()
+                    wishRate_rep.Create(new WishRating()
                     {
                         WishId = wish_id,
                         UserId = currentUser.Id,
@@ -263,19 +272,18 @@ namespace Wish_Box.Controllers
                     if (currentRate.Rate)
                     {
                         currentWish.Rating -= 2;
-                        db.Wishes.Update(currentWish);
+                        wish_rep.Update(currentWish);
 
                         currentRate.Rate = false;
-                        db.WishRatings.Update(currentRate);
+                        wishRate_rep.Update(currentRate);
                     }
                 }
 
                 if (currentWish.Rating <= -5)
                 {
                     currentWish.IsVisible = false;
-                    db.Wishes.Update(currentWish);
+                    wish_rep.Update(currentWish);
                 }
-                await db.SaveChangesAsync();
                 return Redirect(Request.Headers["Referer"].ToString());
             }
             return RedirectToAction("Index", "Account");
