@@ -33,7 +33,7 @@ namespace Wish_Box.Repositories
 
         public IEnumerable<Following> Find(Func<Following, bool> predicate)
         {
-            return db.Followings.Where(predicate).ToList();
+            return db.Followings.Where(predicate);
         }
 
         public async Task<Following> FindFirstOrDefault(System.Linq.Expressions.Expression<Func<Following, bool>> predicate)
