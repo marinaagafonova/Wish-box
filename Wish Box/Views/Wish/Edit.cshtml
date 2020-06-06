@@ -5,10 +5,11 @@
 
 <div class="col-sm-8 col-lg-8 col-md-8">
     <h2 style="text-align: center; color:white; font-weight: bold; margin-bottom: 20px;">Редактировать желание</h2>
-    <form class="edit" asp-action="edit" asp-controller="Wish" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+    <form id="editform" asp-controller="Wish" asp-action="Edit" class="edit" asp-route-id="@Model.Id" hidden_method="put" enctype="multipart/form-data">
+        <input id="WId" value="@Model.Id" style="display:none" />
         <div class="form-group">
             <label asp-for="Description" class="control-label">Описание:</label>
-            <input type="text" asp-for="Description" class="form-control" value="@Model.Description" />
+            <input id="WDesc" type="text" asp-for="Description" class="form-control" value="@Model.Description" />
         </div>
         <div class="form-group">
             <div class="attachment">
@@ -21,10 +22,47 @@
                     <img src="~/Content/gift.png" asp-append-version="true">
                 }
             </div>
-            <input name="Attachment" type="file" class="form-control" />
+            <input asp-for="Attachment" type="file" class="form-control" />
         </div>
         <div class="form-group">
-            <input style="margin-top: 10px;" class="btn btn-outline-success" type="submit" value="Cохранить" />
+            <a style="margin-top: 10px;" class="btn btn-outline-success" onclick="editwish()">Cохранить</a>
         </div>
     </form>
 </div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        function editwish() {
+            debugger;
+            console.log('Form submit');
+            var dataT = $("#editform").serialize();
+            console.log(dataT);
+            @{ 
+                ViewBag.Attachment = Model.Attachment;
+            }
+            //var wvm = {
+            //    Id: $('#WId').val(),
+            //    Description: $('#WDesc').val(),
+            //    Attachment: $('#WAttach').val()
+            //};
+            $.ajax({
+                type: "PUT",
+                url: "@Url.Action("Edit", "Wish")",
+                data: dataT,
+                success: function () {
+                    //location.reload(true);
+                }
+            });
+            //$.ajax({
+            //    url: "/Wish/Edit/" + dataT,
+            //    type: "PUT",
+            //    cache: false,
+            //    dataType: 'json',
+            //    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            //    data: dataT,
+               
+            //});
+        }
+    </script>
+} 

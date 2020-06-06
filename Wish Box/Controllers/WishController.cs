@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace Wish_Box.Controllers
 {
+    [ApiController]
     public class WishController : Controller
     {
         private readonly IWebHostEnvironment _appEnvironment;
@@ -23,6 +24,7 @@ namespace Wish_Box.Controllers
             _appEnvironment = appEnvironment;
         }
 
+        [HttpGet("[controller]/[action]")]
         public IActionResult Create()
         {
             if (User.Identity.IsAuthenticated)
@@ -32,8 +34,8 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(WishViewModel wvm)
+        [HttpPost("[controller]/[action]/")]
+        public async Task<IActionResult> Create([FromForm]WishViewModel wvm)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -60,11 +62,12 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        public async Task<IActionResult> Edit()
+        [HttpGet("[controller]/[action]/{id}")]
+        public async Task<IActionResult> Edit(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                var id = Convert.ToInt32(RouteData.Values["id"]);
+                //var id = Convert.ToInt32(RouteData.Values["id"]);
                 if (id >= 0)
                 {
                     Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
@@ -81,12 +84,14 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Edit(WishViewModel wvm)
+        //[HttpPost]
+        [HttpPut("[controller]/[action]/{id}")]
+        public async Task<IActionResult> Edit([FromRoute] int id, [FromForm]WishViewModel wvm)
         {
             if (User.Identity.IsAuthenticated)
             {
-                Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == wvm.Id);
+                IFormFile file = ViewBag.Attachment;
+                Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
                 if (wvm.Attachment != null)
                 {
                     string path = "/Files/" + wvm.Attachment.FileName;
@@ -112,7 +117,7 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [HttpGet]
+        [HttpGet("[controller]/[action]/")]
         [ActionName("Delete")]
         public async Task<IActionResult> ConfirmDelete()
         {
@@ -131,7 +136,8 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [HttpPost]
+        //[HttpPost]
+        [HttpDelete("[controller]/[action]/{id}")]
         public async Task<IActionResult> Delete()
         {
             if (User.Identity.IsAuthenticated)
@@ -155,7 +161,7 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [HttpGet]
+        [HttpGet("[controller]/[action]/")]
         public async Task<IActionResult> OwnList()
         {
 
@@ -168,6 +174,7 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
+        [HttpGet("[controller]/[action]/")]
         public async Task<IActionResult> RatingPlus()
         {
             if (User.Identity.IsAuthenticated)
@@ -212,6 +219,7 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
+        [HttpGet("[controller]/[action]/")]
         public async Task<IActionResult> RatingMinus()
         {
             if (User.Identity.IsAuthenticated)
