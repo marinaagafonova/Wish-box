@@ -44,7 +44,7 @@ namespace Wish_Box.Controllers
             return PartialView();
         }
         [HttpPost("[controller]/[action]/")]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromForm]LoginModel model)
         {
             if (ModelState.IsValid)
@@ -68,7 +68,7 @@ namespace Wish_Box.Controllers
             return PartialView();
         }
         [HttpPost("[controller]/[action]/")]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register([FromForm]RegisterModel model)
         {
             if (ModelState.IsValid)
@@ -130,7 +130,7 @@ namespace Wish_Box.Controllers
         }
         [HttpPut("[controller]/[action]/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Edit2Model model)
+        public async Task<IActionResult> Edit([FromForm]Edit2Model model)
         {
             if (ModelState.IsValid)
             {
@@ -186,7 +186,7 @@ namespace Wish_Box.Controllers
         }
         [HttpPut("[controller]/[action]/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+        public async Task<IActionResult> ChangePassword([FromForm]ChangePasswordModel model)
         {
             if (ModelState.IsValid)
             {

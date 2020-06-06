@@ -6,7 +6,7 @@
 
 <div class="col-sm-8 col-lg-8 col-md-8">
     <h2 style="color:white; text-align: center; font-weight: bold; margin-bottom: 20px;">Редактирование профиля</h2>
-                <form class="edit" asp-action="Edit" method="post" enctype="multipart/form-data">
+                <form class="edit" asp-action="Edit" hidden_method="put" enctype="multipart/form-data" id="from_edit">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Login" class="control-label">Имя</label>
@@ -42,11 +42,33 @@
                         <input name="Avatar" type="file" class="form-control" />
                     </div> 
                     <div class="form-group">
-                        <a asp-action="ChangePassword" asp-controller="Account" value="ь" class="btn btn-light">Изменить пароль</a>
-</div>
+                        <a asp-action="ChangePassword" asp-controller="Account" value="" class="btn btn-light" >Изменить пароль</a>
+                    </div>
                     <div class="form-group">
-                        <input type="submit" value="Сохранить" class="btn btn-primary" />
+                        @*<input type="submit" value="Сохранить" class="btn btn-primary" onclick="putfun(@Model)" />*@
+                        <a asp-action="Edit" asp-controller="Account" class="btn btn-primary" onclick="putfun()">Сохранить</a>
+                        @*<a class="btn btn-primary" value="Сохранить" onclick="putfun()">Сохранить</a>*@
                     </div>
                 </form>
         </div>
+@section scripts
+{
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript"></script>
+    <script>
+        function putfun() {
+            jQuery.noConflict();
+            $.ajaxSetup({ cache: false });
+            console.log($('#from_edit').serialize());
+            $.ajax({
+                type: "PUT",
+                url: "@Url.Action("Edit", "Account")",
+                data: $('#from_edit').serialize(),
+                success: function () {
+                    //location.reload(true);
+                }
+            })
+        }
+    </script>
+} 
 
