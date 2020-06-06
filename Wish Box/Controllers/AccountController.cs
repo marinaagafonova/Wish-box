@@ -14,6 +14,11 @@ using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace Wish_Box.Controllers
 {
@@ -49,12 +54,13 @@ namespace Wish_Box.Controllers
                 if (user != null)
                 {
                     await Authenticate(model.Login); // аутентификация
-
-                    return RedirectToAction("Index", "Home");
+                    return PartialView("SuccessLogin");
                 }
+                //throw new Exception("Некорректные логин и(или) пароль");
+                //ModelState.TryAddModelException("", new Exception("Некорректные логин и(или) пароль"));
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
-            return RedirectToAction("Index", "Account");
+            return PartialView("Login", model);
         }
         [HttpGet("[controller]/[action]/")]
         public IActionResult Register()
@@ -94,12 +100,12 @@ namespace Wish_Box.Controllers
 
                     await Authenticate(model.Login); // аутентификация
 
-                    return RedirectToAction("Index", "Home");
+                    return PartialView("SuccessRegister");
                 }
-                else
-                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                    ModelState.AddModelError("", "Имя пользователя занято");
+                    //throw new Exception("Имя пользователя занято");
             }
-            return RedirectToAction("Index", "Account");
+            return PartialView("Register", model);
         }
         [HttpGet("[controller]/[action]/")]
         public async Task<IActionResult> Edit()

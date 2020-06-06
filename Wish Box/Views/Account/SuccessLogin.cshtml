@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "Success";
+}
+
+<h1>Success</h1>
+
+<h2>Авторизован</h2>
+<script>
+    $(document).ready(function () {
+        setTimeout(function() {
+            window.location.href = "@Url.Action("Index", "Home")";
+        }, 1000);
+    })
+</script>
+
