@@ -90,7 +90,6 @@ namespace Wish_Box.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                IFormFile file = ViewBag.Attachment;
                 Wish wish = await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
                 if (wvm.Attachment != null)
                 {
@@ -136,7 +135,6 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        //[HttpPost]
         [HttpDelete("[controller]/[action]/{id}")]
         public async Task<IActionResult> Delete()
         {

@@ -22,10 +22,10 @@
                     <img src="~/Content/gift.png" asp-append-version="true">
                 }
             </div>
-            <input asp-for="Attachment" type="file" class="form-control" />
+            <input asp-for="Attachment"  type="file" class="form-control" />
         </div>
         <div class="form-group">
-            <a style="margin-top: 10px;" class="btn btn-outline-success" onclick="editwish()">Cохранить</a>
+            <input style="margin-top: 10px;" class="btn btn-outline-success" type="submit" value="Cохранить" />
         </div>
     </form>
 </div>
@@ -33,36 +33,18 @@
 @section scripts{
     <script type="text/javascript">
 
-        function editwish() {
-            debugger;
-            console.log('Form submit');
-            var dataT = $("#editform").serialize();
-            console.log(dataT);
-            @{ 
-                ViewBag.Attachment = Model.Attachment;
-            }
-            //var wvm = {
-            //    Id: $('#WId').val(),
-            //    Description: $('#WDesc').val(),
-            //    Attachment: $('#WAttach').val()
-            //};
-            $.ajax({
-                type: "PUT",
-                url: "@Url.Action("Edit", "Wish")",
-                data: dataT,
-                success: function () {
-                    //location.reload(true);
-                }
-            });
-            //$.ajax({
-            //    url: "/Wish/Edit/" + dataT,
-            //    type: "PUT",
-            //    cache: false,
-            //    dataType: 'json',
-            //    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-            //    data: dataT,
-               
-            //});
-        }
+        $(document).ready(function (e) {
+            $("#editform").on('submit', (function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url:"@Url.Action("Edit", "Wish")",
+                    type: "PUT",
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,                    
+                });
+            }));
+        });
     </script>
 } 
