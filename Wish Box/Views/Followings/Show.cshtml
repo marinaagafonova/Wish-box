@@ -20,7 +20,10 @@
                      height="70" alt="My profile">
             }@user.Login
         </a>
-        <a class="btn btn-default" id="btn_delete" style="float: right;" asp-controller="Followings" asp-action="Remove" asp-route-id="@user.Id" data-id="@user.Id">x</a>         
+        <!-- <form method="delete" asp-controller="Followings" asp-action="Remove" asp-route-id="@user.Id">
+         <button class="btn btn-default" type="submit">x</button>
+     </form>-->
+        <form action="@Url.Action("Remove", "Followings", new{ id = user.Id })" method="delete"><input type="submit" value="x" /></form>
     </div>
         }
     </div>

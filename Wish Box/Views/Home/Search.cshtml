@@ -16,38 +16,41 @@
                     @foreach (var user in Model.Users)
                     {
                         flag = false;
-                        <div class="user-block-search">
-                            <a class="btn-default user-link" asp-controller="UserPage" asp-action="Show" asp-route-id="@user.Login">
-                                @if (user.Avatar != null)
-                                {
-                                    <img class="avatar" style='width:70px; height:70px;' src="@Url.Content(user.Avatar)" />
-                                }
-                                else
-                                {
-                                    <img class="avatar" src="~/Content/default_profile.jpg" asp-append-version="true" width="70"
-                                         height="70" alt="My profile">
-                                }
-                                @user.Login
-                            </a>
-                            @if (user.Login != User.Identity.Name)
-                            {
-                                @if (!Model.Following_ids.Contains(user.Id))
-                                {
-                                    <a class="follow-btn" asp-controller="Followings" asp-action="PostFollowing" asp-route-id="@user.Id" id="follow" onclick="ym(62193592, 'reachGoal', 'follow'); return true;">Подписаться</a>
-                                    if(flag)
-                                        Model.Following_ids.Add(user.Id);
-                                }
-                                else
-                                {
-                                    <!-- Данила "to do" - action -->
-                                    <a class="btn btn-ligh unfollow-btn" asp-controller="Followings" asp-action="Remove" asp-route-id="@user.Id" id="unfollow">Отписаться</a>
-                                    if(flag)
-                                        Model.Following_ids.Remove(user.Id);
-                                }
+            <div class="user-block-search">
+                <a class="btn-default user-link" asp-controller="UserPage" asp-action="Show" asp-route-id="@user.Login">
+                    @if (user.Avatar != null)
+                    {
+                        <img class="avatar" style='width:70px; height:70px;' src="@Url.Content(user.Avatar)" />
+                    }
+                    else
+                    {
+                        <img class="avatar" src="~/Content/default_profile.jpg" asp-append-version="true" width="70"
+                             height="70" alt="My profile">
+                    }
+                    @user.Login
+                </a>
+                @if (user.Login != User.Identity.Name)
+                {
+                    @if (!Model.Following_ids.Contains(user.Id))
+                    {
+                        <form asp-controller="Followings" asp-action="PostFollowing" asp-route-id="@user.Id" method="post" role="form">
+                            <button class="follow-btn" type="submit" id="follow" onclick="ym(62193592, 'reachGoal', 'follow'); return true;">Подписаться</button>
+                        </form>
+                        if (flag)
+                            Model.Following_ids.Add(user.Id);
+                    }
+                    else
+                    {
+                        <form asp-controller="Followings" asp-action="Remove" asp-route-id="@user.Id" method="delete" role="form">
+                            <button class="btn btn-ligh unfollow-btn" type="submit" id="unfollow">Подписаться</button>
+                        </form>
+                        if (flag)
+                            Model.Following_ids.Remove(user.Id);
+                    }
 
-                            }
+                }
 
-                        </div>
+            </div>
                     }
                 }
             </div>

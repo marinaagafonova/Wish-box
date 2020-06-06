@@ -84,6 +84,11 @@ namespace Wish_Box
             {
                 option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
             });
+            //         app.UseSwagger()
+            //.UseSwaggerUI(c =>
+            //{
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "DOA.API V1");
+            //});
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -112,8 +117,8 @@ namespace Wish_Box
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute("api", "api/post", new { controller = "Following", action = "PostFollowing" });
-                routes.MapRoute("following", "following/delete", new { controller = "Following", action = "Remove" });
+                //routes.MapRoute("api", "api/post", new { controller = "Following", action = "PostFollowing" });
+                //routes.MapRoute("following", "following/delete", new { controller = "Following", action = "Remove" });
 
                 routes.MapRoute(
                     name: "default",

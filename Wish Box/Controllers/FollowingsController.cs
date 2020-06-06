@@ -4,14 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Wish_Box.Contracts;
 using Wish_Box.Models;
 using Wish_Box.ViewModels;
 
 namespace Wish_Box.Controllers
 {
     //[ApiController]
-    [Route("api/[controller]")]
+    //[Route("[controller]")]
     [ApiController]
+    //[Route("api/[controller]/[action]", Name = "[controller]_[action]")]
     public class FollowingsController : Controller
     {
         readonly AppDbContext db;
@@ -21,12 +23,13 @@ namespace Wish_Box.Controllers
             db = context;
         }
 
-        [Route("PostFollowing/{id}")]
+        //[Route("PostFollowing/{id}")]
         //[HttpPost]
         // [HttpPost("{id:int}")]
         //[HttpPost ("Add/{id}")]
-        [HttpPost("PostFollowing/{id}")]
-        public async Task<ActionResult<Following>> PostFollowing(int id)
+        //[HttpPost("{id}")]
+        [HttpPost("[controller]/[action]/{id}")]
+        public async Task<ActionResult<Following>> PostFollowing([FromRoute] int id)
         {
             //var id = Convert.ToInt32(RouteData.Values["id"]);
             var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
@@ -44,9 +47,10 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [Route("Remove/{id:int}")]
+        // [Route("Remove/{id:int}")]
         //[HttpDelete]
-        [HttpDelete("{id:int}")]
+        //[Microsoft.AspNetCore.Mvc.HttpDelete("Remove/{id:int}")]
+        [HttpDelete("[controller]/[action]/{id}")]
         public async Task<ActionResult<Following>> Remove([FromRoute]int id)
         {
             //var followed_id = Convert.ToInt32(RouteData.Values["id"]);
@@ -60,7 +64,9 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [HttpGet]
+        //[HttpGet]
+        [HttpGet("[controller]/[action]")]
+
         public async Task<ActionResult<IEnumerable<Following>>> Show()
         {
             if (User.Identity.IsAuthenticated)
