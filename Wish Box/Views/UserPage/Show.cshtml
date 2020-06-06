@@ -34,7 +34,10 @@
         {
             @if (!Model.Followers.Contains(Model.CurrentUser.Id))
             {
-                <a class="follow-btn" asp-controller="Followings" asp-action="Add" asp-route-id="@Model.User.Id" id="follow" onclick="ym(62193592, 'reachGoal', 'follow'); return true;">Подписаться</a>
+                //<a class="follow-btn" asp-controller="Followings" asp-action="PostFollowing" asp-route-id="@Model.User.Id" id="follow" method="post">Подписаться</a>
+                <form asp-controller="Followings" asp-action="PostFollowing" asp-route-id="@Model.User.Id" method="post" role="form">
+                    <button class="follow-btn" type="submit" id="follow" onclick="ym(62193592, 'reachGoal', 'follow'); return true;">Подписаться</button>
+                </form>
                 if (flag)
                 {
                     Model.Followers.Add(Model.User.Id);
@@ -43,7 +46,7 @@
             }
             else
             {
-                <a class="btn btn-ligh unfollow-btn" asp-controller="Followings" asp-action="Remove" asp-route-id="@Model.User.Id" id="unfollow">Отписаться</a>
+                <a class="btn btn-light unfollow-btn" id="unfollow" onclick="deletefun(@Model.User.Id)">Отписаться</a>
                 if (flag)
                 {
                     Model.Followers.Remove(Model.User.Id);
@@ -118,27 +121,6 @@
     </div>
 </div>
 
-
-<script>
-    function myFunction(id) {
-        console.log(id);
-        //console.log("myDropdown"+id);
-        document.getElementById("myDropdown" + id).classList.toggle("show");
-    }
-    window.onclick = function (event) {
-        if (!event.target.matches('.dropbtn')) {
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            var i;
-            for (i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
-                }
-            }
-        }
-    }
-</script>
-
 @section scripts
 {
     <script type="text/javascript">
@@ -171,15 +153,49 @@
             });
         })
     </script>
+    <script type="text/javascript">
+        function deletefun(id) {
+            @{flag = true;}
+            $.ajax({
+                type: "DELETE",
+                url: "/Followings/Remove/" + id,
+                success: function () {
+                    location.reload(true);
+                }
+            })
+        }
+    </script>
+
+
+    <script>
+        function myFunction(id) {
+            console.log(id);
+            //console.log("myDropdown"+id);
+            document.getElementById("myDropdown" + id).classList.toggle("show");
+        }
+        window.onclick = function (event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
 }
 
 <script>
     follow.onclick = function (event) {
         console.log("follow button was pressed");
-      @{flag = true;}
+        @{flag = true;}
+        ym(62193592, 'reachGoal', 'follow');
     }
-    unfollow.onclick = function (event) {
+    @*unfollow.onclick = function (event) {
         console.log("unfollow button was pressed");
       @{flag = true;}
-    }
+    }*@
 </script>

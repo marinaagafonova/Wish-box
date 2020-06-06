@@ -9,7 +9,6 @@ using Wish_Box.ViewModels;
 
 namespace Wish_Box.Controllers
 {
-    [Route("[controller]")]
     [ApiController]
     public class UserPageController : Controller
     {
@@ -19,7 +18,7 @@ namespace Wish_Box.Controllers
             db = context;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("[controller]/[action]/{id}")]
         public async Task<IActionResult> Show([FromRoute]string id)
         {
             if (User.Identity.IsAuthenticated)

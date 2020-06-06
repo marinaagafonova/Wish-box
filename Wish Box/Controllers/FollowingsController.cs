@@ -9,11 +9,8 @@ using Wish_Box.Models;
 using Wish_Box.ViewModels;
 
 namespace Wish_Box.Controllers
-{
-    //[ApiController]
-    //[Route("[controller]")]
+{ 
     [ApiController]
-    //[Route("api/[controller]/[action]", Name = "[controller]_[action]")]
     public class FollowingsController : Controller
     {
         readonly AppDbContext db;
@@ -23,11 +20,6 @@ namespace Wish_Box.Controllers
             db = context;
         }
 
-        //[Route("PostFollowing/{id}")]
-        //[HttpPost]
-        // [HttpPost("{id:int}")]
-        //[HttpPost ("Add/{id}")]
-        //[HttpPost("{id}")]
         [HttpPost("[controller]/[action]/{id}")]
         public async Task<ActionResult<Following>> PostFollowing([FromRoute] int id)
         {
@@ -47,9 +39,6 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        // [Route("Remove/{id:int}")]
-        //[HttpDelete]
-        //[Microsoft.AspNetCore.Mvc.HttpDelete("Remove/{id:int}")]
         [HttpDelete("[controller]/[action]/{id}")]
         public async Task<ActionResult<Following>> Remove([FromRoute]int id)
         {
@@ -64,9 +53,7 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        //[HttpGet]
         [HttpGet("[controller]/[action]/")]
-
         public async Task<ActionResult<IEnumerable<Following>>> Show()
         {
             if (User.Identity.IsAuthenticated)

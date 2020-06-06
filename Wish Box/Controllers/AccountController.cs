@@ -17,6 +17,7 @@ using System.Text;
 
 namespace Wish_Box.Controllers
 {
+    [ApiController]
     public class AccountController : Controller
     {
         private readonly AppDbContext db;
@@ -27,18 +28,19 @@ namespace Wish_Box.Controllers
             db = context;
             _appEnvironment = appEnvironment;
         }
+        [HttpGet("[controller]/[action]/")]
         public IActionResult Index()
         {
             return View();
         }
-        [HttpGet]
+        [HttpGet("[controller]/[action]/")]
         public IActionResult Login()
         {
             return PartialView();
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginModel model)
+        [HttpPost("[controller]/[action]/")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login([FromForm]LoginModel model)
         {
             if (ModelState.IsValid)
             {
@@ -54,14 +56,14 @@ namespace Wish_Box.Controllers
             }
             return RedirectToAction("Index", "Account");
         }
-        [HttpGet]
+        [HttpGet("[controller]/[action]/")]
         public IActionResult Register()
         {
             return PartialView();
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterModel model)
+        [HttpPost("[controller]/[action]/")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register([FromForm]RegisterModel model)
         {
             if (ModelState.IsValid)
             {
@@ -99,6 +101,7 @@ namespace Wish_Box.Controllers
             }
             return RedirectToAction("Index", "Account");
         }
+        [HttpGet("[controller]/[action]/")]
         public async Task<IActionResult> Edit()
         {
             if (User.Identity.Name != null)
@@ -119,7 +122,7 @@ namespace Wish_Box.Controllers
             }
             return NotFound();//может сделать страничку "вы должны быть авторизованны для этого действия"
         }
-        [HttpPost]
+        [HttpPut("[controller]/[action]/")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Edit2Model model)
         {
@@ -160,6 +163,7 @@ namespace Wish_Box.Controllers
             }
             return View(model);
         }
+        [NonAction]
         private async Task<bool> CheckUserName(string oldLogin, string newLogin)
         {
             if (oldLogin == newLogin)
@@ -167,14 +171,14 @@ namespace Wish_Box.Controllers
             else
                 return await db.Users.FirstOrDefaultAsync(p => p.Login == newLogin) == null;
         }
-        [HttpGet]
+        [HttpGet("[controller]/[action]/")]
         public async Task<IActionResult> ChangePassword()
         {
             if (User.Identity.Name != null && await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name) != null)
                 return View();
             return NotFound();
         }
-        [HttpPost]
+        [HttpPut("[controller]/[action]/")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
         {
@@ -202,6 +206,7 @@ namespace Wish_Box.Controllers
             }
             return View(model);
         }
+        [NonAction]
         private async Task Authenticate(string userName)
         {
             // создаем один claim
@@ -215,6 +220,7 @@ namespace Wish_Box.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
+        [HttpGet("[controller]/[action]/")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

@@ -7,7 +7,7 @@
             <h2 style="margin-left:auto; margin-right:auto;">Вход</h2>             
         </div>
         <div class="modal-body">
-            <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true">
+            <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true" method="post">
                 <div class="validation" asp-validation-summary="ModelOnly" />
                 <div>
                     <div class="form-group">
@@ -21,15 +21,16 @@
                         <span asp-validation-for="Password"></span>
                     </div>
                     <div class="form-group">
-                        <input class="btn btn-outline-success sign-in-btn" type="submit" value="Войти" class="btn btn-outline-dark" id="finish_login" />
+                        <input class="btn btn-outline-success sign-in-btn" type="submit" value="Войти" id="finish_login" />
                     </div>
                 </div>
             </form>
         </div>
     </div>
-
+@section scripts{ 
     <script>
         finish_login.onclick = function (event) {
             ym(62193592, 'reachGoal', 'finish_login')
         }
     </script>
+}
