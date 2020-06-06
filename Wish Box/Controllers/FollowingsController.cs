@@ -50,6 +50,8 @@ namespace Wish_Box.Controllers
             {
                 db.Entry(await db.Followings.FirstOrDefaultAsync(p => p.UserFId == current_user.Id && p.UserIsFId == id)).State = EntityState.Deleted;
                 await db.SaveChangesAsync();
+                return Json(new { success = true, responseText = "Following was deleted!" });
+
                 //return Redirect(Request.Headers["Referer"].ToString());
             }
             return RedirectToAction("Index", "Account");

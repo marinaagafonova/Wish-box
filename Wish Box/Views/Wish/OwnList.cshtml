@@ -20,7 +20,7 @@
                         }
                         <div id="@drop_id" class="dropdown-content">
                             <a asp-controller="Wish" asp-action="Edit" asp-route-id="@wish.Id">Редактировать желание</a>
-                            <a class="btn-delete" asp-controller="Wish" asp-action="Delete" asp-route-id="@wish.Id">Удалить желание</a>
+                            <a class="btn-delete" onclick="deletefun(@wish.Id)">Удалить желание</a>
                         </div>
                     </div>
                     <div style="transform: translate(10%, 20%); text-align:center">
@@ -67,16 +67,27 @@
 {
     <script type="text/javascript">
 
-        $(function () {
-            $.ajaxSetup({ cache: false });
-            $(".btn-delete").click(function (e) {
-                console.log("delete button was pressed");
-                e.preventDefault();
-                $.get(this.href, function (data) {
-                    $('#dialogContent').html(data);
-                    $('#modDialog').modal('show');
-                });
-            });
-        })
+        //$(function () {
+        //    $.ajaxSetup({ cache: false });
+        //    $(".btn-delete").click(function (e) {
+        //        console.log("delete button was pressed");
+        //        e.preventDefault();
+        //        $.get(this.href, function (data) {
+        //            $('#dialogContent').html(data);
+        //            $('#modDialog').modal('show');
+        //        });
+              
+        //    });
+        //})
+        function deletefun(id) {
+            $.ajax({
+                type: "DELETE",
+                url: "/Wish/Delete/" + id,
+                success: function () {
+                    console.log('success delete');
+                    location.reload(true);
+                }
+            })
+        }
     </script>
 }
