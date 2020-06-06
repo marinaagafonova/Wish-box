@@ -160,7 +160,8 @@ namespace Wish_Box.Controllers
                         db.Users.Update(user);
                         await db.SaveChangesAsync();
                         await Authenticate(model.Login);
-                        return RedirectToAction("Show", "UserPage", new { id = model.Login });
+                        //return RedirectToAction("Show", "UserPage", new { id = model.Login });
+                        //return Redirect(Request.Headers["Referer"].ToString());
                     }
                     else
                         ModelState.AddModelError("error - login isn't unique", "Имя пользователя занято!");
@@ -200,7 +201,7 @@ namespace Wish_Box.Controllers
                         user.Password = Convert.ToBase64String(new MD5CryptoServiceProvider().ComputeHash(new UTF8Encoding().GetBytes(model.Password)));
                         db.Users.Update(user);
                         await db.SaveChangesAsync();
-                        return RedirectToAction("Index", "Home");
+                        //return RedirectToAction("Show", "UserPage");
                     }
                     else
                     {

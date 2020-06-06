@@ -45,9 +45,7 @@
                         <a asp-action="ChangePassword" asp-controller="Account" value="" class="btn btn-light" >Изменить пароль</a>
                     </div>
                     <div class="form-group">
-                        @*<input type="submit" value="Сохранить" class="btn btn-primary" onclick="putfun(@Model)" />*@
-                        <a asp-action="Edit" asp-controller="Account" class="btn btn-primary" onclick="putfun()">Сохранить</a>
-                        @*<a class="btn btn-primary" value="Сохранить" onclick="putfun()">Сохранить</a>*@
+                        <input class="btn btn-primary" type="submit" value="Сохранить" />
                     </div>
                 </form>
         </div>
@@ -56,19 +54,23 @@
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script type="text/javascript"></script>
     <script>
-        function putfun() {
-            jQuery.noConflict();
-            $.ajaxSetup({ cache: false });
-            console.log($('#from_edit').serialize());
-            $.ajax({
-                type: "PUT",
-                url: "@Url.Action("Edit", "Account")",
-                data: $('#from_edit').serialize(),
-                success: function () {
-                    //location.reload(true);
-                }
-            })
-        }
+        $(document).ready(function (e) {
+            $("#from_edit").on('submit', (function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url:"@Url.Action("Edit", "Account")",
+                    type: "PUT",
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function () {
+                        //location.reload(true);
+                        window.location.replace("UserPage/Show/@Model.Login")
+                    }
+                });
+            }));
+        });
     </script>
-} 
+}
 
