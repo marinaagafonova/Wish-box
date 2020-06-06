@@ -10,6 +10,7 @@ using Wish_Box.ViewModels;
 
 namespace Wish_Box.Controllers
 {
+
     [ApiController]
     public class FollowingsController : Controller
     {
@@ -39,7 +40,7 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-       
+
         [HttpDelete("[controller]/[action]/{id}")]
         public async Task<ActionResult<Following>> Remove([FromRoute]int id)
         {
@@ -54,9 +55,7 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        //[HttpGet]
         [HttpGet("[controller]/[action]/")]
-
         public async Task<ActionResult<IEnumerable<Following>>> Show()
         {
             if (User.Identity.IsAuthenticated)

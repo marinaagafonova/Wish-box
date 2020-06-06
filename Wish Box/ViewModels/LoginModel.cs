@@ -11,8 +11,8 @@ namespace Wish_Box.ViewModels
         [Required(ErrorMessage = "Не указан логин")]
         public string Login { get; set; }
 
-        [Required(ErrorMessage = "Не указан пароль")]
         [DataType(DataType.Password)]
+        [Required(ErrorMessage = "Не указан пароль")]
         public string Password { get; set; }
     }
 }

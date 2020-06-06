@@ -14,9 +14,15 @@ using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace Wish_Box.Controllers
 {
+    [ApiController]
     public class AccountController : Controller
     {
         private readonly AppDbContext db;
@@ -27,18 +33,19 @@ namespace Wish_Box.Controllers
             db = context;
             _appEnvironment = appEnvironment;
         }
+        [HttpGet("[controller]/[action]/")]
         public IActionResult Index()
         {
             return View();
         }
-        [HttpGet]
+        [HttpGet("[controller]/[action]/")]
         public IActionResult Login()
         {
             return PartialView();
         }
-        [HttpPost]
+        [HttpPost("[controller]/[action]/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginModel model)
+        public async Task<IActionResult> Login([FromForm]LoginModel model)
         {
             if (ModelState.IsValid)
             {
@@ -47,21 +54,22 @@ namespace Wish_Box.Controllers
                 if (user != null)
                 {
                     await Authenticate(model.Login); // аутентификация
-
-                    return RedirectToAction("Index", "Home");
+                    return PartialView("SuccessLogin");
                 }
+                //throw new Exception("Некорректные логин и(или) пароль");
+                //ModelState.TryAddModelException("", new Exception("Некорректные логин и(или) пароль"));
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
-            return RedirectToAction("Index", "Account");
+            return PartialView("Login", model);
         }
-        [HttpGet]
+        [HttpGet("[controller]/[action]/")]
         public IActionResult Register()
         {
             return PartialView();
         }
-        [HttpPost]
+        [HttpPost("[controller]/[action]/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterModel model)
+        public async Task<IActionResult> Register([FromForm]RegisterModel model)
         {
             if (ModelState.IsValid)
             {
@@ -92,13 +100,14 @@ namespace Wish_Box.Controllers
 
                     await Authenticate(model.Login); // аутентификация
 
-                    return RedirectToAction("Index", "Home");
+                    return PartialView("SuccessRegister");
                 }
-                else
-                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                    ModelState.AddModelError("", "Имя пользователя занято");
+                    //throw new Exception("Имя пользователя занято");
             }
-            return RedirectToAction("Index", "Account");
+            return PartialView("Register", model);
         }
+        [HttpGet("[controller]/[action]/")]
         public async Task<IActionResult> Edit()
         {
             if (User.Identity.Name != null)
@@ -119,9 +128,9 @@ namespace Wish_Box.Controllers
             }
             return NotFound();//может сделать страничку "вы должны быть авторизованны для этого действия"
         }
-        [HttpPost]
+        [HttpPut("[controller]/[action]/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Edit2Model model)
+        public async Task<IActionResult> Edit([FromForm]Edit2Model model)
         {
             if (ModelState.IsValid)
             {
@@ -160,6 +169,7 @@ namespace Wish_Box.Controllers
             }
             return View(model);
         }
+        [NonAction]
         private async Task<bool> CheckUserName(string oldLogin, string newLogin)
         {
             if (oldLogin == newLogin)
@@ -167,16 +177,16 @@ namespace Wish_Box.Controllers
             else
                 return await db.Users.FirstOrDefaultAsync(p => p.Login == newLogin) == null;
         }
-        [HttpGet]
+        [HttpGet("[controller]/[action]/")]
         public async Task<IActionResult> ChangePassword()
         {
             if (User.Identity.Name != null && await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name) != null)
                 return View();
             return NotFound();
         }
-        [HttpPost]
+        [HttpPut("[controller]/[action]/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+        public async Task<IActionResult> ChangePassword([FromForm]ChangePasswordModel model)
         {
             if (ModelState.IsValid)
             {
@@ -202,6 +212,7 @@ namespace Wish_Box.Controllers
             }
             return View(model);
         }
+        [NonAction]
         private async Task Authenticate(string userName)
         {
             // создаем один claim
@@ -215,6 +226,7 @@ namespace Wish_Box.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
+        [HttpGet("[controller]/[action]/")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
