@@ -136,11 +136,11 @@ namespace Wish_Box.Controllers
         }
 
         [HttpDelete("[controller]/[action]/{id}")]
-        public async Task<IActionResult> Delete()
+        public async Task<IActionResult> Delete(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                var id = Convert.ToInt32(RouteData.Values["id"]);
+               // var id = Convert.ToInt32(RouteData.Values["id"]);
                 if (id > 0)
                 {
                     Wish wish = new Wish { Id = id };
@@ -151,9 +151,11 @@ namespace Wish_Box.Controllers
                     }
                     db.Entry(wish).State = EntityState.Deleted;
                     await db.SaveChangesAsync();
-                    return Redirect(Request.Headers["Referer"].ToString());
+                    return Json(new { success = true, responseText = "Wish was deleted!" });
+                    //return Redirect(Request.Headers["Referer"].ToString());
                 }
-                return NotFound();
+                else
+                    return NotFound();
 
             }
             return RedirectToAction("Index", "Account");
@@ -172,15 +174,14 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [HttpGet("[controller]/[action]/")]
-        public async Task<IActionResult> RatingPlus()
+        [HttpGet("[controller]/[action]/{id}")]
+        public async Task<IActionResult> RatingPlus(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                var wish_id = Convert.ToInt32(RouteData.Values["id"]);
                 var currentUser = await db.Users.FirstOrDefaultAsync(x => x.Login == User.Identity.Name);
-                var currentWish = await db.Wishes.FirstOrDefaultAsync(x => x.Id == wish_id);
-                var currentRate = await db.WishRatings.FirstOrDefaultAsync(x => x.UserId == currentUser.Id && x.WishId == wish_id);
+                var currentWish = await db.Wishes.FirstOrDefaultAsync(x => x.Id == id);
+                var currentRate = await db.WishRatings.FirstOrDefaultAsync(x => x.UserId == currentUser.Id && x.WishId == id);
 
                 if (currentRate == null)
                 {
@@ -189,7 +190,7 @@ namespace Wish_Box.Controllers
 
                     db.WishRatings.Add(new WishRating()
                     {
-                        WishId = wish_id,
+                        WishId = id,
                         UserId = currentUser.Id,
                         Rate = true
                     });
@@ -217,15 +218,14 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [HttpGet("[controller]/[action]/")]
-        public async Task<IActionResult> RatingMinus()
+        [HttpGet("[controller]/[action]/{id}")]
+        public async Task<IActionResult> RatingMinus(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                var wish_id = Convert.ToInt32(RouteData.Values["id"]);
                 var currentUser = await db.Users.FirstOrDefaultAsync(x => x.Login == User.Identity.Name);
-                var currentWish = await db.Wishes.FirstOrDefaultAsync(x => x.Id == wish_id);
-                var currentRate = await db.WishRatings.FirstOrDefaultAsync(x => x.UserId == currentUser.Id && x.WishId == wish_id);
+                var currentWish = await db.Wishes.FirstOrDefaultAsync(x => x.Id == id);
+                var currentRate = await db.WishRatings.FirstOrDefaultAsync(x => x.UserId == currentUser.Id && x.WishId == id);
 
                 if (currentRate == null)
                 {
@@ -234,7 +234,7 @@ namespace Wish_Box.Controllers
 
                     db.WishRatings.Add(new WishRating()
                     {
-                        WishId = wish_id,
+                        WishId = id,
                         UserId = currentUser.Id,
                         Rate = false
                     });
