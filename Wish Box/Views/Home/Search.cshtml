@@ -115,6 +115,8 @@
                 $('.follow-btn-section-' + id).prepend('<button class="btn btn-light unfollow-btn" onclick="unfollow(' + id + ', \'/followings/remove/\');">Отписаться</button>');
                 console.log('follow success');
                 ym(62193592, 'reachGoal', 'follow');
+                location.reload(true);
+
             }
         });
     }
