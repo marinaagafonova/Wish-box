@@ -49,11 +49,11 @@ namespace Wish_Box.Controllers
         public async Task<ActionResult<Following>> Remove([FromRoute]int id)
         {
             //var followed_id = Convert.ToInt32(RouteData.Values["id"]);
-            var current_user = await db.Users.FirstOrDefaultAsync(p => p.Login == User.Identity.Name);
+            var current_user = await rep_user.FindFirstOrDefault(p => p.Login == User.Identity.Name); 
             if (current_user != null)
             {
-                db.Entry(await db.Followings.FirstOrDefaultAsync(p => p.UserFId == current_user.Id && p.UserIsFId == id)).State = EntityState.Deleted;
-                await db.SaveChangesAsync();
+                var follow = await rep_following.FindFirstOrDefault(p => p.UserFId == current_user.Id && p.UserIsFId == id);
+                await rep_following.Delete(follow.Id);
                 return Json(new { success = true, responseText = "Following was deleted!" });
                 //return Redirect(Request.Headers["Referer"].ToString());
             }

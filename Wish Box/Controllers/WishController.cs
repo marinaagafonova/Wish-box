@@ -107,7 +107,7 @@ namespace Wish_Box.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                Wish wish = await wish_rep.Get(wvm.Id);
+                Wish wish = await wish_rep.Get(id);
                 if (wvm.Attachment != null)
                 {
                     string path = "/Files/" + wvm.Attachment.FileName;
@@ -133,7 +133,9 @@ namespace Wish_Box.Controllers
                     wish.Description = wvm.Description;
                 }
                 await wish_rep.Update(wish);
-                return RedirectToAction("OwnList");
+                return Json(new { success = true, responseText = "Wish was deleted!" });
+
+                // return RedirectToAction("OwnList");
             }
             return RedirectToAction("Index", "Account");
         }
@@ -192,6 +194,7 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
+        [HttpGet("[controller]/[action]")]
         public async Task<int> GetRating()
         {
             try 

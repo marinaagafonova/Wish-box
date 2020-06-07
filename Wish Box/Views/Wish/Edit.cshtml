@@ -69,7 +69,11 @@
                     data: new FormData(this),
                     contentType: false,
                     cache: false,
-                    processData: false,                    
+                    processData: false, 
+                    success: function () {
+                        //location.reload(true);
+                        window.location.replace("@Url.Action("OwnList", "Wish")");
+                    }
                 });
             }));
         });

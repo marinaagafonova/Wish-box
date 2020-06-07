@@ -70,6 +70,7 @@ namespace Wish_Box.Controllers
                 }
             }
         }
+        [HttpGet("[controller]/[action]/")]
         public IActionResult GetCityList(string id)
         {
             List<string> cities = new List<string>();

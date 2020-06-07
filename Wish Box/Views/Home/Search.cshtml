@@ -31,19 +31,19 @@
                                   
                                 @if (!Model.Following_ids.Contains(user.Id))
                                 {
-                                    <form asp-controller="Followings" asp-action="PostFollowing" asp-route-id="@user.Id" method="post" role="form">
-                                        <button class="follow-btn" type="submit" id="follow" onclick="ym(62193592, 'reachGoal', 'follow'); return true;">Подписаться</button>
-                                    </form>
-                                    if (flag)
-                                        Model.Following_ids.Add(user.Id);
+                                    //<form asp-controller="Followings" asp-action="PostFollowing" asp-route-id="@user.Id" method="post" role="form">
+                                        <button class="follow-btn" type="submit" id="follow" onclick="follow(@user.Id, '/followings/add/')">Подписаться</button>
+                                    //</form>
+                                   // if (flag)
+                                     //   Model.Following_ids.Add(user.Id);
                                 }
                                 else
                                 {
-                                    <form method="delete" role="form">
+                                   // <form method="delete" role="form">
                                         <button class="btn btn-ligh unfollow-btn" type="submit" id="unfollow" onclick="deletefun(@user.Id)">Отписаться</button>
-                                    </form>
-                                    if (flag)
-                                        Model.Following_ids.Remove(user.Id);
+                                   // </form>
+                                 //   if (flag)
+                                   //     Model.Following_ids.Remove(user.Id);
                                 }
                                 </div>
 
@@ -84,7 +84,6 @@
 {
     <script type="text/javascript">
         function deletefun(id) {
-            @{flag = true;}
             $.ajax({
                 type: "DELETE",
                 url: "/Followings/Remove/" + id,
@@ -109,8 +108,8 @@
 <script>
     function follow(id, my_link) {
         $.ajax({
-            type: 'GET',
-            url: my_link + id,
+            type: "POST",
+            url: "/Followings/PostFollowing/" + id,
             success: function () {
                 $('.follow-btn-section-' + id).empty();
                 $('.follow-btn-section-' + id).prepend('<button class="btn btn-light unfollow-btn" onclick="unfollow(' + id + ', \'/followings/remove/\');">Отписаться</button>');
@@ -122,8 +121,8 @@
 
     function unfollow(id, my_link) {
         $.ajax({
-            type: 'GET',
-            url: my_link + id,
+            type: "DELETE",
+            url: "/Followings/Remove/" + id,
             success: function () {
                 $('.follow-btn-section-' + id).empty();
                 $('.follow-btn-section-' + id).prepend('<button class="btn follow-btn" onclick="follow(' + id + ',\'/followings/add/\');">Подписаться</button>');
