@@ -39,7 +39,7 @@
                 </div>
                 @{ if (User.Identity.IsAuthenticated)
                     {
-                        <form method="get" asp-controller="Home" asp-action="Search">
+                        <form method="get" asp-controller="Home" asp-action="Search" asp-route-model=@null>
                             <div class="searchbar">
                                 <input class="search_input" type="search" name="keyword" placeholder="Найти пользователя...">
                                 <a href="#" class="search_icon"><i class="fas fa-search"></i></a>

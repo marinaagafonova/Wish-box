@@ -10,6 +10,7 @@ using Wish_Box.Repositories;
 
 namespace Wish_Box.Controllers
 {
+    [ApiController]
     public class ToGiveController : Controller
     {
         //private readonly AppDbContext db;
@@ -28,6 +29,7 @@ namespace Wish_Box.Controllers
             this.commentRepository = commentRepository;
         }
 
+        [HttpGet("[controller]/[action]")]
         public async Task<IActionResult> Index()
         {
             if (User.Identity.IsAuthenticated)
@@ -42,7 +44,7 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [HttpPost]
+        [HttpPost("[controller]/[action]")]
         public async Task<IActionResult> Add()
         {
             if (User.Identity.IsAuthenticated)
@@ -64,7 +66,8 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [HttpPost]
+        //        [HttpDelete("[controller]/[action]/{id}")]
+        [HttpPost("[controller]/[action]")]
         public async Task<IActionResult> Remove()
         {
             if (User.Identity.IsAuthenticated)
@@ -80,7 +83,7 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [HttpPost]
+        [HttpPost("[controller]/[action]")]
         public async Task<IActionResult> MarkAsGiven()
         {
             if (User.Identity.IsAuthenticated)

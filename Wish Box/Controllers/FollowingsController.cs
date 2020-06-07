@@ -27,10 +27,12 @@ namespace Wish_Box.Controllers
         }
 
         [HttpPost("[controller]/[action]/{id}")]
-        public async Task<ActionResult<Following>> PostFollowing([FromRoute] int id)
+        public async Task<IActionResult> PostFollowing([FromRoute] int id)
         {
             //var followed_id = Convert.ToInt32(RouteData.Values["id"]);
-            var current_user = await rep_user.FindFirstOrDefault(p => p.Login == User.Identity.Name);
+            //var users = rep_user.GetAll();
+            string login = User.Identity.Name;
+            var current_user = rep_user.FindFirstOrDefault(p => p.Login == login).Result;
             if (User.Identity.Name != null)
             {
                 await rep_following.Create(new Following
@@ -39,7 +41,8 @@ namespace Wish_Box.Controllers
                     UserIsFId = id
                 });
                 //await db.SaveChangesAsync();
-                return Redirect(Request.Headers["Referer"].ToString());
+                return Json(new { success = true, responseText = "Following was added!" });
+               // return Redirect(Request.Headers["Referer"].ToString());
             }
             return RedirectToAction("Index", "Account");
         }

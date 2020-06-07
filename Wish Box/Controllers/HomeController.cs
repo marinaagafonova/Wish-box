@@ -16,6 +16,7 @@ using Wish_Box.Repositories;
 
 namespace Wish_Box.Controllers
 {
+    [ApiController]
     public class HomeController : Controller
     {
         private List<string> countries;
@@ -32,6 +33,7 @@ namespace Wish_Box.Controllers
         }
 
         //[Authorize]
+        [HttpGet("/")]
         public async Task<IActionResult> Index()
         {
             if (User.Identity.IsAuthenticated)
@@ -54,25 +56,27 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
+        [Route("Home/Privacy")]
         public IActionResult Privacy()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public IActionResult Error()
+        //{
+        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        //}
+        [Route("Home/Logout")]
         public IActionResult Logout()
         {
             return RedirectToAction("Logout", "Account");
         }
 
-        [HttpGet] 
-        public async Task<IActionResult> Search(UserListViewModel model = null)
+        [HttpGet("[action]")]
+        public async Task<IActionResult> Search([FromRoute]UserListViewModel model = null)
         {
+           // UserListViewModel model = null;
             var keyword = Request.Query["keyword"].ToString();
             var users = user_rep.Find(u => u.Login.Contains(keyword)).ToList();
             List<string> cities = GetCities("Afghanistan");
@@ -154,6 +158,7 @@ namespace Wish_Box.Controllers
             }
         }
 
+        [HttpGet("[action]")]
         public async Task<IActionResult> Filter(string country, string city, string name)
         {
             IQueryable<User> users = user_rep.GetAll().AsQueryable();

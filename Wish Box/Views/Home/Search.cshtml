@@ -88,6 +88,9 @@
                 type: "DELETE",
                 url: "/Followings/Remove/" + id,
                 success: function () {
+                    $('.follow-btn-section-' + id).empty();
+                    $('.follow-btn-section-' + id).prepend('<button class="btn follow-btn" onclick="follow(' + id + ',\'/followings/add/\');">Подписаться</button>');
+                    console.log('unfollow success');
                     location.reload(true);
                 }
             })
@@ -116,7 +119,6 @@
                 console.log('follow success');
                 ym(62193592, 'reachGoal', 'follow');
                 location.reload(true);
-
             }
         });
     }
