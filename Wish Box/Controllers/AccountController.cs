@@ -160,6 +160,7 @@ namespace Wish_Box.Controllers
                         db.Users.Update(user);
                         await db.SaveChangesAsync();
                         await Authenticate(model.Login);
+                        return Json(new { success = true, responseText = "Edited!" });
                         //return RedirectToAction("Show", "UserPage", new { id = model.Login });
                         //return Redirect(Request.Headers["Referer"].ToString());
                     }
@@ -202,6 +203,7 @@ namespace Wish_Box.Controllers
                         db.Users.Update(user);
                         await db.SaveChangesAsync();
                         //return RedirectToAction("Show", "UserPage");
+                        return Json(new { success = true, responseText = "Pass Edited!" });
                     }
                     else
                     {
