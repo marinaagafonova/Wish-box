@@ -306,7 +306,7 @@ namespace Wish_Box.Controllers
                         }
                         await userRepository.Update(user);
                         //await db.SaveChangesAsync();
-                        Authenticate(model.Login);
+                        await Authenticate(model.Login);
                         return Json(new { success = true, responseText = model.Login });
                         //return RedirectToAction("Show", "UserPage", new { id = model.Login });
                         //return Redirect(Request.Headers["Referer"].ToString());
@@ -330,7 +330,10 @@ namespace Wish_Box.Controllers
         public async Task<IActionResult> ChangePassword()
         {
             if (User.Identity.Name != null && await userRepository.FindFirstOrDefault(p => p.Login == User.Identity.Name) != null)
+            {
+                ViewBag.Login = User.Identity.Name;
                 return View();
+            }
             return NotFound();
         }
         [HttpPut("[controller]/[action]/")]
