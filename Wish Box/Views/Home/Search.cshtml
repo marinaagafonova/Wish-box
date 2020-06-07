@@ -28,16 +28,25 @@
                             @if (user.Login != User.Identity.Name)
                             {
                                 <div class="follow-btn-section-@user.Id">
-                                    @if (!Model.Following_ids.Contains(user.Id))
-                                    {
-                                        <button class="btn follow-btn" onclick="follow(@user.Id, '/followings/add/');">Подписаться</button>
-                                    }
-                                    else
-                                    {
-                                        <!-- Данила "to do" - action -->
-                                        <button class="btn btn-light unfollow-btn" onclick="unfollow(@user.Id, '/followings/remove/');">Отписаться</button>
-                                    }
+                                  
+                                @if (!Model.Following_ids.Contains(user.Id))
+                                {
+                                    <form asp-controller="Followings" asp-action="PostFollowing" asp-route-id="@user.Id" method="post" role="form">
+                                        <button class="follow-btn" type="submit" id="follow" onclick="ym(62193592, 'reachGoal', 'follow'); return true;">Подписаться</button>
+                                    </form>
+                                    if (flag)
+                                        Model.Following_ids.Add(user.Id);
+                                }
+                                else
+                                {
+                                    <form method="delete" role="form">
+                                        <button class="btn btn-ligh unfollow-btn" type="submit" id="unfollow" onclick="deletefun(@user.Id)">Отписаться</button>
+                                    </form>
+                                    if (flag)
+                                        Model.Following_ids.Remove(user.Id);
+                                }
                                 </div>
+
                             }
 
                         </div>
@@ -70,6 +79,32 @@
         </div>
     </div>
 </div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        function deletefun(id) {
+            @{flag = true;}
+            $.ajax({
+                type: "DELETE",
+                url: "/Followings/Remove/" + id,
+                success: function () {
+                    location.reload(true);
+                }
+            })
+        }
+        //// $(function () {
+        //     $.ajaxSetup({ cache: false });
+        //     $(".btn-detele").on('click', function (e) {
+        //         var id = $(this).attr("data-id");
+        //         $.ajax({
+        //             type: 'Delete',
+        //             url: '/Followings?id=' + id
+        //         });
+        //         console.log("delete following with id" + id);
+        //     })
+        // })
+    </script>
 
 <script>
     function follow(id, my_link) {
@@ -115,3 +150,4 @@
     }
 
 </script>
+}

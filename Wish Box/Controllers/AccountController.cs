@@ -26,6 +26,7 @@ using Wish_Box.Repositories;
 
 namespace Wish_Box.Controllers
 {
+    [ApiController]
     public class AccountController : Controller
     {
         //private readonly AppDbContext db;
@@ -100,18 +101,20 @@ namespace Wish_Box.Controllers
             ViewBag.Cities = cities;
             return PartialView("DisplayCities");
         }
+
+        [HttpGet("[controller]/[action]/")]
         public IActionResult Index()
         {
             return View();
         }
-        [HttpGet]
+        [HttpGet("[controller]/[action]/")]
         public IActionResult Login()
         {
             return PartialView();
         }
-        [HttpPost]
+        [HttpPost("[controller]/[action]/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginModel model)
+        public async Task<IActionResult> Login([FromForm]LoginModel model)
         {
             if (ModelState.IsValid)
             {
@@ -126,7 +129,7 @@ namespace Wish_Box.Controllers
             }
             return PartialView("Login", model);
         }
-        [HttpGet]
+        [HttpGet("[controller]/[action]/")]
         public IActionResult Register()
         {
             InitCountryList();
@@ -161,9 +164,9 @@ namespace Wish_Box.Controllers
             ViewBag.CitiesFirst = cities;
             return PartialView();
         }
-        [HttpPost]
+        [HttpPost("[controller]/[action]/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterModel model)
+        public async Task<IActionResult> Register([FromForm]RegisterModel model)
         {
             if (ModelState.IsValid)
             {
@@ -206,6 +209,7 @@ namespace Wish_Box.Controllers
             }
             return PartialView("Register", model);
         }
+        [HttpGet("[controller]/[action]/")]
         public async Task<IActionResult> Edit()
         {
             if (User.Identity.Name != null)
@@ -256,9 +260,9 @@ namespace Wish_Box.Controllers
             }
             return NotFound();//может сделать страничку "вы должны быть авторизованны для этого действия"
         }
-        [HttpPost]
+        [HttpPut("[controller]/[action]/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Edit2Model model)
+        public async Task<IActionResult> Edit([FromForm]Edit2Model model)
         {
             if (ModelState.IsValid)
             {
@@ -302,7 +306,8 @@ namespace Wish_Box.Controllers
                         await userRepository.Update(user);
                         //await db.SaveChangesAsync();
                         await Authenticate(model.Login);
-                        return RedirectToAction("Show", "UserPage", new { id = model.Login });
+                        //return RedirectToAction("Show", "UserPage", new { id = model.Login });
+                        //return Redirect(Request.Headers["Referer"].ToString());
                     }
                     else
                         ModelState.AddModelError("error - login isn't unique", "Имя пользователя занято!");
@@ -311,6 +316,7 @@ namespace Wish_Box.Controllers
             }
             return View(model);
         }
+        [NonAction]
         private async Task<bool> CheckUserName(string oldLogin, string newLogin)
         {
             if (oldLogin == newLogin)
@@ -318,16 +324,16 @@ namespace Wish_Box.Controllers
             else
                 return await userRepository.FindFirstOrDefault(p => p.Login == newLogin) == null;
         }
-        [HttpGet]
+        [HttpGet("[controller]/[action]/")]
         public async Task<IActionResult> ChangePassword()
         {
             if (User.Identity.Name != null && await userRepository.FindFirstOrDefault(p => p.Login == User.Identity.Name) != null)
                 return View();
             return NotFound();
         }
-        [HttpPost]
+        [HttpPut("[controller]/[action]/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+        public async Task<IActionResult> ChangePassword([FromForm]ChangePasswordModel model)
         {
             if (ModelState.IsValid)
             {
@@ -340,8 +346,6 @@ namespace Wish_Box.Controllers
                     {
                         user.Password = Convert.ToBase64String(new MD5CryptoServiceProvider().ComputeHash(new UTF8Encoding().GetBytes(model.Password)));
                         await userRepository.Update(user);
-                        //await db.SaveChangesAsync();
-                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
@@ -353,6 +357,7 @@ namespace Wish_Box.Controllers
             }
             return View(model);
         }
+        [NonAction]
         private async Task Authenticate(string userName)
         {
             // создаем один claim
@@ -366,6 +371,7 @@ namespace Wish_Box.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
+        [HttpGet("[controller]/[action]/")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

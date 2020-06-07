@@ -32,14 +32,23 @@
         else
         {
             <div class="follow-btn-section">
-                @if (!Model.Followers.Contains(Model.CurrentUser.Id))
-                {
-                    <button class="follow-btn" onclick="follow(@Model.User.Id, '/followings/add/');">Подписаться</button>
-                }
-                else
-                {
-                    <button class="btn btn-ligh unfollow-btn" onclick="unfollow(@Model.User.Id, '/followings/remove/');">Отписаться</button>
-                }
+            @if (!Model.Followers.Contains(Model.CurrentUser.Id))
+            {
+                //<a class="follow-btn" asp-controller="Followings" asp-action="PostFollowing" asp-route-id="@Model.User.Id" id="follow" method="post">Подписаться</a>
+               // <form asp-controller="Followings" asp-action="PostFollowing" asp-route-id="@Model.User.Id" method="post" role="form">
+                //    <button class="follow-btn" type="submit" id="follow" onclick="ym(62193592, 'reachGoal', 'follow'); return true;">Подписаться</button>
+                //</form>
+                //if (flag)
+                //{
+                    <button class="follow-btn" onclick="follow(@Model.User.Id, '/Followings/PostFollowing/');">Подписаться</button>
+            }
+            else
+            {
+                <a class="btn btn-light unfollow-btn" id="unfollow" onclick="deletefun(@Model.User.Id)">Отписаться</a>
+                //if (flag)
+               // {
+                 //   <button class="btn btn-ligh unfollow-btn" onclick="unfollow(@Model.User.Id, '/followings/remove/');">Отписаться</button>
+               // }
             </div>
         }
     </div>
@@ -129,7 +138,11 @@
     </div>
 </div>
 
-<script>
+
+
+@section scripts
+{
+    <script>
     function myFunction(id) {
         console.log(id);
         //console.log("myDropdown"+id);
@@ -148,9 +161,6 @@
         }
     }
 </script>
-
-@section scripts
-{
     <script type="text/javascript">
 
         $(function () {
@@ -254,8 +264,8 @@
 
         function unfollow(id, my_link) {
             $.ajax({
-                type: 'GET',
-                url: my_link + id,
+                 type: "DELETE",
+                url: "/Followings/Remove/" + id,
                 success: function () {
                     $('.follow-btn-section').empty();
                     $('.follow-btn-section').prepend('<button class="btn follow-btn" onclick="follow(' + id + ',\'/followings/add/\');">Подписаться</button>');
@@ -265,4 +275,19 @@
         }
 
     </script>
+    <script type="text/javascript">
+        function deletefun(id) {
+            @{flag = true;}
+            $.ajax({
+                type: "DELETE",
+                url: "/Followings/Remove/" + id,
+                success: function () {
+                    location.reload(true);
+                }
+            })
+        }
+    </script>
+
+
+    
 }

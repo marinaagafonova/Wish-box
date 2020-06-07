@@ -5,10 +5,12 @@
 
 <div class="col-sm-8 col-lg-8 col-md-8">
     <h2 style="text-align: center; color:white; font-weight: bold; margin-bottom: 20px;">Редактировать желание</h2>
-    <form class="edit" asp-action="edit" asp-controller="Wish" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data" id="upload-form">
+
+    <form id="editform" asp-controller="Wish" asp-action="Edit" class="edit" asp-route-id="@Model.Id" hidden_method="put" enctype="multipart/form-data">
+        <input id="WId" value="@Model.Id" style="display:none" />
         <div class="form-group">
             <label asp-for="Description" class="control-label">Описание:</label>
-            <input type="text" asp-for="Description" class="form-control" value="@Model.Description" maxlength="150"/>
+            <input id="WDesc" type="text" asp-for="Description" class="form-control" value="@Model.Description" maxlength="150" />
         </div>
         <div class="form-group">
             <div class="attachment">
@@ -21,7 +23,7 @@
                     <img src="~/Content/gift.png" asp-append-version="true">
                 }
             </div>
-            <input id="upload-file" accept=".gif,.jpg,.jpeg,.png" data-max-size="3145728" name="Attachment" type="file" class="form-control" />
+            <input id="upload-file" accept=".gif,.jpg,.jpeg,.png" asp-for="Attachment" data-max-size="3145728" name="Attachment" type="file" class="form-control" />
         </div>
         <div class="form-group">
             <input style="margin-top: 10px;" class="btn btn-outline-success" type="submit" value="Cохранить" />
@@ -55,5 +57,21 @@
             });
             </text>
         }
+    </script>
+      <script type="text/javascript">
+
+        $(document).ready(function (e) {
+            $("#editform").on('submit', (function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url:"@Url.Action("Edit", "Wish")",
+                    type: "PUT",
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,                    
+                });
+            }));
+        });
     </script>
 }

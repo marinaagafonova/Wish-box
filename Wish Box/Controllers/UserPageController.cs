@@ -10,6 +10,7 @@ using Wish_Box.ViewModels;
 
 namespace Wish_Box.Controllers
 {
+    [ApiController]
     public class UserPageController : Controller
     {
         //private readonly AppDbContext db;
@@ -26,8 +27,8 @@ namespace Wish_Box.Controllers
             this.takenWishRepository = takenWishRepository;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Show()
+        [HttpGet("[controller]/[action]/{id}")]
+        public async Task<IActionResult> Show([FromRoute]string id)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -37,6 +38,7 @@ namespace Wish_Box.Controllers
                 List<int> following_ids = followingRepository.Find(p => p.UserIsFId == user.Id).Select(p => p.UserFId).ToList();
                 List<Wish> user_wishes = wishRepository.Find(p => p.UserId == user.Id).ToList();
                 List<int> takenWishes = takenWishRepository.Find(t => t.WhoGivesId == currentUser.Id).Select(t => t.WishId).ToList();
+
                 UserPageViewModel upvm = new UserPageViewModel()
                 {
                     User = user,
