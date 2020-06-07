@@ -133,7 +133,7 @@ namespace Wish_Box.Controllers
                     wish.Description = wvm.Description;
                 }
                 await wish_rep.Update(wish);
-                return Json(new { success = true, responseText = "Wish was deleted!" });
+                return Json(new { success = true, responseText = "Wish was edited!" });
 
                 // return RedirectToAction("OwnList");
             }
