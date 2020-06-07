@@ -27,12 +27,12 @@
                             </a>
                             @if (user.Login != User.Identity.Name)
                             {
-                                <div class="follow-btn-section-@user.Id">
+                                //<div class="follow-btn-section-@user.Id">
                                   
                                 @if (!Model.Following_ids.Contains(user.Id))
                                 {
                                     //<form asp-controller="Followings" asp-action="PostFollowing" asp-route-id="@user.Id" method="post" role="form">
-                                        <button class="follow-btn" type="submit" id="follow" onclick="follow(@user.Id, '/followings/add/')">Подписаться</button>
+                                        <button class="btn follow-btn"id="follow" onclick="follow(@user.Id, '/followings/add/')">Подписаться</button>
                                     //</form>
                                    // if (flag)
                                      //   Model.Following_ids.Add(user.Id);
@@ -45,7 +45,7 @@
                                  //   if (flag)
                                    //     Model.Following_ids.Remove(user.Id);
                                 }
-                                </div>
+                               // </div>
 
                             }
 

@@ -34,26 +34,16 @@
             <div class="follow-btn-section">
                 @if (!Model.Followers.Contains(Model.CurrentUser.Id))
                 {
-                    //<a class="follow-btn" asp-controller="Followings" asp-action="PostFollowing" asp-route-id="@Model.User.Id" id="follow" method="post">Подписаться</a>
-                    // <form asp-controller="Followings" asp-action="PostFollowing" asp-route-id="@Model.User.Id" method="post" role="form">
-                    //    <button class="follow-btn" type="submit" id="follow" onclick="ym(62193592, 'reachGoal', 'follow'); return true;">Подписаться</button>
-                    //</form>
-                    //if (flag)
-                    //{
                     <button class="follow-btn" onclick="follow(@Model.User.Id, '/Followings/PostFollowing/');">Подписаться</button>
                 }
                 else
                 {
                     <a class="btn btn-light unfollow-btn" id="unfollow" onclick="deletefun(@Model.User.Id)">Отписаться</a>
-                    //if (flag)
-                    // {
-                    //   <button class="btn btn-ligh unfollow-btn" onclick="unfollow(@Model.User.Id, '/followings/remove/');">Отписаться</button>
-                    // }
                 }
             </div>
 
         }
-
+        </div>
         <div class="wishes">
             @foreach (var wish in Model.UserWishes)
             {
@@ -252,7 +242,7 @@
 
         function follow(id, my_link) {
             $.ajax({
-                type: 'GET',
+                type: 'POST',
                 url: my_link + id,
                 success: function () {
                     $('.follow-btn-section').empty();
