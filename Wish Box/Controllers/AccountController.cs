@@ -306,7 +306,8 @@ namespace Wish_Box.Controllers
                         }
                         await userRepository.Update(user);
                         //await db.SaveChangesAsync();
-                        await Authenticate(model.Login);
+                        Authenticate(model.Login);
+                        return Json(new { success = true, responseText = model.Login });
                         //return RedirectToAction("Show", "UserPage", new { id = model.Login });
                         //return Redirect(Request.Headers["Referer"].ToString());
                     }
@@ -347,6 +348,7 @@ namespace Wish_Box.Controllers
                     {
                         user.Password = Convert.ToBase64String(new MD5CryptoServiceProvider().ComputeHash(new UTF8Encoding().GetBytes(model.Password)));
                         await userRepository.Update(user);
+                        return Json(new { success = true, responseText = "Pass Edited!" });
                     }
                     else
                     {

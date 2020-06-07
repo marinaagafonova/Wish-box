@@ -93,9 +93,7 @@
             })
         }
         </script>
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script type="text/javascript"></script>
-    <script>
+    <script type="text/javascript">
         $(document).ready(function (e) {
             $("#from_edit").on('submit', (function (e) {
                 e.preventDefault();
@@ -107,8 +105,8 @@
                     cache: false,
                     processData: false,
                     success: function () {
-                        //location.reload(true);
-                        window.location.replace("UserPage/Show/@Model.Login")
+                        location.reload(true);
+                        //window.location.replace("UserPage/Show/@Model.Login")
                     }
                 });
             }));
