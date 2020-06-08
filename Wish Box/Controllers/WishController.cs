@@ -194,8 +194,8 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [HttpGet("[controller]/[action]")]
-        public async Task<int> GetRating()
+        [HttpGet("[controller]/[action]/{id}")]
+        public async Task<int> GetRating([FromRoute] int id)
         {
             try 
             {
@@ -208,16 +208,16 @@ namespace Wish_Box.Controllers
             }
         }
         [HttpGet("[controller]/[action]/{id}")]
-        public async Task<IActionResult> RatingPlus(int id)
+        public async Task<IActionResult> RatingPlus([FromRoute]int id)
         {
             if (User.Identity.IsAuthenticated)
             {
                 var currentUser = user_rep.FindFirstOrDefault(x => x.Login == User.Identity.Name);
                 Wish currentWish = await wish_rep.FindFirstOrDefault(p => p.Id == id);
-                List<WishRating> currentRates = wishRate_rep.Find(x => x.UserId == currentUser.Id && x.WishId == id).ToList();
-                var currentRate = new WishRating();
-                if (currentRates != null)
-                    currentRate = currentRates[0];
+                WishRating currentRate = await wishRate_rep.FindFirstOrDefault(x => x.UserId == currentUser.Id && x.WishId == id);
+                //WishRating currentRate = null;
+                //if (currentRates.Count != 0)
+                //    currentRate = currentRates[0];
 
                 if (currentRate == null)
                 {
@@ -254,17 +254,17 @@ namespace Wish_Box.Controllers
         }
 
         [HttpGet("[controller]/[action]/{id}")]
-        public async Task<IActionResult> RatingMinus(int id)
+        public async Task<IActionResult> RatingMinus([FromRoute]int id)
         {
             if (User.Identity.IsAuthenticated)
             {
                 //var wish_id = Convert.ToInt32(RouteData.Values["id"]);
                 var currentUser = user_rep.FindFirstOrDefault(x => x.Login == User.Identity.Name);
                 Wish currentWish = await wish_rep.FindFirstOrDefault(p => p.Id == id);
-                var currentRates = wishRate_rep.Find(x => x.UserId == currentUser.Id && x.WishId == id).ToList();
-                var currentRate = new WishRating();
-                if (currentRates != null)
-                    currentRate = currentRates[0];
+                WishRating currentRate = await wishRate_rep.FindFirstOrDefault(x => x.UserId == currentUser.Id && x.WishId == id);
+                //WishRating currentRate = null;
+                //if (currentRates.Count != 0)
+                //    currentRate = currentRates[0];
 
                 if (currentRate == null)
                 {
