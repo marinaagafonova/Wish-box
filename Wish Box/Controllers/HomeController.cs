@@ -16,7 +16,7 @@ using Wish_Box.Repositories;
 
 namespace Wish_Box.Controllers
 {
-    [ApiController]
+    //[ApiController]
     public class HomeController : Controller
     {
         private List<string> countries;
@@ -56,7 +56,7 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [Route("Home/Privacy")]
+        //[Route("Home/Privacy")]
         public IActionResult Privacy()
         {
             return View();
@@ -67,7 +67,7 @@ namespace Wish_Box.Controllers
         //{
         //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         //}
-        [Route("Home/Logout")]
+       // [Route("Home/Logout")]
         public IActionResult Logout()
         {
             return RedirectToAction("Logout", "Account");
@@ -159,7 +159,7 @@ namespace Wish_Box.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> Filter(string country, string city, string name)
+        public async Task<IActionResult> Filter([FromQuery]string country, [FromQuery]string city, [FromQuery]string name)
         {
             IQueryable<User> users = user_rep.GetAll().AsQueryable();
             if (country != null && country != "" && country != "Все")
@@ -178,8 +178,8 @@ namespace Wish_Box.Controllers
 
             List<string> cities = GetCities(country);
             var current_user = await user_rep.FindFirstOrDefault(p => p.Login == User.Identity.Name);
-            var following_ids = following_rep.Find(p => p.UserFId == current_user.Id).Select(p => p.UserIsFId).ToList(); 
-
+            var following_ids = following_rep.Find(p => p.UserFId == current_user.Id).Select(p => p.UserIsFId).ToList();
+            GetCountries();
             UserListViewModel viewModel = new UserListViewModel
             {
                 Users = users.ToList(),
