@@ -34,7 +34,7 @@
             <div class="follow-btn-section">
                 @if (!Model.Followers.Contains(Model.CurrentUser.Id))
                 {
-                    <button class="follow-btn" onclick="follow(@Model.User.Id, '/Followings/PostFollowing/');">Подписаться</button>
+                    <button class="btn follow-btn" onclick="follow(@Model.User.Id, '/Followings/PostFollowing/');">Подписаться</button>
                 }
                 else
                 {

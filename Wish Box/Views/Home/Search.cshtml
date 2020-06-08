@@ -56,22 +56,23 @@
         </div>
         <div class="col-3 col-sm-4">
             <div class="search-filter">
+                <h4 style="text-align: center; font-weight: bold;">Фильтр</h4>
                 <form method="get" asp-controller="Home" asp-action="Filter">
-                    <div class="form-inline form-group">
-                        <div>
+                    <div class="form-inline form-group" style="margin-left: auto; margin-right: auto; display: table;">
+                        <div style="display: table-row;">
                             <label class="control-label">Имя: </label>
                             <input style="margin-right:7px;" name="name" class="form-control" value="@ViewBag.keyword" />
                         </div>
-                        <div>
+                        <div style="display: table-row;">
                             <label class="control-label">Страна: </label>
                             <select style="margin-right:7px;" onchange="myFunction(this)" name="country" asp-items="Model.Countries" class="form-control"></select>
                         </div>
-                        <div>
+                        <div style="display: table-row;">
                             <label class="control-label">Город: </label>
                             <select style="margin-right:7px;" id="citylist" name="city" asp-items="Model.Cities" class="form-control"></select>
                         </div>
-                        <div>
-                            <input type="submit" value="Искать" class="btn btn-info" />
+                        <div style="display: table-row;">
+                            <input type="submit" style="margin-top: 10px;" value="Искать" class="btn btn-info" />
                         </div>
                     </div>
                 </form>

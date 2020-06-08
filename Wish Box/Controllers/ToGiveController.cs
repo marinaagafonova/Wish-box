@@ -29,7 +29,7 @@ namespace Wish_Box.Controllers
             this.commentRepository = commentRepository;
         }
 
-       // [HttpGet("[controller]/[action]")]
+        [HttpGet("[controller]/[action]")]
         public async Task<IActionResult> Index()
         {
             if (User.Identity.IsAuthenticated)
@@ -44,9 +44,9 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [HttpPost]
-        //[HttpPost("[controller]/[action]")]
-        public async Task<IActionResult> Add()
+        //[HttpPost]
+        [HttpPost("[controller]/[action]/{id}")]
+        public async Task<IActionResult> Add([FromRoute] int id)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -67,10 +67,10 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        //        [HttpDelete("[controller]/[action]/{id}")]
+        [HttpDelete("[controller]/[action]/{id}")]
         //[HttpPost("[controller]/[action]")]
-        [HttpPost]
-        public async Task<IActionResult> Remove()
+        //[HttpPost]
+        public async Task<IActionResult> Remove([FromRoute] int id)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -80,14 +80,15 @@ namespace Wish_Box.Controllers
                 //db.Entry(takenWish).State = EntityState.Deleted;
                 await takenWishRepository.Delete(takenWish.Id);
                 //await db.SaveChangesAsync();
-                return Redirect(Request.Headers["Referer"].ToString());
+                //return Redirect(Request.Headers["Referer"].ToString());
+                return Json(new { success = true, responseText = "mark was deleted" });
             }
             return RedirectToAction("Index", "Account");
         }
 
-        // [HttpPost("[controller]/[action]")]
-        [HttpPost]
-        public async Task<IActionResult> MarkAsGiven()
+        [HttpPost("[controller]/[action]/{id}")]
+      //  [HttpPost]
+        public async Task<IActionResult> MarkAsGiven([FromRoute]int id)
         {
             if (User.Identity.IsAuthenticated)
             {

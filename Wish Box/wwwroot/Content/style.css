@@ -2,9 +2,12 @@
     background-color: #aed3e6 !important;
 }
 
-.navbar-default {
-    background-color: #aed3e6 !important;
-    border-color: white;
+.border-bottom {
+    border-bottom: 3px solid #ffffff8a !important
+}
+
+.border-top {
+    border-top: 3px solid #ffffff8a !important;
 }
 
 .own-navbar {
@@ -443,6 +446,7 @@ a.menu-btn {
     padding: 20px;
     margin-top: 20px;
     display: table;
+    margin-bottom: 20px;
 }
 
 .wish-desc {
@@ -519,4 +523,18 @@ header {
 
 .to-give-remove {
     background-image: url('~/Content/tick_to_give.png');
+}
+
+.message {
+    width: 55%;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 30px;
+    color: #FFFFFF;
+    text-align: center;
+    padding-top: 90px;
+    margin-bottom: 90px;
+    margin-left: 4%;
+    margin-right: 70%;
 }
