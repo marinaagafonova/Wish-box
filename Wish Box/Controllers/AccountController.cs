@@ -268,11 +268,15 @@ namespace Wish_Box.Controllers
             if (ModelState.IsValid)
             {
                 string name = User.Identity.Name;
+                bool reauth = false;
                 if (name != null)
                 {
                     if (CheckUserName(name, model.Login).Result)
                     {
                         User user = await userRepository.FindFirstOrDefault(p => p.Login == name);
+                        if (name != model.Login)
+                            reauth = true;
+
                         user.Login = model.Login;
                         user.City = model.City;
                         user.Country = model.Country;
@@ -306,7 +310,8 @@ namespace Wish_Box.Controllers
                         }
                         await userRepository.Update(user);
                         //await db.SaveChangesAsync();
-                        await Authenticate(model.Login);
+                        if(reauth)
+                            await Authenticate(model.Login);
                         return Json(new { success = true, responseText = model.Login });
                         //return RedirectToAction("Show", "UserPage", new { id = model.Login });
                         //return Redirect(Request.Headers["Referer"].ToString());

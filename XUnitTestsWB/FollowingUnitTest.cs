@@ -25,8 +25,6 @@ namespace XUnitTestsWB
             User_rep = new Mock<IRepository<User>>();
             Following_rep = new Mock<IRepository<Following>>();
             int test_id = 1;
-            System.Linq.Expressions.Expression<Func<User, bool>> predicate = p => p.Login == "login2";
-            //string test_login = ; //user with id=2
             User_rep.Setup(repo => repo.GetAll()).Returns(TestData.GetTestUsers());
             
 
