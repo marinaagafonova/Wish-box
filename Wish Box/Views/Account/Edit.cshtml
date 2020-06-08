@@ -6,55 +6,52 @@
 
 <div class="col-sm-8 col-lg-8 col-md-8">
     <h2 style="color:white; text-align: center; font-weight: bold; margin-bottom: 20px;">Редактирование профиля</h2>
-    <form class="edit" asp-action="Edit" method="post" enctype="multipart/form-data" id="upload-form">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="Login" class="control-label">Имя</label>
-            <input asp-for="Login" class="form-control" maxlength="50" />
-            <span asp-validation-for="Login" class="text-danger"></span>
+                <form class="edit" asp-action="Edit" hidden_method="put" enctype="multipart/form-data" id="from_edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Login" class="control-label">Имя</label>
+                        <input asp-for="Login" class="form-control" maxlength="50" />
+                        <span asp-validation-for="Login" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="dayOfBirth" class="control-label">Дата рождения</label>
+                        <input asp-for="dayOfBirth" class="form-control" />
+                        <span asp-validation-for="dayOfBirth" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Country" class="control-label">Страна</label>
+                        <select id="countrylist" onchange="myFunction(this)" asp-for="Country" asp-items="ViewBag.Countries" class="form-control"></select>
+                        <span asp-validation-for="Country" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="City" class="control-label">Город</label>
+                        @Html.DropDownListFor(m => m.City, new SelectList(ViewBag.CitiesFirst), new { @class = "form-control", @id = "citylist" })
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="attachment">
+                            @if (@Model.Avatar != null)
+                            {
+                                <img src="@Url.Content(Model.Avatar)" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/default_profile.jpg" asp-append-version="true">
+                            }
+                        </div>
+                        <input id="upload-file" name="Avatar" type="file" accept=".gif,.jpg,.jpeg,.png" data-max-size="3145728" class="form-control" />
+                    </div> 
+                    <div class="form-group">
+                        <a asp-action="ChangePassword" asp-controller="Account" value="ь"class="btn btn-light" >Изменить пароль</a>
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-primary" type="submit" value="Сохранить" />
+                    </div>
+                </form>
         </div>
-        <div class="form-group">
-            <label asp-for="dayOfBirth" class="control-label">Дата рождения</label>
-            <input asp-for="dayOfBirth" class="form-control" />
-            <span asp-validation-for="dayOfBirth" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Country" class="control-label">Страна</label>
-            <select id="countrylist" onchange="myFunction(this)" asp-for="Country" asp-items="ViewBag.Countries" class="form-control"></select>
-            <span asp-validation-for="Country" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="City" class="control-label">Город</label>
-            @Html.DropDownListFor(m => m.City, new SelectList(ViewBag.CitiesFirst), new { @class = "form-control", @id = "citylist" })
-            <span asp-validation-for="City" class="text-danger"></span>
-
-        </div>
-        <div class="form-group">
-            <div class="attachment">
-                @if (@Model.Avatar != null && ViewData.ModelState.IsValid)
-                {
-                    <img src="@Url.Content(Model.Avatar)" />
-                }
-                else
-                {
-                    <img src="~/Content/default_profile.jpg" asp-append-version="true">
-                }
-            </div>
-            <input id="upload-file" name="Avatar" type="file" accept=".gif,.jpg,.jpeg,.png" data-max-size="3145728" class="form-control" />
-        </div>
-        <div class="form-group">
-            <a asp-action="ChangePassword" asp-controller="Account" value="ь" class="btn btn-light">Изменить пароль</a>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Сохранить" class="btn btn-primary" />
-        </div>
-    </form>
-</div>
-
-
 @section scripts
 {
-    <script type="text/javascript">
+     <script type="text/javascript">
         $(function () {
             var fileInput = $('#upload-file');
             var maxSize = fileInput.data('max-size');
@@ -69,7 +66,7 @@
             });
         });
     </script>
-    <script type="text/javascript">
+     <script type="text/javascript">
         @if (!ViewData.ModelState.IsValid && ViewData.ModelState["Error"].Errors.Count > 0)
         {
             <text>
@@ -95,6 +92,24 @@
 
             })
         }
-
+        </script>
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $("#from_edit").on('submit', (function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url:"@Url.Action("Edit", "Account")",
+                    type: "PUT",
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function () {
+                        location.reload(true);
+                        //window.location.replace("UserPage/Show/@Model.Login")
+                    }
+                });
+            }));
+        });
     </script>
 }

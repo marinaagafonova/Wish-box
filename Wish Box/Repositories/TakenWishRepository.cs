@@ -2,6 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Wish_Box.Repositories;
 
 namespace Wish_Box.Models
 {
@@ -19,19 +22,21 @@ namespace Wish_Box.Models
 			return db.TakenWishes;
 		}
 
-		public TakenWish Get(int id)
+		public async Task<TakenWish> Get(int id)
 		{
-			return db.TakenWishes.Find(id);
+			return await db.TakenWishes.FirstOrDefaultAsync(p => p.Id == id);
 		}
 
-		public void Create(TakenWish TakenWish)
+		public async Task Create(TakenWish TakenWish)
 		{
 			db.TakenWishes.Add(TakenWish);
+			await db.SaveChangesAsync();
 		}
 
-		public void Update(TakenWish TakenWish)
+		public async Task Update(TakenWish TakenWish)
 		{
 			db.Entry(TakenWish).State = EntityState.Modified;
+			await db.SaveChangesAsync();
 		}
 
 		public IEnumerable<TakenWish> Find(Func<TakenWish, Boolean> predicate)
@@ -39,12 +44,20 @@ namespace Wish_Box.Models
 			return db.TakenWishes.Where(predicate).ToList();
 		}
 
-		public void Delete(int id)
+		public async Task Delete(int id)
 		{
 			TakenWish TakenWish = db.TakenWishes.Find(id);
 
 			if (TakenWish != null)
 				db.Entry(TakenWish).State = EntityState.Deleted;
+			await db.SaveChangesAsync();
 		}
+
+
+		public async Task<TakenWish> FindFirstOrDefault(Expression<Func<TakenWish, bool>> predicate)
+		{
+			return await db.TakenWishes.FirstOrDefaultAsync(predicate);
+		}
+
 	}
 }

@@ -41,7 +41,7 @@
 <script type="text/javascript">
     function remove(id, my_link) {
         $.ajax({
-            type: 'POST',
+            type: 'Delete',
             url: my_link + id,
             success: function () { $('.wish-block-' + id).empty(); console.log('success'); }
         });

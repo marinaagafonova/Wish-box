@@ -6,32 +6,32 @@ namespace Wish_Box.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Wishes_Users_UserId",
-                table: "Wishes");
+            //migrationBuilder.DropForeignKey(
+            //    name: "FK_Wishes_Users_UserId",
+            //    table: "Wishes");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Wishes_Users_UserId",
-                table: "Wishes",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+            //migrationBuilder.AddForeignKey(
+            //    name: "FK_Wishes_Users_UserId",
+            //    table: "Wishes",
+            //    column: "UserId",
+            //    principalTable: "Users",
+            //    principalColumn: "Id",
+            //    onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Wishes_Users_UserId",
-                table: "Wishes");
+            //migrationBuilder.DropForeignKey(
+            //    name: "FK_Wishes_Users_UserId",
+            //    table: "Wishes");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Wishes_Users_UserId",
-                table: "Wishes",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+            //migrationBuilder.AddForeignKey(
+            //    name: "FK_Wishes_Users_UserId",
+            //    table: "Wishes",
+            //    column: "UserId",
+            //    principalTable: "Users",
+            //    principalColumn: "Id",
+            //    onDelete: ReferentialAction.Cascade);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Wish_Box.Models;
 
@@ -14,19 +15,19 @@ namespace Wish_Box.Repositories
         {
             db = context;
         }
-        public void Create(WishRating item)
+        public async Task Create(WishRating item)
         {
             db.WishRatings.Add(item);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             WishRating wishRating = db.WishRatings.Find(id);
 
             if (wishRating != null)
                 db.WishRatings.Remove(wishRating);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
         public IEnumerable<WishRating> Find(Func<WishRating, bool> predicate)
@@ -34,9 +35,14 @@ namespace Wish_Box.Repositories
             return db.WishRatings.Where(predicate).ToList();
         }
 
-        public WishRating Get(int id)
+        public async Task<WishRating> FindFirstOrDefault(Expression<Func<WishRating, bool>> predicate)
         {
-            return db.WishRatings.Find(id);
+            return await db.WishRatings.FirstOrDefaultAsync(predicate);
+        }
+
+        public async Task<WishRating> Get(int id)
+        {
+            return await db.WishRatings.FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public IEnumerable<WishRating> GetAll()
@@ -44,10 +50,18 @@ namespace Wish_Box.Repositories
             return db.WishRatings;
         }
 
-        public void Update(WishRating item)
+        public async Task Update(WishRating item)
         {
             db.Entry(item).State = EntityState.Modified;
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
+
+       
+
+        Task<WishRating> IRepository<WishRating>.Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

@@ -10,11 +10,11 @@ namespace Wish_Box.Repositories
 		IEnumerable<T> GetAll();
 		Task<T> Get(int id);
 		IEnumerable<T> Find(Func<T, Boolean> predicate);
-		Task<T> FindFirstOrDefault(Func<T, Boolean> predicate);
-
+		Task<T> FindFirstOrDefault(System.Linq.Expressions.Expression<Func<T, bool>> predicate);
 
 		Task Create(T item);
 		Task Update(T item);
 		Task Delete(int id);
 	}
 }
+

@@ -14,19 +14,19 @@ namespace Wish_Box.Repositories
         {
             db = context;
         }
-        public void Create(Wish item)
+        public async Task Create(Wish item)
         {
             db.Wishes.Add(item);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             Wish wish = db.Wishes.Find(id);
 
             if (wish != null)
                 db.Wishes.Remove(wish);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
         public IEnumerable<Wish> Find(Func<Wish, bool> predicate)
@@ -34,9 +34,14 @@ namespace Wish_Box.Repositories
             return db.Wishes.Where(predicate).ToList();
         }
 
-        public Wish Get(int id)
+        public async Task<Wish> FindFirstOrDefault(System.Linq.Expressions.Expression<Func<Wish, bool>> predicate)
         {
-            return db.Wishes.Find(id);
+            return await db.Wishes.FirstOrDefaultAsync(predicate);
+        }
+
+        public async Task<Wish> Get(int id)
+        {
+            return await db.Wishes.FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public IEnumerable<Wish> GetAll()
@@ -44,10 +49,12 @@ namespace Wish_Box.Repositories
             return db.Wishes;
         }
 
-        public void Update(Wish item)
+        public async Task Update(Wish item)
         {
             db.Entry(item).State = EntityState.Modified;
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
+
+        
     }
 }

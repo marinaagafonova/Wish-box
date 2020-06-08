@@ -34,102 +34,106 @@
             <div class="follow-btn-section">
                 @if (!Model.Followers.Contains(Model.CurrentUser.Id))
                 {
-                    <button class="follow-btn" onclick="follow(@Model.User.Id, '/followings/add/');">Подписаться</button>
+                    <button class="btn follow-btn" onclick="follow(@Model.User.Id, '/Followings/PostFollowing/');">Подписаться</button>
                 }
                 else
                 {
-                    <button class="btn btn-ligh unfollow-btn" onclick="unfollow(@Model.User.Id, '/followings/remove/');">Отписаться</button>
+                    <a class="btn btn-light unfollow-btn" id="unfollow" onclick="deletefun(@Model.User.Id)">Отписаться</a>
                 }
             </div>
+
         }
-    </div>
-
-    <div class="wishes">
-        @foreach (var wish in Model.UserWishes)
-        {
-
-            @if (wish.UserId == Model.User.Id)
+        </div>
+        <div class="wishes">
+            @foreach (var wish in Model.UserWishes)
             {
-                <div class="col-auto">
-                    <div class="wish-show row">
-                        @if (Model.User.Login == Model.CurrentUser.Login)
-                        {
-                            <div class="row">
-                                <div class="dropdown" style="margin-left:auto; margin-right: 20px;">
 
-                                    <button onclick="myFunction(@wish.Id)" class="dropbtn">&#8226;&#8226;&#8226;</button>
-                                    @{
-                                        string drop_id = "myDropdown" + wish.Id.ToString();
-                                    }
-                                    <div id="@drop_id" class="dropdown-content">
-                                        <a asp-controller="Wish" asp-action="Edit" asp-route-id="@wish.Id">Редактировать желание</a>
-                                        <a class="btn-delete" asp-controller="Wish" asp-action="Delete" asp-route-id="@wish.Id">Удалить желание</a>
+                @if (wish.UserId == Model.User.Id)
+                {
+                    <div class="col-auto">
+                        <div class="wish-show row">
+                            @if (Model.User.Login == Model.CurrentUser.Login)
+                            {
+                                <div class="row">
+                                    <div class="dropdown" style="margin-left:auto; margin-right: 20px;">
+
+                                        <button onclick="myFunction(@wish.Id)" class="dropbtn">&#8226;&#8226;&#8226;</button>
+                                        @{
+                                            string drop_id = "myDropdown" + wish.Id.ToString();
+                                        }
+                                        <div id="@drop_id" class="dropdown-content">
+                                            <a asp-controller="Wish" asp-action="Edit" asp-route-id="@wish.Id">Редактировать желание</a>
+                                            <a class="btn-delete" asp-controller="Wish" asp-action="Delete" asp-route-id="@wish.Id">Удалить желание</a>
+                                        </div>
+
                                     </div>
+                                </div>
+                            }
+                            <div class="col-12">
+                                <div class="desc-block col-8">
+                                    <label class="wish-desc">@wish.Description</label>
 
                                 </div>
-                            </div>
-                        }
-                        <div class="col-12">
-                            <div class="desc-block col-8">
-                                <label class="wish-desc">@wish.Description</label>
-
-                            </div>
-                            <div class="attachment col-4">
-                                @if (wish.Attachment != null)
-                                {
-                                    <img src="@Url.Content(wish.Attachment)" />
-                                }
-                                else
-                                {
-                                    <img src="~/Content/gift.png" />
-                                }
-                            </div>
-
-                        </div>
-                        <div class="wish-func col-12">
-                            <div class="toggle-comment-section-@(wish.Id)">
-                                <button class="btn btn-get-comments" style="margin-right: 20px; float:left;" onclick="get_comments(@wish.Id,'/comments/getcomments/');">
-                                    <img class="icon" style="width: 40px;height: 40px;" src="~/Content/comment.png" />
-                                </button>
-                            </div>
-                            @if (Model.User.Login != Model.CurrentUser.Login)
-                            {
-                                <button class="btn" onclick="rating(@wish.Id, '/wish/ratingplus/');" style="float:left">
-                                    <img class="icon" style="width: 14px;height: 35px;" src="~/Content/ratingPlus available.png" />
-                                </button>
-                                <label class="rating-desc wish-rating-@wish.Id" style="float:left;">Рейтинг: @wish.Rating.ToString()</label>
-                                <button class="btn" onclick="rating(@wish.Id, '/wish/ratingminus/');" style="float: left">
-                                    <img class="icon" style="width: 14px;height: 35px;" src="~/Content/ratingMinus available.png" />
-                                </button>
-                                <div class="to-give-button-section-@wish.Id">
-                                    @if (Model.TakenWishes.Contains(wish.Id))
+                                <div class="attachment col-4">
+                                    @if (wish.Attachment != null)
                                     {
-                                        <button class="btn btn-add-to-give-mark" style="float:left;" onclick="remove_from_list(@wish.Id, '/togive/remove/');">
-                                            <img class="icon" style="width: 39px;height: 30px;" src="~/Content/tick_to_give.png" />Добавлено в "Подарить"
-                                        </button>
+                                        <img src="@Url.Content(wish.Attachment)" />
                                     }
                                     else
                                     {
-                                        <button class="btn btn-add-to-give-mark" style="float:left;" onclick="add_to_list(@wish.Id, '/togive/add/');">
-                                            <img class="icon" style="width: 30px;height: 30px;" src="~/Content/plus.png" />Добавить в "Подарить"
-                                        </button>
+                                        <img src="~/Content/gift.png" />
                                     }
                                 </div>
-                            }
-                            else
-                            {
-                                <label class="rating-desc wish-rating-@wish.Id" style="float:left;">Рейтинг: @wish.Rating.ToString()</label>
-                            }
-                        </div>
-                    </div>
-                    <div class="comment-section-@(wish.Id)"></div>
-                </div>
-            }
-        }
-    </div>
-</div>
 
-<script>
+                            </div>
+                            <div class="wish-func col-12">
+                                <div class="toggle-comment-section-@(wish.Id)">
+                                    <button class="btn btn-get-comments" style="margin-right: 20px; float:left;" onclick="get_comments(@wish.Id,'/comments/getcomments/');">
+                                        <img class="icon" style="width: 40px;height: 40px;" src="~/Content/comment.png" />
+                                    </button>
+                                </div>
+                                @if (Model.User.Login != Model.CurrentUser.Login)
+                                {
+                                    <button class="btn" onclick="rating(@wish.Id, '/wish/ratingplus/');" style="float:left">
+                                        <img class="icon" style="width: 14px;height: 35px;" src="~/Content/ratingPlus available.png" />
+                                    </button>
+                                    <label class="rating-desc wish-rating-@wish.Id" style="float:left;">Рейтинг: @wish.Rating.ToString()</label>
+                                    <button class="btn" onclick="rating(@wish.Id, '/wish/ratingminus/');" style="float: left">
+                                        <img class="icon" style="width: 14px;height: 35px;" src="~/Content/ratingMinus available.png" />
+                                    </button>
+                                    <div class="to-give-button-section-@wish.Id">
+                                        @if (Model.TakenWishes.Contains(wish.Id))
+                                        {
+                                            <button class="btn btn-add-to-give-mark" style="float:left;" onclick="remove_from_list(@wish.Id, '/togive/remove/');">
+                                                <img class="icon" style="width: 39px;height: 30px;" src="~/Content/tick_to_give.png" />Добавлено в "Подарить"
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-add-to-give-mark" style="float:left;" onclick="add_to_list(@wish.Id, '/togive/add/');">
+                                                <img class="icon" style="width: 30px;height: 30px;" src="~/Content/plus.png" />Добавить в "Подарить"
+                                            </button>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <label class="rating-desc wish-rating-@wish.Id" style="float:left;">Рейтинг: @wish.Rating.ToString()</label>
+                                }
+                            </div>
+                        </div>
+                        <div class="comment-section-@(wish.Id)"></div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+
+
+@section scripts
+{
+    <script>
     function myFunction(id) {
         console.log(id);
         //console.log("myDropdown"+id);
@@ -148,9 +152,6 @@
         }
     }
 </script>
-
-@section scripts
-{
     <script type="text/javascript">
 
         $(function () {
@@ -241,7 +242,7 @@
 
         function follow(id, my_link) {
             $.ajax({
-                type: 'GET',
+                type: 'POST',
                 url: my_link + id,
                 success: function () {
                     $('.follow-btn-section').empty();
@@ -254,8 +255,8 @@
 
         function unfollow(id, my_link) {
             $.ajax({
-                type: 'GET',
-                url: my_link + id,
+                 type: "DELETE",
+                url: "/Followings/Remove/" + id,
                 success: function () {
                     $('.follow-btn-section').empty();
                     $('.follow-btn-section').prepend('<button class="btn follow-btn" onclick="follow(' + id + ',\'/followings/add/\');">Подписаться</button>');
@@ -265,4 +266,18 @@
         }
 
     </script>
+    <script type="text/javascript">
+        function deletefun(id) {
+            $.ajax({
+                type: "DELETE",
+                url: "/Followings/Remove/" + id,
+                success: function () {
+                    location.reload(true);
+                }
+            })
+        }
+    </script>
+
+
+    
 }
