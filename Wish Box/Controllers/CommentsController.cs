@@ -25,10 +25,10 @@ namespace Wish_Box.Controllers
             wish_rep = wishRepository;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetComments()
+        [HttpGet("[controller]/[action]/{id}")]
+        public async Task<IActionResult> GetComments([FromRoute] int id)
         {
-            string id = RouteData.Values["id"].ToString();
+            //string id = RouteData.Values["id"].ToString();
             var wishId = Convert.ToInt32(RouteData.Values["id"]);
             var comments = comment_rep.Find(c => c.WishId == wishId)/*.OrderBy(p=>p.Id).ToList()*/;
             if(comments != null)
@@ -55,7 +55,7 @@ namespace Wish_Box.Controllers
             return PartialView(new CommentViewModel { WishId = wishId });
         }
 
-        [HttpPost]
+        [HttpPost("[controller]/[action]")]
         public async Task<IActionResult> AddComment(CommentViewModel comment)
         {
             var user = await user_rep.FindFirstOrDefault(u => u.Login == User.Identity.Name);
@@ -74,8 +74,9 @@ namespace Wish_Box.Controllers
             return RedirectToAction("Show", "UserPage", new { id = (await user_rep.FindFirstOrDefault(u => u.Id == wish.UserId)).Login });
         }
 
-        [HttpPost]//[HttpDelete]
-        public async Task<IActionResult> Delete()
+        // [HttpPost]//[HttpDelete]
+        [HttpDelete("[controller]/[action]/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var commentId = Convert.ToInt32(RouteData.Values["id"]);
             var wishId = (await comment_rep.FindFirstOrDefault(c => c.Id == commentId)).WishId;
@@ -84,7 +85,8 @@ namespace Wish_Box.Controllers
             if (commentId > 0 && User.Identity.Name != null)
             {
                 await comment_rep.Delete(commentId);
-                return RedirectToAction("Show", "UserPage", new { id = username });
+                //return RedirectToAction("Show", "UserPage", new { id = username });
+                return Json(new { success = true, responseText = "comment was deleted" });
             }
             return NotFound();
         }

@@ -92,7 +92,7 @@
 
     function delete_comment(id){
         $.ajax({
-            type: 'POST',
+            type: 'DELETE',
             url: '/comments/delete/' + id,
             success: function () {
                 $('.comment-' + id).empty();
