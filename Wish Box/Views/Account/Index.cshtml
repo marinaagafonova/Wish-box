@@ -93,7 +93,7 @@
         function myFunction(obj) {
             console.log("countryList was changed");
             var countryId = obj.value;
-
+            //debugger;
             $.ajax({
                 type: "post",
                 url: "/Account/GetCityList/" + countryId,
