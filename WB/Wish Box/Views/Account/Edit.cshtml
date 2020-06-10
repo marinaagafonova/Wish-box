@@ -105,8 +105,7 @@
                     cache: false,
                     processData: false,
                     success: function () {
-                        location.reload(true);
-                        //window.location.replace("UserPage/Show/@Model.Login")
+                         window.location.replace("@Url.Action("Show", "UserPage")" + "/@Model.Login");
                     }
                 });
             }));

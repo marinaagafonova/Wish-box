@@ -50,8 +50,8 @@
 
 
 
-<script type="text/javascript">
-    $(function () {
+    <script type="text/javascript">
+    @*$(function () {
         $.ajaxSetup({ cache: false });
 
         $("#finish_register").click(function (e) {
@@ -70,8 +70,27 @@
             });
             return false;
         });
-    })
-</script>
+    })*@
+    $(document).ready(function (e) {
+        $("#registerform").on('submit', (function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: "@Url.Action("Register", "Account")",
+                type: "POST",
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (result) {
+                    $('#modelcontentregister').replaceWith(result);
+                },
+                error: function (xhr, status, error) {
+                    console.log("register_error");
+                }
+            });
+        }));
+    });
+    </script>
 <script>
     finish_register.onclick = function (event) {
         ym(62193592, 'reachGoal', 'finish_register');
