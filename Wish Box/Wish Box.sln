@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wish Box", "Wish Box.csproj", "{0F8E4852-0954-431D-A7D7-3A4D8E0FE1AF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTestsWB", "..\XUnitTestsWB\XUnitTestsWB.csproj", "{711B91F5-3218-4042-B0DC-37E588805A38}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTestsWB", "..\XUnitTestsWB\XUnitTestsWB.csproj", "{711B91F5-3218-4042-B0DC-37E588805A38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

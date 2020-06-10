@@ -38,7 +38,7 @@
                 }
                 else
                 {
-                    <button class="btn btn-light unfollow-btn" onclick="unfollow(@Model.User.Id, '/followings/remove/');">Отписаться</button>
+                    <a class="btn btn-light unfollow-btn" id="unfollow" onclick="deletefun(@Model.User.Id)">Отписаться</a>
                 }
             </div>
 
@@ -256,10 +256,10 @@
         function unfollow(id, my_link) {
             $.ajax({
                  type: "DELETE",
-                url: my_link + id,
+                url: "/Followings/Remove/" + id,
                 success: function () {
                     $('.follow-btn-section').empty();
-                    $('.follow-btn-section').prepend('<button class="btn follow-btn" onclick="follow(' + id + ',\'/Followings/PostFollowing/\');">Подписаться</button>');
+                    $('.follow-btn-section').prepend('<button class="btn follow-btn" onclick="follow(' + id + ',\'/followings/add/\');">Подписаться</button>');
                     console.log('unfollow success');
                 }
             });
