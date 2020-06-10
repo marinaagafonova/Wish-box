@@ -32,7 +32,7 @@ namespace Wish_Box.Controllers
             //var followed_id = Convert.ToInt32(RouteData.Values["id"]);
             //var users = rep_user.GetAll();
             string login = User.Identity.Name;
-            var current_user = rep_user.FindFirstOrDefault(p => p.Login == login).Result;
+            var current_user = await rep_user.FindFirstOrDefault(p => p.Login == login);
             if (User.Identity.Name != null)
             {
                 await rep_following.Create(new Following
@@ -68,7 +68,8 @@ namespace Wish_Box.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var CurrentUser = await rep_user.FindFirstOrDefault(p => p.Login == User.Identity.Name);
+                string login = User.Identity.Name;
+                var CurrentUser = await rep_user.FindFirstOrDefault(p => p.Login == login);
                 List<User> followedUsersList = new List<User>();
                 //var followings = await db.Followings.Where(p => p.UserFId == CurrentUser.Id).ToListAsync();
                 var followings = rep_following.Find(p => p.UserFId == CurrentUser.Id);
