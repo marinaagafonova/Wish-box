@@ -335,7 +335,10 @@ namespace Wish_Box.Controllers
         public async Task<IActionResult> ChangePassword()
         {
             if (User.Identity.Name != null && await userRepository.FindFirstOrDefault(p => p.Login == User.Identity.Name) != null)
+            {
+                ViewBag.Login = User.Identity.Name;
                 return View();
+            }
             return NotFound();
         }
         [HttpPut("[controller]/[action]/")]
