@@ -12,7 +12,7 @@
 
 **Курсовой проект (формат docx):** https://github.com/marinaagafonova/Wish-box/blob/master/course_project_Wish_box.docx
 
-**Курсовой проект (формат pdf):** https://github.com/marinaagafonova/Wish-box/blob/master/course_project_Wish_box.pdf
+**Курсовой проект (формат pdf):** https://github.com/marinaagafonova/Wish-box/blob/master/course_project_Wishbox.pdf
 
 **Демо видео:** https://github.com/marinaagafonova/Wish-box/blob/master/WishBox%20demo.wmv
 
