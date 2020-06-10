@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Wish Box";
+}
+
+@model IEnumerable<Wish_Box.Models.Wish>
+
+    <div class="col-8 col-lg-8">
+        
+        @if (Model != null && Model.Count()>0)
+        {
+            @foreach (var wish in Model)
+            {
+                <div class="news-block" style="margin-bottom: 20px;">
+
+                    <a class="btn-default user-link" asp-controller="UserPage" asp-action="Show" asp-route-id="@wish.User.Login">
+                        @if (wish.User.Avatar != null)
+                        {
+                            <img class="avatar" style='width:55px; height:55px;' src="@Url.Content(wish.User.Avatar)" />
+                        }
+                        else
+                        {
+                            <img class="avatar" src="~/Content/default_profile.jpg" asp-append-version="true" width="55"
+                                 height="55" alt="My profile">
+                        }
+                        @wish.User.Login
+                    </a>
+                    <p>добавил(а) новое желание</p>
+
+                    <div class="wish-desc" style="display:table;">
+                        <label class="wish-description" style="display: table-cell; vertical-align: middle; width: 80%;">@wish.Description</label>
+                        <div class="attachment">
+
+                            @if (wish.Attachment != null)
+                            {
+                                <img src="@Url.Content(wish.Attachment)" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/gift.png" />
+                            }
+                        </div>
+                    </div>
+                    <label style="display:table-row; margin-bottom: 10px;">Рейтинг: @wish.Rating.ToString()</label>
+
+                </div>
+            }
+        }
+        else
+        {
+            <p class="message">В ленте новостей пока нет желаний от других пользователей. 
+               Подпишитесь на своих друзей, найдя их через функцию поиска, если хотите получать обновления об их новых желаниях</p>
+        }
+
+    </div>

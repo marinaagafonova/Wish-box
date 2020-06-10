@@ -1,0 +1,541 @@
+﻿body {
+    background-color: #aed3e6 !important;
+}
+
+.border-bottom {
+    border-bottom: 3px solid #ffffff8a !important
+}
+
+.border-top {
+    border-top: 3px solid #ffffff8a !important;
+}
+
+.own-navbar {
+    background-color: #aed3e6;
+    border-color: white;
+    max-width: 1920px;
+    margin: 10px;
+}
+
+.navbar {
+    background-color: #aed3e6 !important;
+}
+
+.searchbar {
+    margin-bottom: auto;
+    margin-top: auto;
+    height: 50px;
+    background-color: #5d8ba2;
+    border-radius: 30px;
+    padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.search_input {
+    color: white;
+    border: 0;
+    outline: 0;
+    background: none;
+    width: 450px;
+    line-height: 30px;
+    transition: width 0.4s linear;
+    padding-left: 50px;
+}
+
+.search_icon {
+    height: 40px;
+    width: 40px;
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    color: white;
+    text-decoration: none;
+    margin-right: 10px;
+    position: absolute;
+    transform: translate(0, -90%);
+}
+
+input[type="search"]::-webkit-input-placeholder {
+    color: white;
+}
+
+input[type="search"]::-moz-placeholder {
+    color: white;
+}
+/* Firefox 19+ */
+input[type="search"]:-moz-placeholder {
+    color: white;
+}
+/* Firefox 18- */
+input[type="search"]:-ms-input-placeholder {
+    color: white;
+}
+
+.own-container {
+    margin: 0 !important;
+    max-width: 1440px !important;
+}
+
+.actions-block {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.logo {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.logout-btn {
+    color: white !important;
+    font-weight: bold;
+}
+
+.btn-signup {
+    background-color: #FF967E;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.button-group {
+    list-style: none;
+    display: inline-block;
+}
+
+.app-desc {
+    width: 430px;
+    height: 158px;
+    left: 518px;
+    top: 448px;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 27px;
+    line-height: 40px;
+    color: #FFFFFF;
+    text-align: left;
+    margin-left: 43%;
+    padding-top: 20px;
+}
+
+
+a.menu-btn {
+    font-family: Arimo;
+    font-style: normal;
+    color: white;
+    text-decoration: none;
+    padding: .8em 1em calc(.8em + 3px);
+    font-size: 20px;
+    line-height: 50px;
+}
+
+.menu-btn-block:hover {
+    background: rgb(73, 128, 156);
+}
+
+.menu-btn-block:active {
+    background: rgb(53, 108, 136);
+}
+
+.menu-li {
+    margin-bottom: 20px;
+}
+
+.menu-btn-block {
+    border-radius: 20px;
+    background: #71A8C4;
+    transition: 0.2s;
+    width: 281px;
+    height: 50px;
+    position: relative;
+}
+
+.left {
+    /*position: fixed;*/
+    margin-left: 40px;
+    /*margin-right: auto;*/
+    width: 400px !important;
+}
+.add-wish-block {
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 5px 25px;
+    margin-bottom: 20px;
+}
+
+.upload {
+    position: relative;
+    overflow: hidden;
+    background-color: #E8E8E8;
+    border-radius: 15px;
+}
+
+.file {
+    position: absolute;
+    font-size: 50px;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
+.sign-in-window {
+    top: 241px;
+    background: #FFFFFF;
+    border-radius: 15px;
+}
+.menu-image {
+    margin-top: -5px;
+    margin-right: 10px;
+}
+
+.sign-in-btn {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.sign-up-window {
+    background: #FFFFFF;
+    border-radius: 15px;
+    width: 550px;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 10%);
+}
+
+.sign-up-btn {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.add-wish-block {
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.upload {
+    position: relative;
+    overflow: hidden;
+    background-color: #E8E8E8;
+    border-radius: 15px;
+}
+
+.file {
+    position: absolute;
+    font-size: 50px;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
+
+.search-result {
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 660px;
+}
+
+.avatar {
+    border-radius: 100px;
+    margin-right: 10px;
+}
+
+.user-block-search {
+    margin-bottom: 15px;
+}
+
+.user-link {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    color: #004393;
+}
+
+.search-filter {
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.follow-btn {
+    float: right;
+    margin-right: 50px;
+    background-color: #87cb5c;
+    border-radius: 15px;
+    color: white !important;
+    padding: 10px;
+}
+
+.follow-btn:hover {
+    background-color: #149331;
+    border-color: #149331;
+    color: white !important;
+}
+
+
+.attachment {
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    background: #FFFFFF;
+    margin: 10px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.attachment img {
+    width: 200px;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+.wish-block {
+    width: 481px;
+    height: 319px;
+    background-color: white;
+    border-radius: 15px;
+    padding: 15px;
+    display: table;
+    margin: 20px;
+}
+
+/* Dropdown Button */
+.dropbtn {
+    background-color: white;
+    color: black;
+    font-size: 25px;
+    border: none;
+    cursor: pointer;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    float:right;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+    background-color: #ddd
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {
+    display: block;
+}
+
+.description {
+    /*transform: translate(-10%, -350%);*/
+    font-size: 20px;
+    font-weight: bold;
+}
+.wish-description {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.news-block {
+    width: 612px;
+    height: 351px;
+    background-color: white;
+    border-radius: 25px;
+    padding: 20px 30px;
+}
+
+.unfollow-btn {
+    float: right;
+    margin-right: 50px;
+    border-radius: 15px;
+}
+
+.edit {
+    /*width: 942px;
+    #height: 549px;*/
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.user-info {
+    width: 986px;
+    height: 250px;
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 20px;
+}
+
+.user-name {
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 35px;
+    line-height: 40px;
+    color: #000000;
+}
+
+.user-place {
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 29px;
+    color: #000000;
+}
+
+.user-date-lb {
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 25px;
+    color: #000000;
+    transform: translate(0%, 13%);
+}
+
+.edit-profile {
+    width: 281px;
+    height: 50px;
+    background: #71A8C4;
+    border-radius: 20px;
+    color: white;
+    float:right;
+}
+
+.edit-profile:hover {
+    background: #6393ac;
+    color: white;
+}
+
+.user-info-block {
+    float: left;
+    margin-left: 20px;
+}
+
+.wish-show {
+    width: 866px;
+    height: 285px;
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+    display: table;
+    margin-bottom: 20px;
+}
+
+.wish-desc {
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 40px;
+    margin-right: 20px;
+}
+
+.change-password {
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 20px;
+    width: 1250px;
+    height: 350px;
+}
+
+.following {
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 660px;
+}
+
+.to-give-info {
+    width: 50%;
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 10px;
+}
+
+header {
+    border: 10px white !important;
+    border-width: 10px !important;
+}
+
+
+.desc-block {
+    display: table-cell;
+    vertical-align: middle;
+    width: 70%;
+}
+
+.wish-attachment {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    background: #FFFFFF;
+    margin: 10px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.wish-func {
+    display:table-row;
+}
+
+.rating-desc {
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.comment-block {
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 850px;
+    margin-top: 10px;
+}
+
+.to-give-remove {
+    background-image: url('~/Content/tick_to_give.png');
+}
+
+.message {
+    width: 55%;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 30px;
+    color: #FFFFFF;
+    text-align: center;
+    padding-top: 90px;
+    margin-bottom: 90px;
+    margin-left: 4%;
+    margin-right: 70%;
+}
