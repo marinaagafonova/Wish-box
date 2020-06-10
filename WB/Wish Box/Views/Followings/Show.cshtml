@@ -1,0 +1,62 @@
+@{
+    ViewData["Title"] = "Мои подписки";
+}
+@model Wish_Box.ViewModels.FollowingViewModel
+
+    <div class="col-8 col-lg-8">
+        <div class="following">
+            <h4 style="text-align: center; font-weight: bold;">Мои подписки</h4>
+            @foreach (var user in Model.followedUsersList)
+            {
+
+                <div class="user-block-search">
+                    <a class="btn-link user-link" asp-area="" asp-controller="Userpage" asp-action="Show" asp-route-id="@user.Login">
+                        @if (user.Avatar != null)
+                        {
+                            <img class="avatar" style='width:70px; height:70px;' src="@Url.Content(user.Avatar)" />
+                        }
+                        else
+                        {
+                            <img class="avatar" src="~/Content/default_profile.jpg" asp-append-version="true" width="70"
+                                 height="70" alt="My profile">
+                        }@user.Login
+                    </a>
+                    <a class="btn btn-default" style="float: right;" onclick="deletefun(@user.Id)">x</a>
+                </div>
+            }
+
+        </div>
+        @if (Model.followedUsersList.Count == 0)
+        {
+            <p class="message">
+                На данный момент вы не подписаны ни на одного пользователя системы "Wish Box". Чтобы подписаться на обновления своего друга, найдите его в поиске по имени пользователя и нажмите на кнопку "Подписаться".
+            </p>
+        }
+    </div>
+
+@section scripts
+{
+<script type="text/javascript">
+    function deletefun(id) {
+        $.ajax({
+            type: "DELETE",
+            url: "/Followings/Remove/" + id,
+            success: function () {
+                location.reload(true);
+            }
+        })
+    }
+   //// $(function () {
+   //     $.ajaxSetup({ cache: false });
+   //     $(".btn-detele").on('click', function (e) {
+   //         var id = $(this).attr("data-id");
+   //         $.ajax({
+   //             type: 'Delete',
+   //             url: '/Followings?id=' + id
+   //         });
+   //         console.log("delete following with id" + id);
+   //     })
+   // })
+</script>
+}
+

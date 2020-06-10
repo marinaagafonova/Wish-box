@@ -1,0 +1,103 @@
+﻿@model List<Wish_Box.Models.Wish>
+@{
+    ViewData["Title"] = "Мои желания";
+}
+
+    <div class="col-sm-8 col-lg-8 col-md-8">
+        <h2 style="color:white; text-align: center; font-weight: bold; margin-bottom: 20px;">Мои желания</h2>
+        <div id="modDialog" class="modal fade">
+            <div id="dialogContent" class="modal-dialog"></div>
+        </div>
+        <div class="row">
+            @foreach (var wish in Model)
+            {
+                <div class="col-6">
+                    <div class="wish-block">
+                        <div class="row">
+                            <div class="dropdown" style="margin-left:auto; margin-right:10px;">
+                                <button onclick="myFunction(@wish.Id)" class="dropbtn">&#8226;&#8226;&#8226;</button>
+                                @{
+                                    string drop_id = "myDropdown" + wish.Id.ToString();
+                                }
+                                <div id="@drop_id" class="dropdown-content">
+                                    <a asp-controller="Wish" asp-action="Edit" asp-route-id="@wish.Id">Редактировать желание</a>
+                                    <a class="btn-delete" onclick="deletefun(@wish.Id)">Удалить желание</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="display: table;">
+                            <label class="description col-7" style="display: table-cell; vertical-align: middle;">@wish.Description</label>
+                            <div class="col-5">
+
+                                <div class="attachment">
+                                    @if (wish.Attachment != null)
+                                    {
+                                        <img class="cut" src="@Url.Content(wish.Attachment)" />
+                                    }
+                                    else
+                                    {
+                                        <img class="cut" src="~/Content/gift.png" />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        @if (Model.Count == 0)
+        {
+            <p class="message">
+                На данный момент вы не добавили ни одного желания. Чтобы добавить желание, нажмите на иконку подарка с плюсом, которая располагается в "шапке" сайта.
+            </p>
+        }
+    </div>
+
+<script>
+    function myFunction(id) {
+        console.log(id);
+        //console.log("myDropdown"+id);
+        document.getElementById("myDropdown" + id).classList.toggle("show");
+    }
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        //$(function () {
+        //    $.ajaxSetup({ cache: false });
+        //    $(".btn-delete").click(function (e) {
+        //        console.log("delete button was pressed");
+        //        e.preventDefault();
+        //        $.get(this.href, function (data) {
+        //            $('#dialogContent').html(data);
+        //            $('#modDialog').modal('show');
+        //        });
+              
+        //    });
+        //})
+        function deletefun(id) {
+            $.ajax({
+                type: "DELETE",
+                url: "/Wish/Delete/" + id,
+                success: function () {
+                    console.log('success delete');
+                    location.reload(true);
+                }
+            })
+        }
+    </script>
+}
