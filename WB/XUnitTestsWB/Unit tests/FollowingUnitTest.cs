@@ -11,7 +11,7 @@ using Wish_Box.Models;
 using Wish_Box.Repositories;
 using Xunit;
 
-namespace XUnitTestsWB
+namespace XUnitTestsWB.Unit_tests
 {
     public class FollowingUnitTest
     {

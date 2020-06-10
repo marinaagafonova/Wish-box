@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Wish_Box.ViewModels;
 
-namespace XUnitTestsWB
+namespace XUnitTestsWB.Unit_tests
 {
     public class AccountUnitTest
     {

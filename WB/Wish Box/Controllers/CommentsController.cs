@@ -78,13 +78,13 @@ namespace Wish_Box.Controllers
         [HttpDelete("[controller]/[action]/{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var commentId = Convert.ToInt32(RouteData.Values["id"]);
-            var wishId = (await comment_rep.FindFirstOrDefault(c => c.Id == commentId)).WishId;
+            //var commentId = Convert.ToInt32(RouteData.Values["id"]);
+            var wishId = (await comment_rep.FindFirstOrDefault(c => c.Id == id)).WishId;
             var userId = (await wish_rep.FindFirstOrDefault(p => p.Id == wishId)).UserId;
             var username = (await user_rep.FindFirstOrDefault(u => u.Id == userId)).Login;
-            if (commentId > 0 && User.Identity.Name != null)
+            if (id > 0 && User.Identity.Name != null && User.Identity.Name == username)
             {
-                await comment_rep.Delete(commentId);
+                await comment_rep.Delete(id);
                 //return RedirectToAction("Show", "UserPage", new { id = username });
                 return Json(new { success = true, responseText = "comment was deleted" });
             }

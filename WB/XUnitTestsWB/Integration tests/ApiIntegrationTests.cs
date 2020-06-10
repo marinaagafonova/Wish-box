@@ -32,5 +32,37 @@ namespace XUnitTestsWB.Integration_tests
             Assert.Equal("text/html; charset=utf-8",
                        result.Content.Headers.ContentType.ToString());
         }
+
+        [Fact]
+        public async Task WishTestApi()
+        {
+            var result = await _client.GetAsync("/Wish/OwnList");
+
+            result.EnsureSuccessStatusCode();
+
+            Assert.Equal("text/html; charset=utf-8",
+                       result.Content.Headers.ContentType.ToString());
+        }
+
+        [Fact]
+        public async Task UserPageTestApi()
+        {
+            var result = await _client.GetAsync("/UserPage/Show/1");
+
+            result.EnsureSuccessStatusCode();
+
+            Assert.Equal("text/html; charset=utf-8",
+                       result.Content.Headers.ContentType.ToString());
+        }
+        [Fact]
+        public async Task FollowingsTestApi()
+        {
+            var result = await _client.GetAsync("/Followings/Show");
+
+            result.EnsureSuccessStatusCode();
+
+            Assert.Equal("text/html; charset=utf-8",
+                       result.Content.Headers.ContentType.ToString());
+        }
     }
 }
