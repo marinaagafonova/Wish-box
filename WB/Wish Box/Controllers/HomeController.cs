@@ -39,12 +39,12 @@ namespace Wish_Box.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var current_user = await user_rep.FindFirstOrDefault(p => p.Login == User.Identity.Name);
-                List<Following> followings = following_rep.Find(p => p.UserFId == current_user.Id).ToList();
+                List<Following> followings = (await following_rep.Find(p => p.UserFId == current_user.Id)).ToList();
                 var wishes = new List<Wish>();
                 if (followings.Count > 0)
                 {
                     var is_followed_id = from f in followings select f.UserIsFId;
-                    wishes = wish_rep.Find(p => is_followed_id.Contains(p.UserId)).OrderByDescending(p => p.Id).ToList();
+                    wishes = (await wish_rep.Find(p => is_followed_id.Contains(p.UserId))).OrderByDescending(p => p.Id).ToList();
                 }
                 
                 foreach (var wish in wishes)
@@ -78,11 +78,11 @@ namespace Wish_Box.Controllers
         {
            // UserListViewModel model = null;
             var keyword = Request.Query["keyword"].ToString();
-            var users = user_rep.Find(u => u.Login.Contains(keyword)).ToList();
+            var users = (await user_rep.Find(u => u.Login.Contains(keyword))).ToList();
             List<string> cities = GetCities("Afghanistan");
             GetCountries();
             var current_user = await user_rep.FindFirstOrDefault(p => p.Login == User.Identity.Name);
-            var following_ids = following_rep.Find(p => p.UserFId == current_user.Id).Select(p => p.UserIsFId).ToList(); 
+            var following_ids = (await following_rep.Find(p => p.UserFId == current_user.Id)).Select(p => p.UserIsFId).ToList(); 
             if (model.Users == null)
             {
                 model = new UserListViewModel
@@ -178,7 +178,7 @@ namespace Wish_Box.Controllers
 
             List<string> cities = GetCities(country);
             var current_user = await user_rep.FindFirstOrDefault(p => p.Login == User.Identity.Name);
-            var following_ids = following_rep.Find(p => p.UserFId == current_user.Id).Select(p => p.UserIsFId).ToList();
+            var following_ids = (await following_rep.Find(p => p.UserFId == current_user.Id)).Select(p => p.UserIsFId).ToList();
             GetCountries();
             UserListViewModel viewModel = new UserListViewModel
             {

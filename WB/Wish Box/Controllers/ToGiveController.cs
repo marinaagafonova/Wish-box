@@ -35,8 +35,8 @@ namespace Wish_Box.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var user_id = await userRepository.FindFirstOrDefault(u => u.Login == User.Identity.Name);
-                List<int> wishId = takenWishRepository.Find(w => w.WhoGivesId == user_id.Id).Select(w => w.WishId).ToList();
-                var wishes = wishRepository.Find(w => wishId.Contains(w.Id)).ToList();
+                List<int> wishId = (await takenWishRepository.Find(w => w.WhoGivesId == user_id.Id)).Select(w => w.WishId).ToList();
+                var wishes = (await wishRepository.Find(w => wishId.Contains(w.Id))).ToList();
                 foreach (var wish in wishes)
                     wish.User = await userRepository.FindFirstOrDefault(p => p.Id == wish.UserId);
                 return View(wishes);
@@ -94,7 +94,7 @@ namespace Wish_Box.Controllers
             {
                 int wishId = Convert.ToInt32(RouteData.Values["id"]);
                 int whoGivesId = (await userRepository.FindFirstOrDefault(u => u.Login == User.Identity.Name)).Id;
-                var comments = commentRepository.Find(p => p.WishId == wishId).ToList();
+                var comments = (await commentRepository.Find(p => p.WishId == wishId)).ToList();
                 foreach (var comment in comments)
                 {
                     //db.Entry(comment).State = EntityState.Deleted;

@@ -39,9 +39,9 @@ namespace Wish_Box.Models
 			await db.SaveChangesAsync();
 		}
 
-		public IEnumerable<Comment> Find(Func<Comment, Boolean> predicate)
+		public async Task<IEnumerable<Comment>> Find(Func<Comment, Boolean> predicate)
 		{
-			return db.Comments.Where(predicate).ToList();
+			return await Task.FromResult(db.Comments.Where(predicate).ToList());
 		}
 
 		public async Task Delete(int id)

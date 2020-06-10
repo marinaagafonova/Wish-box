@@ -30,7 +30,7 @@ namespace Wish_Box.Controllers
         {
             //string id = RouteData.Values["id"].ToString();
             var wishId = Convert.ToInt32(RouteData.Values["id"]);
-            var comments = comment_rep.Find(c => c.WishId == wishId)/*.OrderBy(p=>p.Id).ToList()*/;
+            var comments = await comment_rep.Find(c => c.WishId == wishId)/*.OrderBy(p=>p.Id).ToList()*/;
             if(comments != null)
             {
                 comments = comments.OrderBy(p => p.Id).ToList();

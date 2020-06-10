@@ -166,7 +166,7 @@ namespace Wish_Box.Controllers
                // var id = Convert.ToInt32(RouteData.Values["id"]);
                 if (id > 0)
                 {
-                    var comments = comment_rep.Find(p => p.WishId == id).ToList();
+                    var comments = (await comment_rep.Find(p => p.WishId == id)).ToList();
                     foreach (var comment in comments)
                     {
                         await comment_rep.Delete(comment.Id);
@@ -188,7 +188,7 @@ namespace Wish_Box.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var current_user = await user_rep.FindFirstOrDefault(p => p.Login == User.Identity.Name);
-                var wishes = wish_rep.Find(p => p.UserId == current_user.Id).ToList();
+                var wishes = (await wish_rep.Find(p => p.UserId == current_user.Id)).ToList();
                 return View(wishes);
             }
             return RedirectToAction("Index", "Account");

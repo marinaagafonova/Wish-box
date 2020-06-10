@@ -35,9 +35,9 @@ namespace Wish_Box.Controllers
                 var login = RouteData.Values["id"].ToString();
                 User user = await userRepository.FindFirstOrDefault(x => x.Login == login); //the owner of the page we're on
                 User currentUser = await userRepository.FindFirstOrDefault(x => x.Login == User.Identity.Name); //current logged in user
-                List<int> following_ids = followingRepository.Find(p => p.UserIsFId == user.Id).Select(p => p.UserFId).ToList();
-                List<Wish> user_wishes = wishRepository.Find(p => p.UserId == user.Id).ToList();
-                List<int> takenWishes = takenWishRepository.Find(t => t.WhoGivesId == currentUser.Id).Select(t => t.WishId).ToList();
+                List<int> following_ids = (await followingRepository.Find(p => p.UserIsFId == user.Id)).Select(p => p.UserFId).ToList();
+                List<Wish> user_wishes = (await wishRepository.Find(p => p.UserId == user.Id)).ToList();
+                List<int> takenWishes = (await takenWishRepository.Find(t => t.WhoGivesId == currentUser.Id)).Select(t => t.WishId).ToList();
 
                 UserPageViewModel upvm = new UserPageViewModel()
                 {

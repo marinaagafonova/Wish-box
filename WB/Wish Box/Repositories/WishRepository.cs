@@ -29,9 +29,9 @@ namespace Wish_Box.Repositories
             await db.SaveChangesAsync();
         }
 
-        public IEnumerable<Wish> Find(Func<Wish, bool> predicate)
+        public async Task<IEnumerable<Wish>> Find(Func<Wish, bool> predicate)
         {
-            return db.Wishes.Where(predicate).ToList();
+            return await Task.FromResult(db.Wishes.Where(predicate).ToList());
         }
 
         public async Task<Wish> FindFirstOrDefault(System.Linq.Expressions.Expression<Func<Wish, bool>> predicate)

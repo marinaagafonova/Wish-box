@@ -30,9 +30,9 @@ namespace Wish_Box.Repositories
             await db.SaveChangesAsync();
         }
 
-        public IEnumerable<WishRating> Find(Func<WishRating, bool> predicate)
+        public async Task<IEnumerable<WishRating>> Find(Func<WishRating, bool> predicate)
         {
-            return db.WishRatings.Where(predicate).ToList();
+            return await Task.FromResult(db.WishRatings.Where(predicate).ToList());
         }
 
         public async Task<WishRating> FindFirstOrDefault(Expression<Func<WishRating, bool>> predicate)

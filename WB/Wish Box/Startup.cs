@@ -87,6 +87,7 @@ namespace Wish_Box
             services.AddTransient<IRepository<Wish>, WishRepository>();
             services.AddTransient<IRepository<WishRating>, WishRatingRepository>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
+            services.AddApplicationInsightsTelemetry();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

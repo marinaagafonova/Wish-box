@@ -4,10 +4,13 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-Wish_Box-FE7D3E55-F2B7-4477-88B5-C537D05A53C6</UserSecretsId>
     <RootNamespace>Wish_Box</RootNamespace>
+    <ApplicationInsightsResourceId>/subscriptions/f654b2a0-38d7-49f7-bda8-5f2c2b97f404/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/Wish Box</ApplicationInsightsResourceId>
   </PropertyGroup>
 
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.12.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.SnapshotCollector" Version="1.3.7" />
     <PackageReference Include="Microsoft.AspNetCore.AzureAppServices.HostingStartup" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.AzureAppServicesIntegration" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.3" />
@@ -40,6 +43,11 @@
   <ItemGroup>
     <None Include="wwwroot\Content\logo.png" />
     <None Include="wwwroot\Content\style.css" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>

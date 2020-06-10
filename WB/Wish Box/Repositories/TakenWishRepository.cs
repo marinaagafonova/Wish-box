@@ -39,9 +39,9 @@ namespace Wish_Box.Models
 			await db.SaveChangesAsync();
 		}
 
-		public IEnumerable<TakenWish> Find(Func<TakenWish, Boolean> predicate)
+		public async Task<IEnumerable<TakenWish>> Find(Func<TakenWish, Boolean> predicate)
 		{
-			return db.TakenWishes.Where(predicate).ToList();
+			return await Task.FromResult(db.TakenWishes.Where(predicate).ToList());
 		}
 
 		public async Task Delete(int id)

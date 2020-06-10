@@ -24,6 +24,7 @@ namespace Wish_Box.Controllers
         {
             rep_following = followingRepository;
             rep_user = userRepository;
+            db = context;
         }
 
         [HttpPost("[controller]/[action]/{id}")]
@@ -72,7 +73,7 @@ namespace Wish_Box.Controllers
                 var CurrentUser = await rep_user.FindFirstOrDefault(p => p.Login == login);
                 List<User> followedUsersList = new List<User>();
                 //var followings = await db.Followings.Where(p => p.UserFId == CurrentUser.Id).ToListAsync();
-                var followings = rep_following.Find(p => p.UserFId == CurrentUser.Id);
+                var followings = await rep_following.Find(p => p.UserFId == CurrentUser.Id);
                 if (followings != null)
                 {
                     foreach (var followed in followings)
