@@ -25,13 +25,21 @@ namespace Wish_Box
     }
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public IConfiguration Configuration { get; }
 
+        private readonly IWebHostEnvironment _currentEnvironment;
+
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment currentEnvironment)
+        {
+            Configuration = configuration;
+            _currentEnvironment = currentEnvironment;
+        }
+
+        public virtual void ConfigureDependencies(IServiceCollection services)
+        {
+
+        }
 
         //This method gets called by the runtime.Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -46,8 +54,17 @@ namespace Wish_Box
             services.AddSession();
 
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<AppDbContext>(builder =>
-                builder.UseSqlServer(connectionString));
+
+            if (_currentEnvironment.IsEnvironment("Testing"))
+            {
+                services.AddDbContextPool<AppDbContext>(options =>
+                    options.UseInMemoryDatabase("TestingDB"));
+            }
+            else
+            {
+                services.AddDbContext<AppDbContext>(builder =>
+                    builder.UseSqlServer(connectionString));
+            }
             ConnectionString.Value = Configuration.GetConnectionString("DefaultConnection");
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => //CookieAuthenticationOptions
