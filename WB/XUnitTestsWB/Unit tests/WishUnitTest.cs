@@ -11,7 +11,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
-namespace XUnitTestsWB
+namespace XUnitTestsWB.Unit_tests
 {
     public class WishUnitTest
     {
