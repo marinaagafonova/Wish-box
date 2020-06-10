@@ -14,9 +14,11 @@
 
 **Курсовой проект (формат pdf):** https://github.com/marinaagafonova/Wish-box/blob/master/course_project_Wish_box.pdf
 
+**Демо видео:** https://github.com/marinaagafonova/Wish-box/blob/master/WishBox%20demo.wmv
+
 **Trello:** https://trello.com/b/nvA1IXh0
 
-**Miro:** https://miro.com/app/board/o9J_kukMwds=/
+**Miro:** https://miro.com/app/board/o9J_kugoRpg=/
 
 **Опубликованное приложение:** https://wish--box.azurewebsites.net/
 
