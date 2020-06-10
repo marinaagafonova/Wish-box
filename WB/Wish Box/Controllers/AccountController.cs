@@ -224,7 +224,23 @@ namespace Wish_Box.Controllers
                 {
                     connection.Open();
                     int countryId = 0;
-                    string sql1 = string.Format("Select CountryId From country Where CountryName='{0}'", "Afghanistan");
+                    Edit1Model e = new Edit1Model();
+                    string sql1 = "";
+                    User user = await userRepository.FindFirstOrDefault(p => p.Login == User.Identity.Name);
+                    if (user != null)
+                    {
+                        e = new Edit1Model()
+                        {
+                            City = user.City,
+                            Country = user.Country,
+                            dayOfBirth = user.dayOfBirth,
+                            Login = user.Login,
+                            Avatar = user.Avatar
+                        };
+                        sql1 = string.Format("Select CountryId From country Where CountryName='{0}'", user.Country);
+                    }
+                    else
+                        return NotFound();
                     SqlCommand command1 = new SqlCommand(sql1, connection);
                     using (SqlDataReader dataReader = command1.ExecuteReader())
                     {
@@ -243,20 +259,9 @@ namespace Wish_Box.Controllers
                         }
                     }
                     connection.Close();
-                }
-                ViewBag.CitiesFirst = cities;
-                User user = await userRepository.FindFirstOrDefault(p => p.Login == User.Identity.Name);
-                if (user != null)
-                {
-                    Edit1Model e = new Edit1Model()
-                    {
-                        City = user.City,
-                        Country = user.Country,
-                        dayOfBirth = user.dayOfBirth,
-                        Login = user.Login,
-                        Avatar = user.Avatar
-                    };
-                    return View(e);
+                    ViewBag.CitiesFirst = cities;
+                    if (user!=null)
+                        return View(e);
                 }
             }
             return NotFound();//может сделать страничку "вы должны быть авторизованны для этого действия"

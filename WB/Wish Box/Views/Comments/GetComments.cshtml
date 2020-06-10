@@ -29,7 +29,7 @@
                     </div>
                     @if (commentVM.AuthorName == User.Identity.Name)
                     {
-                        <button style="float:right" class="btn btn-outline-danger" onclick="delete_comment(@commentVM.Id);">x</button>
+                        <button style="float:right" class="btn" onclick="delete_comment(@commentVM.Id);">x</button>
                     }
                     <div class="commentDetails" style="width: 100%;">
                         <p style="margin-left: 30px; margin-top: 10px; font-size: 16px;"> @commentVM.Description </p>

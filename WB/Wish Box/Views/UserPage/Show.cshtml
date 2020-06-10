@@ -75,14 +75,16 @@
 
                             </div>
                             <div class="attachment col-4">
-                                @if (wish.Attachment != null)
-                                {
-                                    <img src="@Url.Content(wish.Attachment)" />
-                                }
-                                else
-                                {
-                                    <img src="~/Content/gift.png" />
-                                }
+                                <div class="cut">
+                                    @if (wish.Attachment != null)
+                                    {
+                                        <img src="@Url.Content(wish.Attachment)" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Content/gift.png" />
+                                    }
+                                </div>
                             </div>
 
                         </div>

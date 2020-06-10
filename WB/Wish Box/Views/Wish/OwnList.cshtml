@@ -28,16 +28,18 @@
                     <div class="row" style="display: table;">
                         <label class="description col-7" style="display: table-cell; vertical-align: middle;">@wish.Description</label>
                         <div class="col-5">
+                            
                             <div class="attachment">
-
-                                @if (wish.Attachment != null)
-                                {
-                                    <img src="@Url.Content(wish.Attachment)" />
-                                }
-                                else
-                                {
-                                    <img src="~/Content/gift.png" />
-                                }
+                                <div class="cut">
+                                    @if (wish.Attachment != null)
+                                    {
+                                        <img src="@Url.Content(wish.Attachment)" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Content/gift.png" />
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -29,15 +29,16 @@
                     <div class="wish-desc" style="display:table;">
                         <label class="wish-description" style="display: table-cell; vertical-align: middle; width: 80%;">@wish.Description</label>
                         <div class="attachment">
-
-                            @if (wish.Attachment != null)
-                            {
-                                <img src="@Url.Content(wish.Attachment)" />
-                            }
-                            else
-                            {
-                                <img src="~/Content/gift.png" />
-                            }
+                            <div class="cut">
+                                @if (wish.Attachment != null)
+                                {
+                                    <img src="@Url.Content(wish.Attachment)" />
+                                }
+                                else
+                                {
+                                    <img src="~/Content/gift.png" />
+                                }
+                            </div>
                         </div>
                     </div>
                     <label style="display:table-row; margin-bottom: 10px;">Рейтинг: @wish.Rating.ToString()</label>

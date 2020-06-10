@@ -361,12 +361,19 @@ a.menu-btn {
     font-weight: bold;
 }
 
+.cut {
+    object-fit: cover;
+    width: 200px;
+    height: 200px;
+}
+
 .news-block {
     width: 612px;
-    height: 351px;
+    /*height: 351px;*/
     background-color: white;
     border-radius: 25px;
     padding: 20px 30px;
+    max-height: max-content;
 }
 
 .unfollow-btn {
@@ -461,8 +468,10 @@ a.menu-btn {
     background: #FFFFFF;
     border-radius: 15px;
     padding: 20px;
-    width: 1250px;
+    width: 650px;
     height: 350px;
+    margin-left: 5%;
+    margin-bottom: 20px;
 }
 
 .following {
