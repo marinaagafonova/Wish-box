@@ -36,7 +36,7 @@ namespace Wish_Box.Repositories
 
         public async Task<User> FindFirstOrDefault(Expression<Func<User, bool>> predicate)
         {
-            return await db.Users.FirstOrDefaultAsync(predicate, System.Threading.CancellationToken.None);
+            return await db.Users.FirstOrDefaultAsync(predicate);
         }
 
         public async Task<User> Get(int id)

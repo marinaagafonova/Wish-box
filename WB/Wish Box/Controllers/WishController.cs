@@ -212,7 +212,7 @@ namespace Wish_Box.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var currentUser = user_rep.FindFirstOrDefault(x => x.Login == User.Identity.Name);
+                User currentUser = await user_rep.FindFirstOrDefault(x => x.Login == User.Identity.Name);
                 Wish currentWish = await wish_rep.FindFirstOrDefault(p => p.Id == id);
                 WishRating currentRate = await wishRate_rep.FindFirstOrDefault(x => x.UserId == currentUser.Id && x.WishId == id);
                 //WishRating currentRate = null;
@@ -259,7 +259,7 @@ namespace Wish_Box.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 //var wish_id = Convert.ToInt32(RouteData.Values["id"]);
-                var currentUser = user_rep.FindFirstOrDefault(x => x.Login == User.Identity.Name);
+                User currentUser = await user_rep.FindFirstOrDefault(x => x.Login == User.Identity.Name);
                 Wish currentWish = await wish_rep.FindFirstOrDefault(p => p.Id == id);
                 WishRating currentRate = await wishRate_rep.FindFirstOrDefault(x => x.UserId == currentUser.Id && x.WishId == id);
                 //WishRating currentRate = null;
