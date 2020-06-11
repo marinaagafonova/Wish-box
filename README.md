@@ -22,6 +22,8 @@
 
 **Опубликованное приложение:** https://wish--box.azurewebsites.net/
 
+**Swagger:** https://wish--box.azurewebsites.net/swagger/
+
 **Отчёт по второй аттестации:** https://github.com/marinaagafonova/Wish-box/blob/master/report_on_2_att.pdf
 
 # Участники проекта:
