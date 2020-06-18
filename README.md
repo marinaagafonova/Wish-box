@@ -16,7 +16,7 @@
 
 **Демо видео:** https://github.com/marinaagafonova/Wish-box/blob/master/WishBox%20demo.wmv
 
-**Зашита проекта:** https://youtu.be/R1T02-ae4I4
+**Защита проекта:** https://youtu.be/R1T02-ae4I4
 
 **Trello:** https://trello.com/b/nvA1IXh0
 
